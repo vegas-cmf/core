@@ -13,8 +13,23 @@
 namespace Vegas\Mvc\Router\Adapter;
 
 
-class Standard extends \Phalcon\Mvc\Router
+use Phalcon\DI;
+use Phalcon\DiInterface;
+use Vegas\DI\InjectionAwareTrait;
+
+class Standard extends \Phalcon\Mvc\Router implements DI\InjectionAwareInterface
 {
+
+    /**
+     * @param DiInterface $dependencyInjector
+     * @param bool $keepDefaultRoutes
+     */
+    public function __construct(\Phalcon\DiInterface $dependencyInjector, $keepDefaultRoutes = false)
+    {
+        parent::__construct($keepDefaultRoutes);
+        $this->removeExtraSlashes(true);
+        $this->setDI($dependencyInjector);
+    }
 
     /**
      * Returns whether controller name should not be mangled

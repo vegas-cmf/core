@@ -12,6 +12,7 @@
  
 namespace Vegas\Tests\Mvc;
 
+use Phalcon\DI;
 use Vegas\Http\Method;
 use Vegas\Mvc\Router;
 
@@ -20,7 +21,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     private $testRoutes = array(
         'statictest' => array(
-            'route' => 'static/test',
+            'route' => '/static/qwerty',
             'paths' => array(
                 'controller' => 'statictest',
                 'action' => 'test'
@@ -28,59 +29,89 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             'type' => 'static',
             'params' => array()
         ),
+        'nonstatictest' => array(
+            'route' => '/static/{page}',
+            'paths' => array(
+                'controller' => 'nonstatictest',
+                'action' => 'test'
+            ),
+            'type' => 'default',
+            'params' => array()
+        ),
         'test' => array(
-            'route' => 'test/edit',
+            'route' => '/test/edit',
             'paths' => array(
                 'controller' => 'test'
             ),
             'params' => array()
         ),
         'articles' => array(
-            'route' => 'articles/list',
+            'route' => '/articles',
             'paths' => array(
                 'controller' => 'articles'
             ),
             'type' => 'rest',
             'params' => array(
-                'via' => array(Method::GET, Method::POST)
+                'actions' => array(
+                    '/' => array(
+                        'index' => Method::GET,
+                        'create' => Method::POST
+                    )
+                )
             )
         ),
         'products' => array(
-            'route' => 'products',
+            'route' => '/products',
             'paths' => array(
                 'controller' => 'products'
             ),
             'type' => 'rest',
-            'params' => array()
+            'params' => array(
+                'actions' => array(
+                    '/' =>  array(
+                        'index' =>  Method::GET,
+                        'create'  =>  Method::POST
+                    ),
+                    '/{id}' =>  array(
+                        'show' => Method::GET,
+                        'update' => Method::PUT,
+                        'delete' => Method::DELETE
+                    ),
+                )
+            )
         )
     );
 
     public function testRouteDefinition()
     {
-        $allMethods = array(
-            Method::GET, Method::POST, Method::DELETE, Method::HEAD,
-            Method::OPTIONS, Method::PATCH, Method::PUT
-        );
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(false);
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
         $router = new \Vegas\Mvc\Router($routerAdapter);
         $router->addRoutes($this->testRoutes);
 
         $router->setup();
 
-        $this->assertEquals(count($router->getRouter()->getRoutes()), count($this->testRoutes));
+        $this->assertNotEmpty($router->getRouter()->getRoutes());
 
-        //checks HTTP methods for REST route type
-        foreach ($router->getRouter()->getRoutes() as $i => $route) {
-            $this->assertNotEmpty($this->testRoutes[$route->getName()]);
-            $routeDefinition = $this->testRoutes[$route->getName()];
-            if (isset($routeDefinition['type']) && $routeDefinition['type'] == Router::REST_ROUTE) {
-                if (isset($routeDefinition['params']) && isset($routeDefinition['params']['via'])) {
-                    $this->assertSameSize($routeDefinition['params']['via'],  $route->getHttpMethods());
-                } else {
-                    $this->assertSameSize($allMethods, $route->getHttpMethods());
-                }
-            }
-        }
+        $this->assertNotEmpty($router->getRouter()->getRouteByName('articles/index'));
+        $this->assertNotEmpty($router->getRouter()->getRouteByName('articles/create'));
+        $this->assertEmpty($router->getRouter()->getRouteByName('articles/update'));
+        $this->assertEmpty($router->getRouter()->getRouteByName('articles/delete'));
+        $this->assertEmpty($router->getRouter()->getRouteByName('articles/show'));
+
+        $this->assertEquals(Method::GET, $router->getRouter()->getRouteByName('articles/index')->getHttpMethods());
+        $this->assertEquals(Method::POST, $router->getRouter()->getRouteByName('articles/create')->getHttpMethods());
+
+        $this->assertNotEmpty($router->getRouter()->getRouteByName('products/create'));
+        $this->assertNotEmpty($router->getRouter()->getRouteByName('products/delete'));
+        $this->assertNotEmpty($router->getRouter()->getRouteByName('products/show'));
+        $this->assertNotEmpty($router->getRouter()->getRouteByName('products/index'));
+        $this->assertNotEmpty($router->getRouter()->getRouteByName('products/update'));
+
+        $this->assertEquals(Method::POST, $router->getRouter()->getRouteByName('products/create')->getHttpMethods());
+        $this->assertEquals(Method::DELETE, $router->getRouter()->getRouteByName('products/delete')->getHttpMethods());
+        $this->assertEquals(Method::GET, $router->getRouter()->getRouteByName('products/show')->getHttpMethods());
+        $this->assertEquals(Method::GET, $router->getRouter()->getRouteByName('products/index')->getHttpMethods());
+        $this->assertEquals(Method::PUT, $router->getRouter()->getRouteByName('products/update')->getHttpMethods());
 
         //checks if static route is added in the end
         $routes = $router->getRouter()->getRoutes();
@@ -100,7 +131,86 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->setExpectedException('\Vegas\Mvc\Router\Exception\InvalidRouteTypeException');
         $router->addRoute($failRoute);
         $router->setup();
-
-
     }
-} 
+
+    public function testRouteMatching()
+    {
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router($routerAdapter);
+        $router->addRoutes($this->testRoutes);
+
+        $router->setup();
+
+        $testCorrectRoutes = array(
+            '/static/test',
+            '/test/edit'
+        );
+
+        $defaultRouter = $router->getRouter();
+        foreach ($testCorrectRoutes as $url) {
+            $defaultRouter->handle($url);
+            $this->assertTrue($defaultRouter->wasMatched());
+        }
+
+        /**
+         * Helper function for handling specified URI
+         *
+         * @param $method
+         * @param $uri
+         */
+        $handleUri = function($method, $uri) use ($defaultRouter) {
+            $this->setRequestMethod($method);
+            $defaultRouter->handle($uri);
+            $this->assertTrue($defaultRouter->wasMatched());
+        };
+
+        $handleUri(Method::GET, '/products/123');
+        $handleUri(Method::PUT, '/products/123');
+        $handleUri(Method::DELETE, '/products/123');
+
+        $handleUri(Method::POST, '/products/');
+        $handleUri(Method::GET, '/products/');
+
+        $handleUri(Method::GET, '/articles');
+        $handleUri(Method::POST, '/articles');
+
+        //non existing routes
+        $this->setExpectedException('\PHPUnit_Framework_ExpectationFailedException');
+        $handleUri(Method::POST, '/products/123');
+        $handleUri(Method::DELETE, '/products');
+        $handleUri(Method::PUT, '/products');
+
+        $handleUri(Method::DELETE, '/articles/1234');
+        $handleUri(Method::PUT, '/articles/1234');
+        $handleUri(Method::PUT, '/articles');
+        $handleUri(Method::GET, '/articles/1234');
+    }
+
+    public function testStaticRoutes()
+    {
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router($routerAdapter);
+        $router->addRoutes($this->testRoutes);
+
+        $router->setup();
+
+        $defaultRouter = $router->getRouter();
+
+        $defaultRouter->handle('/static/qwerty');
+        $this->assertNotEmpty($defaultRouter->getMatchedRoute());
+        $matchedRoute = $defaultRouter->getMatchedRoute();
+        $paths = $matchedRoute->getPaths();
+        $this->assertEquals('statictest', $paths['controller']);
+
+        $defaultRouter->handle('/static/asdfgh');
+        $this->assertNotEmpty($defaultRouter->getMatchedRoute());
+        $matchedRoute = $defaultRouter->getMatchedRoute();
+        $paths = $matchedRoute->getPaths();
+        $this->assertEquals('nonstatictest', $paths['controller']);
+    }
+
+    private function setRequestMethod($method)
+    {
+        $_SERVER['REQUEST_METHOD'] = $method;
+    }
+}

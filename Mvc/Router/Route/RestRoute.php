@@ -20,15 +20,27 @@ class RestRoute implements RouteInterface
 {
     public function add(\Phalcon\Mvc\RouterInterface $router, Route $route)
     {
-        $via = $route->getParam('via');
-        if (empty($via)) {
-            $via = array(
-                Method::GET, Method::POST, Method::DELETE, Method::HEAD,
-                Method::OPTIONS, Method::PATCH, Method::PUT
+        //resolves actions with http methods
+        $actions = $route->getParam('actions');
+        if (empty($actions)) {
+            $actions = array(
+                '/' =>  array(
+                    'index' => Method::GET
+                )
             );
         }
-        $newRoute = $router->add($route->getRoute(), $route->getPaths());
-        $newRoute->via($via);
-        $newRoute->setName($route->getName());
+
+        //add routes with http method
+        foreach ($actions as $actionRoute => $actionMethods) {
+            if ($actionRoute == '/') $actionRoute = '';
+            foreach ($actionMethods as $action => $method) {
+                $newRoute = $router->add($route->getRoute() . $actionRoute,
+                    array(
+                        'action'    => $action
+                    )
+                )->via($method);
+                $newRoute->setName($route->getName() . '/' . $action);
+            }
+        }
     }
 }
