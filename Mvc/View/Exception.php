@@ -10,22 +10,11 @@
  * file that was distributed with this source code.
  */
  
-namespace Vegas\Http;
+namespace Vegas\Mvc\View;
 
-/**
- * Class Method
- *
- * HTTP methods
- *
- * @package Vegas\Http
- */
-class Method 
+use Vegas\Mvc\Exception as MvcException;
+
+class Exception extends MvcException
 {
-    const GET = 'GET';
-    const POST = 'POST';
-    const PUT = 'PUT';
-    const PATCH = 'PATCH';
-    const DELETE = 'DELETE';
-    const OPTIONS = 'OPTIONS';
-    const HEAD = 'HEAD';
-}
+
+} 

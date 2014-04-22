@@ -14,6 +14,10 @@ namespace Vegas\Mvc\Router;
 
 use Vegas\Mvc\Router\Route;
 
+/**
+ * Interface RouteInterface
+ * @package Vegas\Mvc\Router
+ */
 interface RouteInterface
 {
     /**

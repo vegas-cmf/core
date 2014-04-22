@@ -11,6 +11,12 @@
  */
 namespace Vegas\Mvc\Controller\Crud;
 
+/**
+ * Class Events
+ * Event dispatcher events
+ *
+ * @package Vegas\Mvc\Controller\Crud
+ */
 class Events
 {
     const BEFORE_NEW = 'crud:beforeNew';

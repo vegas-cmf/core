@@ -16,8 +16,18 @@ namespace Vegas\Mvc\Router\Route;
 use Vegas\Mvc\Router\Route;
 use Vegas\Mvc\Router\RouteInterface;
 
+/**
+ * Class DefaultRoute
+ * Default route type.
+ *
+ * @package Vegas\Mvc\Router\Route
+ */
 class DefaultRoute implements RouteInterface
 {
+
+    /**
+     * {@inheritdoc}
+     */
     public function add(\Phalcon\Mvc\RouterInterface $router, Route $route)
     {
         $router

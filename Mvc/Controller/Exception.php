@@ -13,8 +13,12 @@ namespace Vegas\Mvc\Controller;
 
 use \Vegas\Exception as VegasException;
 
+/**
+ * Class Exception
+ * @package Vegas\Mvc\Controller
+ */
 class Exception extends VegasException
 {
-    
+    protected $_message = 'Unknown MVC Controller exception';
 }
  

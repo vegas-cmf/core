@@ -158,27 +158,4 @@ class Crud extends ControllerAbstract
         
         $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_DELETE, $this);
     }
-    
-    /**
-     * @ACL(name="upload", inherit='edit')
-     */
-    public function uploadAction()
-    {
-        $this->view->disable();
-        $this->dispatcher->getEventsManager()->fire(Crud\Events::BEFORE_UPLOAD, $this);
-        
-        $files = array();
-        
-        if($this->request->isAjax() && $this->request->hasFiles()) {
-            try {
-                $uploader = $this->di->get('uploader');
-                $files[] = $uploader->setFiles($this->request->getUploadedFiles())->handle();
-            } catch (\Exception $e) {
-                $files[] = array('error' => $e->getMessage());
-            }
-        }
-        
-        $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_UPLOAD, $this);
-        return $this->response->setJsonContent(array('files' => $files));
-    }  
 }

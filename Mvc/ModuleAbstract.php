@@ -34,7 +34,6 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
         $this->registerDispatcher($di);
         $this->registerScaffolding($di);
         $this->registerViewComponent($di);
-        $this->registerMediaServices($di);
         $this->registerPlugins($di);
     }
     
@@ -84,19 +83,5 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
             
             return $view;
         });
-    }
-
-    protected function registerMediaServices($di)
-    {
-        $di->set('uploader', function() {
-            $uploader = new \Vegas\Media\Uploader();
-            $uploader->setMaxSize('10MB')
-                    ->setExtensions(array('jpg', 'png'))
-                    ->setMimeTypes(array('image/jpeg', 'image/png'));
-            
-            return $uploader;
-        });
-        
-        $di->set('fileWrapper', '\Vegas\Media\File\Wrapper', true);
     }
 }

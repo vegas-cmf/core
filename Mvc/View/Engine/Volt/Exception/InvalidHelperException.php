@@ -10,22 +10,11 @@
  * file that was distributed with this source code.
  */
  
-namespace Vegas\Http;
+namespace Vegas\Mvc\View\Engine\Volt\Exception;
 
-/**
- * Class Method
- *
- * HTTP methods
- *
- * @package Vegas\Http
- */
-class Method 
+use Vegas\Mvc\View\Engine\Exception;
+
+class InvalidHelperException extends Exception
 {
-    const GET = 'GET';
-    const POST = 'POST';
-    const PUT = 'PUT';
-    const PATCH = 'PATCH';
-    const DELETE = 'DELETE';
-    const OPTIONS = 'OPTIONS';
-    const HEAD = 'HEAD';
-}
+    protected $_message = 'Invalid helper. Helper must be an instance of VoltHelperAbstract';
+} 

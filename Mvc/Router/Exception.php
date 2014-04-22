@@ -14,7 +14,11 @@ namespace Vegas\Mvc\Router;
 
 use \Vegas\Exception as VegasException;
 
+/**
+ * Class Exception
+ * @package Vegas\Mvc\Router
+ */
 class Exception extends VegasException
 {
-
+    protected $_message = 'Router unknown error';
 }

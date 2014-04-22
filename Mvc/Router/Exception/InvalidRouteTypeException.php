@@ -14,7 +14,13 @@ namespace Vegas\Mvc\Router\Exception;
 
 use \Vegas\Mvc\Router\Exception as RouterException;
 
+/**
+ * Class InvalidRouteTypeException
+ * Thrown when trying to add non existing route type.
+ *
+ * @package Vegas\Mvc\Router\Exception
+ */
 class InvalidRouteTypeException extends RouterException
 {
-
+    protected $_message = 'Invalid route type';
 }

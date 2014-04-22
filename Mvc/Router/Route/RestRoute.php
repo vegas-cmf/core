@@ -16,8 +16,17 @@ use Vegas\Http\Method;
 use Vegas\Mvc\Router\Route;
 use Vegas\Mvc\Router\RouteInterface;
 
+/**
+ * Class RestRoute
+ * REST route type, useful for building RESTful API
+ *
+ * @package Vegas\Mvc\Router\Route
+ */
 class RestRoute implements RouteInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function add(\Phalcon\Mvc\RouterInterface $router, Route $route)
     {
         //resolves actions with http methods
@@ -31,6 +40,7 @@ class RestRoute implements RouteInterface
         }
 
         //add routes with http method
+        //for each action new route is adding with specified HTTP Method.
         foreach ($actions as $actionRoute => $actionMethods) {
             if ($actionRoute == '/') $actionRoute = '';
             foreach ($actionMethods as $action => $method) {

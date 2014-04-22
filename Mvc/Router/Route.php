@@ -12,23 +12,31 @@
  
 namespace Vegas\Mvc\Router;
 
+/**
+ * Class Route
+ * Object representation of route
+ *
+ * @package Vegas\Mvc\Router
+ */
 class Route
 {
     /**
-     * Name assigned to route definition
+     * Simplify route name
      *
      * @var string
      */
     private $name;
 
     /**
-     *
+     * Route URL
      *
      * @var string
      */
     private $route;
 
     /**
+     * Contains module/controller/action which will be executed when route is matched
+     *
      * @var array
      */
     private $paths;
@@ -37,7 +45,7 @@ class Route
      * Optional route definition parameters
      * Available keys:
      *
-     *      via     -   allows to specify HTTP methods, useful for building REST API
+     *      actions     -   allows to specify resource actions with HTTP methods, useful for building REST API
      *
      * @var array
      */
@@ -55,26 +63,44 @@ class Route
         $this->params = isset($routeArray['params']) ? $routeArray['params'] : array();
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return $this->name;
     }
 
+    /**
+     * @return string
+     */
     public function getRoute()
     {
         return $this->route;
     }
 
+    /**
+     * @return array
+     */
     public function getPaths()
     {
         return $this->paths;
     }
 
+    /**
+     * @return array
+     */
     public function getParams()
     {
         return $this->params;
     }
 
+    /**
+     * Return indicated param if exists
+     *
+     * @param $param
+     * @return null
+     */
     public function getParam($param)
     {
         if (array_key_exists($param, $this->params)) {

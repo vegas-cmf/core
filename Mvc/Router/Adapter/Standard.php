@@ -17,6 +17,13 @@ use Phalcon\DI;
 use Phalcon\DiInterface;
 use Vegas\DI\InjectionAwareTrait;
 
+/**
+ * Class Standard
+ * Default router using standard Phalcon router.
+ *
+ * @package Vegas\Mvc\Router\Adapter
+ * @see http://docs.phalconphp.com/en/latest/api/Phalcon_Mvc_Router.html
+ */
 class Standard extends \Phalcon\Mvc\Router implements DI\InjectionAwareInterface
 {
 

@@ -16,8 +16,17 @@ namespace Vegas\Mvc\Router\Route;
 use Vegas\Mvc\Router\Route;
 use Vegas\Mvc\Router\RouteInterface;
 
+/**
+ * Class StaticRoute
+ * Static route type, useful for rules which should not be overwritten by another route.
+ *
+ * @package Vegas\Mvc\Router\Route
+ */
 class StaticRoute implements RouteInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function add(\Phalcon\Mvc\RouterInterface $router, Route $route)
     {
         $router

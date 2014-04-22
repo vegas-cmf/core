@@ -40,16 +40,28 @@ abstract class ControllerAbstract extends Controller
         return $this->i18n->_($text);
     }
 
+    /**
+     * @param string $message
+     * @throws \Vegas\Exception
+     */
     protected function throw403($message = '')
     {
         throw new \Vegas\Exception($message, 403);
     }
-    
+
+    /**
+     * @param string $message
+     * @throws \Vegas\Exception
+     */
     protected function throw404($message = '')
     {
         throw new \Vegas\Exception($message, 404);
     }
-    
+
+    /**
+     * @param string $message
+     * @throws \Vegas\Exception
+     */
     protected function throw500($message = '')
     {
         throw new \Vegas\Exception($message, 500);

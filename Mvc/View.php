@@ -17,88 +17,35 @@ use Phalcon\Mvc\View as PhalconView;
 class View extends PhalconView
 {
     private $controllerViewPath;
-    private $compiler;
-    
+
     public function __construct($options = null) {
         parent::__construct($options);
-        
-        $config = require APP_CONFIG.'/config.php';
 
-        $this->setLayoutsDir('../../../layouts/');
-        $this->setLayout('main');
+        if (isset($options['layoutsDir'])) {
+            $this->setLayoutsDir($options['layoutsDir']);
+        }
+        if (isset($options['layout'])) {
+            $this->setLayout($options['layout']);
+        }
 
         $this->registerEngines(array(
-            '.volt' => function ($this, $di) use ($config) {
-                    $volt = new PhalconView\Engine\Volt($this, $di);
-                    $volt->setOptions(array(
-                        'compiledPath' => $config->application->cacheDir,
-                        'compiledSeparator' => '_'
-                    ));
+            '.volt' => function ($this, $di) use ($options) {
+                    $volt = new \Vegas\Mvc\View\Engine\Volt($this, $di);
+                    if (isset($options['cacheDir'])) {
+                        $volt->setOptions(array(
+                            'compiledPath' => $options['cacheDir'],
+                            'compiledSeparator' => '_'
+                        ));
+                    }
                     
-                    $this->compiler = $volt->getCompiler();
-                    $this->registerTagsAndFilters();
+                    $volt->registerFilter('toString');
+                    $volt->registerHelper('shortenText');
+                    $volt->registerHelper('pagination');
                     
                     return $volt;
                 },
             '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
         ));
-    }
-
-    private function registerTagsAndFilters()
-    {
-        $this->shortenTextFunction();
-        $this->paginationFunction();
-        $this->toStringFilter();
-    }
-    
-    private function shortenTextFunction()
-    {
-        $this->compiler->addFunction('shortenText',
-            function($resolvedArgs, $exprArgs) {
-                $text = $this->compiler->expression($exprArgs[0]['expr']);
-
-                $length = '100';
-                if (isset($exprArgs[1])) {
-                    $length = $this->compiler->expression($exprArgs[1]['expr']);
-                }
-                
-                $endString = '"..."';
-                if (isset($exprArgs[2])) {
-                    $endString = $this->compiler->expression($exprArgs[2]['expr']);
-                }
-
-                return '\Vegas\Tag::shortenText('.$text.','.$length.', '.$endString.')';
-            }
-        );
-    }
-
-    private function paginationFunction()
-    {
-        $this->compiler->addFunction('pagination',
-            function($resolvedArgs, $exprArgs) {
-                $page = $this->compiler->expression($exprArgs[0]['expr']);
-                $options = array();
-
-                if (isset($exprArgs[1])) {
-                    $options = $this->compiler->expression($exprArgs[1]['expr']);
-                }
-                
-                $optionString = 'array(';
-                foreach ($options As $key => $option) {
-                    $optionString .= '"'.$key.'" => '.$option;
-                }
-                $optionString .= ')';
-                
-                return '\Vegas\Tag::pagination('.$page.','.$optionString.')';
-            }
-        );
-    }
-    
-    private function toStringFilter() 
-    {
-        $this->compiler->addFilter('toString', function($resolvedArgs, $exprArgs) {
-            return sprintf('(string)%s', $resolvedArgs);
-        });
     }
     
     public function render($controllerName, $actionName, $params = null) {
