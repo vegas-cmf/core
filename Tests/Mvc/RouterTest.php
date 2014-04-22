@@ -179,7 +179,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $handleUri(Method::POST, '/products/123');
         $handleUri(Method::DELETE, '/products');
         $handleUri(Method::PUT, '/products');
-
+        $handleUri(Method::PUT, '/products/123');
         $handleUri(Method::DELETE, '/articles/1234');
         $handleUri(Method::PUT, '/articles/1234');
         $handleUri(Method::PUT, '/articles');
