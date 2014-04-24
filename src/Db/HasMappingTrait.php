@@ -38,7 +38,7 @@ trait HasMappingTrait
         return $this;
     }
 
-    private function hasMapping($attributeName)
+    public function hasMapping($attributeName)
     {
         return array_key_exists($attributeName, $this->mappingsContainer);
     }

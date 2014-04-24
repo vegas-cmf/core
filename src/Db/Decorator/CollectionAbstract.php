@@ -43,14 +43,15 @@ abstract class CollectionAbstract extends \Phalcon\Mvc\Collection
         }
     }
 
-    public function __get($name)
+    public function &__get($name)
     {
+        var_dump($name);die;
         return $this->readAttribute($name);
     }
 
     public function readAttribute($name)
     {
-        if (isset($this->mappings[$name])) {
+        if (!$this->hasMapping($name) && isset($this->mappings[$name])) {
             $this->addMapping($name, $this->mappings[$name]);
         }
         $value = parent::readAttribute($name);

@@ -55,6 +55,12 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
         $fakeDoc = Fake::findFirst();
 
+        print_r($fakeDoc->somedata);
+        print_r($fakeDoc->somecamel);
+        $r = new \ReflectionClass($fakeDoc);
+        $n = $r->newInstance();
+        var_dump($n->somedata);
+
         $this->assertInternalType('array', $fakeDoc->readAttribute('somedata'));
         $this->assertEquals(\Phalcon\Text::camelize($nonCamelText), $fakeDoc->readAttribute('somecamel'));
     }
