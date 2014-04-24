@@ -10,20 +10,18 @@
  * file that was distributed with this source code.
  */
  
-namespace Vegas\Db\Mapping;
+namespace models;
 
+use Vegas\Db\Decorator\CollectionAbstract;
 
-use Vegas\Db\MappingInterface;
-
-class File implements MappingInterface
+class Fake extends CollectionAbstract
 {
-    public function getName()
+    public function getSource()
     {
-        return 'files';
+        return 'fake';
     }
 
-    public function resolve($value)
-    {
-
-    }
-}
+    protected $mappings = array(
+        'arraydata' =>  'json'
+    );
+} 

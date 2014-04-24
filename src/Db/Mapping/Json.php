@@ -10,10 +10,23 @@
  * file that was distributed with this source code.
  */
  
-namespace Vegas\Db;
+namespace Vegas\Db\Mapping;
 
+use Vegas\Db\MappingInterface;
 
-class MappingResolver 
+class Json implements MappingInterface
 {
+    public function getName()
+    {
+        return 'json';
+    }
 
-} 
+    public function resolve(& $value)
+    {
+        if (is_string($value) && strlen($value) > 0) {
+            $value = json_decode($value);
+        }
+
+        return $value;
+    }
+}

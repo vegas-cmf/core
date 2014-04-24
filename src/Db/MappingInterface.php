@@ -12,5 +12,5 @@ interface MappingInterface
 {
     public function getName();
 
-    public function resolve($value);
+    public function resolve(& $value);
 } 

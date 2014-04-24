@@ -12,12 +12,14 @@
 namespace Vegas\Db\Decorator;
 
 use Phalcon\Utils\Slug;
+use Vegas\Db\HasMappingTrait;
 
 abstract class CollectionAbstract extends \Phalcon\Mvc\Collection
 {
-    private $fileObjects;
-    private $latestMapedFileValues = null;
-    
+    use HasMappingTrait;
+
+    protected $mappings = array();
+
     public function beforeCreate()
     {
         $this->created_at = new \MongoInt32(time());
@@ -40,54 +42,21 @@ abstract class CollectionAbstract extends \Phalcon\Mvc\Collection
             $this->writeAttribute($attribute, $value);
         }
     }
-    
+
+    public function __get($name)
+    {
+        return $this->readAttribute($name);
+    }
+
     public function readAttribute($name)
     {
-        $values = parent::readAttribute($name);
-        
-        if ($name === 'files' && !empty($values)) {
-            return $this->getFilesFor($values);
+        if (isset($this->mappings[$name])) {
+            $this->addMapping($name, $this->mappings[$name]);
         }
+        $value = parent::readAttribute($name);
+
+        $value = $this->resolveMapping($name, $value);
         
-        return $values;
-    }
-    
-    public function getFiles()
-    {
-        return $this->readAttribute('files');
-    }
-    
-    private function getFilesFor($values)
-    {
-        if ($this->latestMapedFileValues !== $values || !is_array($this->fileObjects)) {
-            return $this->mapFiles($values);
-        }
-        
-        return $this->fileObjects;
-    }
-    
-    /**
-     * @return array 
-     * @throws NoFilesToMapException
-     */
-    private function mapFiles($values)
-    {
-        $this->fileObjects = array();
-        $this->latestMapedFileValues = $values;
-        
-        if ($this->getDI()->has('fileWrapper') && $this->readAttribute('files') !== null) {
-            $this->fileObjects = $this->getDI()->get('fileWrapper')->wrapValues($values);
-        }
-        
-        return $this->fileObjects;
-    }
-    
-    protected function afterDelete()
-    {
-        if (!empty($this->files)) {
-            foreach ($this->getFiles() As $file) {
-                $file->delete();
-            }
-        }
+        return $value;
     }
 }
