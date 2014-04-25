@@ -11,7 +11,7 @@
  */
 namespace Vegas\Tests\Stub\Models;
 
-class FakeModel extends \Vegas\Mvc\CollectionAbstract
+class FakeModel extends \Vegas\Db\Decorator\CollectionAbstract
 {
     public function getSource()
     {

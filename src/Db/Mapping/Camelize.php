@@ -14,13 +14,26 @@ namespace Vegas\Db\Mapping;
 
 use Vegas\Db\MappingInterface;
 
+/**
+ * Class Camelize
+ *
+ * Simple mapper for converting text to camelize style
+ *
+ * @package Vegas\Db\Mapping
+ */
 class Camelize implements MappingInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'camelize';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function resolve(& $value)
     {
         if (is_string($value) && strlen($value) > 0) {

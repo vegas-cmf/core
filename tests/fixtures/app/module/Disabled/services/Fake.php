@@ -10,18 +10,13 @@
  * file that was distributed with this source code.
  */
  
-namespace Vegas\Tests\Mvc;
+namespace Disabled\Services;
 
+use Phalcon\DI\InjectionAwareInterface;
+use Vegas\DI\InjectionAwareTrait;
 
-use Phalcon\DI;
-use Vegas\Mvc\Module\ModuleLoader;
-
-class ModuleLoaderTest extends \PHPUnit_Framework_TestCase
+class Fake implements InjectionAwareInterface
 {
-    public function testDump()
-    {
-        ModuleLoader::dump(DI::getDefault());
-        $this->assertTrue(file_exists(TESTS_ROOT_DIR . '/fixtures/app/config/modules.php'));
-    }
+    use InjectionAwareTrait;
 
 } 

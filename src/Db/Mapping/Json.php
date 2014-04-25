@@ -14,13 +14,26 @@ namespace Vegas\Db\Mapping;
 
 use Vegas\Db\MappingInterface;
 
+/**
+ * Class Json
+ *
+ * Simple mapper for decoding JSON value
+ *
+ * @package Vegas\Db\Mapping
+ */
 class Json implements MappingInterface
 {
+    /**
+     * {@inheritdoc}
+     */
     public function getName()
     {
         return 'json';
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function resolve(& $value)
     {
         if (is_string($value) && strlen($value) > 0) {

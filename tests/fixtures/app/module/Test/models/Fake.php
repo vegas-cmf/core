@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
  
-namespace models;
+namespace Test\Models;
 
 use Vegas\Db\Decorator\CollectionAbstract;
 

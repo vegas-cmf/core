@@ -35,9 +35,9 @@ class Method
      *
      * @return array
      */
-    public function toArray()
+    public static function toArray()
     {
-        $reflectionClass = new \ReflectionClass($this);
+        $reflectionClass = new \ReflectionClass(__CLASS__);
         $constants = $reflectionClass->getConstants();
 
         return $constants;

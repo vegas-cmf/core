@@ -11,6 +11,14 @@
  */
 namespace Vegas\DI;
 
+/**
+ * Trait InjectionAwareTrait
+ *
+ * Can be used for classes implementing InjectionAwareInterface
+ * Provides methods required by InjectionAwareInterface
+ *
+ * @package Vegas\DI
+ */
 trait InjectionAwareTrait
 {
     /**

@@ -17,6 +17,7 @@ use Vegas\Db\HasMappingTrait;
 abstract class CollectionAbstract extends \Phalcon\Mvc\Collection
 {
     use HasMappingTrait;
+    use MappingHelperTrait;
 
     protected $mappings = array();
 
@@ -41,23 +42,5 @@ abstract class CollectionAbstract extends \Phalcon\Mvc\Collection
         foreach ($attributes as $attribute => $value) {
             $this->writeAttribute($attribute, $value);
         }
-    }
-
-    public function &__get($name)
-    {
-        var_dump($name);die;
-        return $this->readAttribute($name);
-    }
-
-    public function readAttribute($name)
-    {
-        if (!$this->hasMapping($name) && isset($this->mappings[$name])) {
-            $this->addMapping($name, $this->mappings[$name]);
-        }
-        $value = parent::readAttribute($name);
-
-        $value = $this->resolveMapping($name, $value);
-        
-        return $value;
     }
 }

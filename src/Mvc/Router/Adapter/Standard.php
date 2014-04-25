@@ -37,14 +37,4 @@ class Standard extends \Phalcon\Mvc\Router implements DI\InjectionAwareInterface
         $this->removeExtraSlashes(true);
         $this->setDI($dependencyInjector);
     }
-
-    /**
-     * Returns whether controller name should not be mangled
-     *
-     * @return bool
-     */
-    public function isExactControllerName()
-    {
-
-    }
 }

@@ -21,6 +21,8 @@ use Phalcon\DiInterface;
 class ServiceProviderLoader
 {
     /**
+     * Dumps services to source file
+     *
      * @param DiInterface $di
      */
     public static function dump(DiInterface $di)
@@ -43,7 +45,7 @@ class ServiceProviderLoader
     }
 
     /**
-     *
+     * Creates autoloader for services
      *
      * @param DiInterface $di
      */

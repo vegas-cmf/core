@@ -58,6 +58,7 @@ class Application extends \Phalcon\Mvc\Application
                 array(
                     $name.'\Models'   => dirname($module['path']).'/models/',
                     $name.'\Services' => dirname($module['path']).'/services/',
+                    $name.'\Components' => dirname($module['path']).'/components/',
                 ), true
             );
         }

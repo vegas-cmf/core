@@ -17,7 +17,7 @@ use Vegas\DI\Scaffolding\Exception\RecordNotFoundException;
 
 class Mongo implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\AdapterInterface
 {
-    use \Vegas\Db\Mongo\AdapterTrait;
+    use \Vegas\Db\Adapter\Mongo\AdapterTrait;
 
     protected $scaffolding;
 

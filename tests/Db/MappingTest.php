@@ -32,37 +32,49 @@ class Fake extends CollectionAbstract
 
 class MappingTest extends \PHPUnit_Framework_TestCase
 {
-    public function testResolveMappings()
+    public function testMappingManager()
     {
-        DI::getDefault()->get('mongo')->selectCollection('fake')->remove(array());
-
         //define mappings
         $mappingManager = new MappingManager();
         $mappingManager->add(new Json());
         $mappingManager->add('\Vegas\Db\Mapping\Camelize');
 
-        $this->assertNotEmpty($mappingManager->find('json'));
-        $this->assertInstanceOf('\Vegas\Db\MappingInterface', $mappingManager->find('json'));
+        $this->assertNotEmpty(MappingManager::find('json'));
+        $this->assertInstanceOf('\Vegas\Db\MappingInterface', MappingManager::find('json'));
 
-        $this->assertNotEmpty($mappingManager->find('camelize'));
-        $this->assertInstanceOf('\Vegas\Db\MappingInterface', $mappingManager->find('camelize'));
+        $this->assertNotEmpty(MappingManager::find('camelize'));
+        $this->assertInstanceOf('\Vegas\Db\MappingInterface', MappingManager::find('camelize'));
+    }
 
+    public function testResolveMappings()
+    {
+        DI::getDefault()->get('mongo')->selectCollection('fake')->remove(array());
+
+        $someData = json_encode(array(1,2,3,4,5,6));
         $fake = new Fake();
-        $fake->somedata = json_encode(array(1,2,3,4,5,6));
+        $fake->somedata = $someData;
         $nonCamelText = 'this_is_non_camel_case_text';
         $fake->somecamel = $nonCamelText;
         $this->assertTrue($fake->save());
 
         $fakeDoc = Fake::findFirst();
 
-        print_r($fakeDoc->somedata);
-        print_r($fakeDoc->somecamel);
-        $r = new \ReflectionClass($fakeDoc);
-        $n = $r->newInstance();
-        var_dump($n->somedata);
+        $this->assertInternalType('array', $fakeDoc->readMapped('somedata'));
+        $this->assertEquals(\Phalcon\Text::camelize($nonCamelText), $fakeDoc->readMapped('somecamel'));
 
-        $this->assertInternalType('array', $fakeDoc->readAttribute('somedata'));
-        $this->assertEquals(\Phalcon\Text::camelize($nonCamelText), $fakeDoc->readAttribute('somecamel'));
+        $this->assertEquals($nonCamelText, $fakeDoc->somecamel);
+        $this->assertEquals($someData, $fakeDoc->somedata);
+        $this->assertEquals($someData, $fakeDoc->readAttribute('somedata'));
+        $this->assertEquals($nonCamelText, $fakeDoc->readAttribute('somecamel'));
+
+        $ownMappedValues = array(
+            '_id'   =>  $fakeDoc->readMapped('_id'),
+            'somedata'   =>  $fakeDoc->readMapped('somedata'),
+            'somecamel'   =>  $fakeDoc->readMapped('somecamel'),
+        );
+        $mappedValues = $fakeDoc->toMappedArray();
+
+        $this->assertEquals($mappedValues['somedata'], $ownMappedValues['somedata']);
+        $this->assertEquals($mappedValues['somecamel'], $ownMappedValues['somecamel']);
     }
-
 } 

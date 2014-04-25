@@ -14,10 +14,26 @@ namespace Vegas\Db;
 
 use Vegas\Db\Exception\InvalidMappingClassException;
 
+/**
+ * Class MappingManager
+ * @package Vegas\Db
+ */
 class MappingManager
 {
+    /**
+     * Registered mappers
+     *
+     * @var array
+     */
     private static $container = array();
 
+    /**
+     * Adds new mapping class
+     *
+     * @param $mappingClass     Object or full class name is acceptable
+     * @return $this
+     * @throws Exception\InvalidMappingClassException
+     */
     public function add($mappingClass)
     {
         try {
@@ -33,12 +49,24 @@ class MappingManager
         return $this;
     }
 
+    /**
+     * Removes mapper indicated by name
+     *
+     * @param $mappingName
+     * @return $this
+     */
     public function remove($mappingName)
     {
         unset(self::$container[$mappingName]);
         return $this;
     }
 
+    /**
+     * Finds the mapper by its name
+     *
+     * @param $mappingName
+     * @return bool
+     */
     public static function find($mappingName)
     {
         if (!array_key_exists($mappingName, self::$container)) {

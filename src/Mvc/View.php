@@ -14,10 +14,20 @@ namespace Vegas\Mvc;
 
 use Phalcon\Mvc\View as PhalconView;
 
+/**
+ * Class View
+ * @package Vegas\Mvc
+ */
 class View extends PhalconView
 {
+    /**
+     * @var
+     */
     private $controllerViewPath;
 
+    /**
+     * @param null $options
+     */
     public function __construct($options = null) {
         parent::__construct($options);
 
@@ -47,7 +57,13 @@ class View extends PhalconView
             '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
         ));
     }
-    
+
+    /**
+     * @param string $controllerName
+     * @param string $actionName
+     * @param null $params
+     * @return PhalconView|void
+     */
     public function render($controllerName, $actionName, $params = null) {
         if (empty($this->controllerViewPath)) {
             $this->controllerViewPath = $this->prepareControllerViewPath($controllerName);
@@ -55,7 +71,11 @@ class View extends PhalconView
 
         parent::render($this->controllerViewPath, $actionName, $params);
     }
-    
+
+    /**
+     * @param $controllerName
+     * @return mixed
+     */
     private function prepareControllerViewPath($controllerName)
     {
         return str_replace('\\','/',strtolower($controllerName));

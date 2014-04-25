@@ -11,7 +11,15 @@
  */
 namespace Vegas\Db;
 
+/**
+ * Interface AdapterInterface
+ * @package Vegas\Db
+ */
 interface AdapterInterface
 {
+    /**
+     * @param \Phalcon\DiInterface $di
+     * @return mixed
+     */
     public function verifyRequiredServices(\Phalcon\DiInterface $di);
 }

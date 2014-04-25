@@ -193,17 +193,13 @@ class Router
      */
     private function resolveRouteType($routeType)
     {
-        try {
-            $typeClassName = sprintf('%sRoute', ucfirst($routeType));
-            $classNamespace = __NAMESPACE__ . '\\Router\\Route\\' . $typeClassName;
-            if (!array_key_exists($classNamespace, $this->resolvedTypes)) {
-                $reflectionClass = new \ReflectionClass($classNamespace);
-                $this->resolvedTypes[$classNamespace] = $reflectionClass->newInstance();
-            }
-
-            return $this->resolvedTypes[$classNamespace];
-        } catch (\ReflectionException $ex) {
-            throw new InvalidRouteTypeException($ex->getMessage());
+        $typeClassName = sprintf('%sRoute', ucfirst($routeType));
+        $classNamespace = __NAMESPACE__ . '\\Router\\Route\\' . $typeClassName;
+        if (!array_key_exists($classNamespace, $this->resolvedTypes)) {
+            $reflectionClass = new \ReflectionClass($classNamespace);
+            $this->resolvedTypes[$classNamespace] = $reflectionClass->newInstance();
         }
+
+        return $this->resolvedTypes[$classNamespace];
     }
 }

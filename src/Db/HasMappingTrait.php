@@ -8,8 +8,6 @@
 
 namespace Vegas\Db;
 
-use Vegas\Db\MappingInterface;
-
 trait HasMappingTrait
 {
     private $mappingsContainer = array();

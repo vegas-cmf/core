@@ -14,6 +14,7 @@ namespace Vegas\Tests\Mvc;
 
 use Phalcon\DI;
 use Vegas\Http\Method;
+use Vegas\Mvc\Module\ModuleLoader;
 use Vegas\Mvc\Router;
 
 class RouterTest extends \PHPUnit_Framework_TestCase
@@ -79,6 +80,13 @@ class RouterTest extends \PHPUnit_Framework_TestCase
                     ),
                 )
             )
+        ),
+        'galleries' => array(
+            'route' =>  '/galleries',
+            'paths' => array(
+                'controller' => 'galleries'
+            ),
+            'type' => 'rest'
         )
     );
 
@@ -87,6 +95,13 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
         $router = new \Vegas\Mvc\Router($routerAdapter);
         $router->addRoutes($this->testRoutes);
+
+        $route = new Router\Route('test', end($this->testRoutes));
+        $this->assertInternalType('array', $route->getParams());
+        $this->assertInternalType('string', $route->getRoute());
+        $this->assertInternalType('array', $route->getPaths());
+        $this->assertInternalType('string', $route->getName());
+
 
         $router->setup();
 
@@ -207,6 +222,27 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $matchedRoute = $defaultRouter->getMatchedRoute();
         $paths = $matchedRoute->getPaths();
         $this->assertEquals('nonstatictest', $paths['controller']);
+    }
+
+    public function testModuleRoutes()
+    {
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router($routerAdapter);
+
+        $modules = ModuleLoader::dump(DI::getDefault());
+        foreach ($modules as $module) {
+            $router->addModuleRoutes($module);
+        }
+
+        $router->setup();
+
+        $defaultRouter = $router->getRouter();
+
+        $defaultRouter->handle('/test/fake/test');
+
+        $this->assertNotEmpty($defaultRouter->getMatchedRoute());
+        $this->assertEquals('Backend\Fake', $defaultRouter->getControllerName());
+        $this->assertEquals('test', $defaultRouter->getActionName());
     }
 
     private function setRequestMethod($method)

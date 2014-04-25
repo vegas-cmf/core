@@ -29,6 +29,7 @@ class ModuleLoader
      * Generates list of modules into source file
      *
      * @param DiInterface $di
+     * @return array
      */
     public static function dump(DiInterface $di)
     {
@@ -54,5 +55,7 @@ class ModuleLoader
             $config->application->configDir . 'modules.php',
             '<?php return ' . var_export($modulesList, true) . ';'
         );
+
+        return $modulesList;
     }
 } 

@@ -17,6 +17,7 @@ use Vegas\Mvc\Router\Route;
 /**
  * Interface RouteInterface
  * @package Vegas\Mvc\Router
+ * @codeCoverageIgnore
  */
 interface RouteInterface
 {
@@ -28,4 +29,4 @@ interface RouteInterface
      * @return mixed
      */
     public function add(\Phalcon\Mvc\RouterInterface $router, Route $route);
-} 
+}

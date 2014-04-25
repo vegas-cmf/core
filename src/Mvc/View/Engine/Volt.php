@@ -15,9 +15,20 @@ namespace Vegas\Mvc\View\Engine;
 use Vegas\Mvc\View\Engine\Volt\Exception\InvalidFilterException;
 use Vegas\Mvc\View\Engine\Volt\Exception\UnknownFilterException;
 use Vegas\Mvc\View\Engine\Volt\VoltFilterAbstract;
+use Vegas\Mvc\View\Engine\Volt\VoltHelperAbstract;
 
+/**
+ * Class Volt
+ * @package Vegas\Mvc\View\Engine
+ */
 class Volt extends \Phalcon\Mvc\View\Engine\Volt
 {
+    /**
+     * Registers a new filter in the compiler
+     *
+     * @param $filterName
+     * @throws Volt\Exception\UnknownFilterException
+     */
     public function registerFilter($filterName)
     {
         $className = __NAMESPACE__ . '\\Filter\\' . ucfirst($filterName);
@@ -32,6 +43,12 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
         }
     }
 
+    /**
+     * Registers a new helper in the compiler
+     *
+     * @param $helperName
+     * @throws Volt\Exception\UnknownFilterException
+     */
     public function registerHelper($helperName)
     {
         $className = __NAMESPACE__ . '\\Helper\\' . ucfirst($helperName);
@@ -46,6 +63,12 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
         }
     }
 
+    /**
+     * Creates an instance of indicated class name
+     *
+     * @param $className
+     * @return object
+     */
     private function getClassInstance($className)
     {
         $reflectionClass = new \ReflectionClass($className);
