@@ -13,11 +13,11 @@
 namespace Vegas\Application;
 
 use Phalcon\DI\FactoryDefault;
+use Phalcon\DI;
 use Phalcon\DiInterface;
 use Vegas\DI\ServiceProviderLoader;
-use Vegas\Mvc\ModuleLoader;
-use Vegas\Mvc\SubModule;
-use Vegas\Mvc\SubModuleManager;
+use Vegas\Mvc\Module\ModuleLoader;
+use Vegas\Mvc\Module\SubModuleManager;
 
 /**
  * Class Bootstrap
@@ -79,17 +79,17 @@ class Bootstrap
         }
 
         //registers modules defined in modules.php file
-        $modulesFile = $this->config->application->configDir . DIRECTORY_SEPARATOR . 'modules.php';
+        $modulesFile = $this->config->application->configDir . 'modules.php';
         if (!file_exists($modulesFile)) {
             ModuleLoader::dump($this->di);
         }
-        $this->application->registerModules(require_once $modulesFile);
+        $this->application->registerModules(require $modulesFile);
 
         //prepares modules configurations
         foreach ($this->application->getModules() as $module) {
             $moduleConfigFile = dirname($module['path']) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
             if (file_exists($moduleConfigFile)) {
-                $this->config->merge(require_once $moduleConfigFile);
+                $this->config->merge(require $moduleConfigFile);
             }
         }
     }
@@ -120,7 +120,7 @@ class Bootstrap
         //adds routes defined in default file
         $defaultRoutesFile = $this->config->application->configDir . DIRECTORY_SEPARATOR . 'routes.php';
         if (file_exists($defaultRoutesFile)) {
-            $router->addRoutes(require_once $defaultRoutesFile);
+            $router->addRoutes(require $defaultRoutesFile);
         }
 
         //setup router rules
@@ -136,10 +136,15 @@ class Bootstrap
      */
     public function setup()
     {
+        $this->di->set('config', $this->config);
+
         $this->initLoader();
         $this->initModules();
         $this->initRoutes();
         $this->initServices();
+
+        $this->application->setDI($this->di);
+        DI::setDefault($this->di);
 
         return $this;
     }
@@ -147,12 +152,11 @@ class Bootstrap
     /**
      * Start handling MVC requests
      *
+     * @param null $uri
      * @return string
      */
-    public function run()
+    public function run($uri = null)
     {
-        $this->di->set('config', $this->config);
-        $this->application->setDI($this->di);
-        return $this->application->handle()->getContent();
+        return $this->application->handle($uri)->getContent();
     }
 } 

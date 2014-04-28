@@ -26,7 +26,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     {
         $namespaces = array();
         foreach (SubModuleManager::getSubModules() as $subModule) {
-            $namespaces[$this->namespace . '\Controllers\\' . $subModule] =
+            $namespaces[$this->namespace . '\Controllers\\' . ucfirst($subModule)] =
                 $this->dir . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $subModule;
         }
 

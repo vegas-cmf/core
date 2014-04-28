@@ -32,7 +32,19 @@ class ModuleAbstractTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue(class_exists('Test\Services\Fake'));
         $this->assertTrue(class_exists('Test\Models\Fake'));
+    }
 
-        $app->handle('/testfake');
+    public function testModuleHandling()
+    {
+        require_once dirname(__DIR__) . '/fixtures/app/Bootstrap.php';
+        $config = require dirname(__DIR__) . '/fixtures/app/config/config.php';
+        $config = new \Phalcon\Config($config);
+        $bootstrap = new \Bootstrap($config);
+
+        $_SERVER['REQUEST_URI'] = '/test/fake/test';
+        $bootstrap->setup()->run('/test/fake/test');
+
+        $this->assertTrue(class_exists('Test\Controllers\Backend\FakeController'));
+        $this->assertTrue(class_exists('Test\Forms\Fake'));
     }
 } 

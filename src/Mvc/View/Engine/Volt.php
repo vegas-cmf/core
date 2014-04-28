@@ -31,7 +31,7 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
      */
     public function registerFilter($filterName)
     {
-        $className = __NAMESPACE__ . '\\Filter\\' . ucfirst($filterName);
+        echo $className = __CLASS__ . '\\Filter\\' . ucfirst($filterName);
         try {
             $filterInstance = $this->getClassInstance($className);
             if (!$filterInstance instanceof VoltFilterAbstract) {
@@ -51,7 +51,7 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
      */
     public function registerHelper($helperName)
     {
-        $className = __NAMESPACE__ . '\\Helper\\' . ucfirst($helperName);
+        $className = __CLASS__ . '\\Helper\\' . ucfirst($helperName);
         try {
             $helperInstance = $this->getClassInstance($className);
             if (!$helperInstance instanceof VoltHelperAbstract) {
@@ -72,6 +72,6 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
     private function getClassInstance($className)
     {
         $reflectionClass = new \ReflectionClass($className);
-        return $reflectionClass->newInstance();
+        return $reflectionClass->newInstance($this->getCompiler());
     }
 } 

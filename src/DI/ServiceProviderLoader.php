@@ -24,6 +24,7 @@ class ServiceProviderLoader
      * Dumps services to source file
      *
      * @param DiInterface $di
+     * @return array
      */
     public static function dump(DiInterface $di)
     {
@@ -42,6 +43,8 @@ class ServiceProviderLoader
             $config->application->configDir . 'services.php',
             '<?php return ' . var_export($servicesList, true) . ';'
         );
+
+        return $servicesList;
     }
 
     /**
@@ -54,10 +57,11 @@ class ServiceProviderLoader
         $config = $di->get('config');
         $configDir = $config->application->configDir;
         if (!file_exists($configDir . 'services.php')) {
-            self::dump($config);
+            $services = self::dump($config);
+        } else {
+            $services = require($configDir . 'services.php');
         }
 
-        $services = require_once( $configDir . 'services.php' );
         self::setupServiceProvidersAutoloader($config, $services);
 
         foreach ($services as $serviceProviderName => $path) {

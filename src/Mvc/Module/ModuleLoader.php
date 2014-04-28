@@ -45,7 +45,7 @@ class ModuleLoader
                 continue;
             }
             $modulesList[$moduleDir->getBasename()] = array(
-                'className' =>  $moduleDir->getBasename() . '\\' . self::MODULE_SETTINGS_FILE,
+                'className' =>  $moduleDir->getBasename() . '\\' . pathinfo(self::MODULE_SETTINGS_FILE, PATHINFO_FILENAME),
                 'path'  =>  $moduleSettingsFile
             );
         }

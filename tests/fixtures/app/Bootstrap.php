@@ -10,8 +10,6 @@
  * file that was distributed with this source code.
  */
  
-namespace Vegas\Tests\fixtures\app;
-
 use Vegas\Db\Mapping\Json;
 use Vegas\Db\MappingManager;
 
@@ -21,6 +19,8 @@ class Bootstrap extends \Vegas\Application\Bootstrap
     {
         parent::setup();
         $this->initDbMappings();
+
+        return $this;
     }
 
     protected function initDbMappings()

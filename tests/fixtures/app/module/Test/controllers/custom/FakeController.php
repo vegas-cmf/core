@@ -17,7 +17,7 @@ use Vegas\Mvc\Controller\ControllerAbstract;
 
 class FakeController extends ControllerAbstract
 {
-    public function fakeAction()
+    public function testAction()
     {
 
     }

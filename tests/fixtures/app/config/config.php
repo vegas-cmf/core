@@ -1,5 +1,5 @@
 <?php
-define('APP_ROOT', dirname(dirname(__DIR__)));
+if (!defined('APP_ROOT')) define('APP_ROOT', dirname(dirname(__DIR__)));
 
 return array(
     'application' => array(
@@ -15,6 +15,9 @@ return array(
             'frontend', 'backend', 'custom'
         )
     ),
+
+    'plugins' => array(),
+
     'environment'    => 'development',
 
     'mongo' => array(
