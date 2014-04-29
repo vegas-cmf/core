@@ -90,8 +90,8 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     
     protected function registerViewComponent($di)
     {
-        $di->set('view', function() {
-            $view = new View();
+        $di->set('view', function() use ($di) {
+            $view = new View($di->get('config')->application->view->toArray());
             if (file_exists($this->dir . '/views')) {
                 $view->setViewsDir($this->dir.'/views/');
             }
