@@ -29,6 +29,5 @@
             "Vegas\\": "src/",
             "Vegas\\Tests\\": "tests/"
         }
-    },
-    "target-dir": "Vegas"
+    }
 }
