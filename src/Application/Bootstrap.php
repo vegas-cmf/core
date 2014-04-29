@@ -28,17 +28,17 @@ class Bootstrap
     /**
      * @var DiInterface
      */
-    private $di;
+    protected $di;
 
     /**
      * @var \Vegas\Mvc\Application
      */
-    private $application;
+    protected $application;
 
     /**
      * @var \Phalcon\Config
      */
-    private $config;
+    protected $config;
 
     /**
      * @param \Phalcon\Config $config
