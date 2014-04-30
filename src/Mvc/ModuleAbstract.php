@@ -47,7 +47,6 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     public function registerServices($di)
     {
         $this->registerDispatcher($di);
-        $this->registerScaffolding($di);
         $this->registerViewComponent($di);
         $this->registerPlugins($di);
     }
