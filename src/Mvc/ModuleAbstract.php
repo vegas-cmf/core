@@ -82,12 +82,6 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
         $dispatcher->setEventsManager($eventsManager);
     }
     
-    protected function registerScaffolding($di)
-    {
-        $adapter = new \Vegas\DI\Scaffolding\Adapter\Mongo;
-        $di->set('scaffolding', new \Vegas\DI\Scaffolding($adapter));
-    }
-    
     protected function registerViewComponent($di)
     {
         $di->set('view', function() use ($di) {
