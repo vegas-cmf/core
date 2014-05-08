@@ -15,6 +15,7 @@ namespace Vegas\Application;
 use Phalcon\DI\FactoryDefault;
 use Phalcon\DI;
 use Phalcon\DiInterface;
+use Vegas\BootstrapInterface;
 use Vegas\DI\ServiceProviderLoader;
 use Vegas\Mvc\Module\ModuleLoader;
 use Vegas\Mvc\Module\SubModuleManager;
@@ -23,7 +24,7 @@ use Vegas\Mvc\Module\SubModuleManager;
  * Class Bootstrap
  * @package Vegas\Application
  */
-class Bootstrap
+class Bootstrap implements BootstrapInterface
 {
     /**
      * @var DiInterface
