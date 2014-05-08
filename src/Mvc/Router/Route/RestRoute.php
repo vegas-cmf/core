@@ -44,11 +44,10 @@ class RestRoute implements RouteInterface
         foreach ($actions as $actionRoute => $actionMethods) {
             if ($actionRoute == '/') $actionRoute = '';
             foreach ($actionMethods as $action => $method) {
-                $newRoute = $router->add($route->getRoute() . $actionRoute,
-                    array(
-                        'action'    => $action
-                    )
-                )->via($method);
+                $paths = $route->getPaths();
+                $paths['action'] = $action;
+
+                $newRoute = $router->add($route->getRoute() . $actionRoute, $paths)->via($method);
                 $newRoute->setName($route->getName() . '/' . $action);
             }
         }
