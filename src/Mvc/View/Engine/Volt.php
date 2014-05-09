@@ -31,7 +31,7 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
      */
     public function registerFilter($filterName)
     {
-        echo $className = __CLASS__ . '\\Filter\\' . ucfirst($filterName);
+        $className = __CLASS__ . '\\Filter\\' . ucfirst($filterName);
         try {
             $filterInstance = $this->getClassInstance($className);
             if (!$filterInstance instanceof VoltFilterAbstract) {
