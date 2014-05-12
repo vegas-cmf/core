@@ -10,10 +10,9 @@
  * file that was distributed with this source code.
  */ 
 
-namespace Vegas\Cli\Command;
+namespace Vegas\Cli\Task;
 
-use Vegas\Cli\Command\Exception\InvalidArgumentException;
-use Vegas\Mvc\View\Engine\Volt\Exception\InvalidFilterException;
+use Vegas\Cli\Task\Exception\InvalidArgumentException;
 
 class Option
 {
@@ -40,14 +39,22 @@ class Option
         $this->validator = $validator;
     }
 
+    public function matchParam($paramName)
+    {
+        return (0 == strcasecmp($this->name, $paramName)) || (0 == strcasecmp($this->shortName, $paramName));
+    }
+
     public function validate($value)
     {
-        $result = call_user_func($this->validator, $value);
-        if (!$result) {
-            throw new InvalidArgumentException();
+        $result = true;
+        if (is_callable($this->validator)) {
+            $result = call_user_func($this->validator, $value);
+            if (!$result) {
+                throw new InvalidArgumentException();
+            }
         }
 
-        return true;
+        return $result;
     }
 }
  

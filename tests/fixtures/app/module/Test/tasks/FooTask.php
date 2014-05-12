@@ -4,20 +4,18 @@
  *
  * @author Slawomir Zytko <slawomir.zytko@gmail.com>
  * @copyright Amsterdam Standard Sp. Z o.o.
- * @homepage https://github.com/vegas-cmf
+ * @homepage https://bitbucket.org/amsdard/vegas-phalcon
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */ 
-
-namespace Vegas\Cli;
-
-interface CommandInterface
-{
-    public function getName();
-
-    public function getOptions();
-
-    public function getHelp();
-}
+ */
  
+namespace Test\Tasks;
+
+class FooTask extends \Phalcon\CLI\Task
+{
+    public function testAction()
+    {
+        echo 'FOO';
+    }
+} 

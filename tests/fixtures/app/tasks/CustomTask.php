@@ -1,4 +1,6 @@
 <?php
+use Vegas\Cli\Task\Option;
+
 /**
  * This file is part of Vegas package
  *
@@ -10,11 +12,27 @@
  * file that was distributed with this source code.
  */
 
-class CustomTask extends \Phalcon\CLI\Task
+class CustomTask extends \Vegas\Cli\Task
 {
 
-    public function testAction()
+    public function initialize()
     {
-        echo 123;
+        $action = new \Vegas\Cli\Task\Action('test', 'Test action');
+
+        //foo option
+        $foo = new Option('foo', 'f', 'Foo option');
+        $action->addOption($foo);
+        $this->addAction($action);
     }
-} 
+
+    public function testAction($params)
+    {
+        $this->validate($params);
+        $this->putText(1234);
+    }
+
+    public function getOptions()
+    {
+        // TODO: Implement getOptions() method.
+    }
+}

@@ -4,19 +4,18 @@
  *
  * @author Slawomir Zytko <slawomir.zytko@gmail.com>
  * @copyright Amsterdam Standard Sp. Z o.o.
- * @homepage https://bitbucket.org/amsdard/vegas-phalcon
+ * @homepage https://github.com/vegas-cmf
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
- 
-namespace Vegas\Cli\Task;
 
+namespace Vegas\Cli\Task\Exception;
 
-class CacheTask extends \Phalcon\CLI\Task
+use Vegas\Cli\Exception as CliException;
+
+class InvalidArgumentException extends CliException
 {
-    public function cleanAction()
-    {
-        echo "Cleaning cache..";
-    }
-} 
+    protected $message = 'Invalid argument';
+}
+ 

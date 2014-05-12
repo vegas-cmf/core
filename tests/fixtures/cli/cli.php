@@ -11,7 +11,7 @@ try {
     $bootstrap = new \Bootstrap(new \Phalcon\Config($config));
     $bootstrap->setArguments($argv);
 
-    echo $bootstrap->setup()->run();
+    $bootstrap->setup()->run();
     echo PHP_EOL;
 } catch (\Exception $ex) {
     echo $ex->getMessage();
