@@ -1,8 +1,4 @@
 <?php
-use Vegas\Cli\Command\Option;
-use Vegas\Cli\CommandInterface;
-use Vegas\Cli\Exception\CommandDuplicateException;
-
 /**
  * This file is part of Vegas package
  *
@@ -12,7 +8,11 @@ use Vegas\Cli\Exception\CommandDuplicateException;
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- */ 
+ */
+
+namespace Vegas\Cli;
+
+use Vegas\Cli\Exception\CommandDuplicateException;
 
 class CommandListener
 {

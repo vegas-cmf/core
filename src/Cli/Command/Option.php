@@ -46,6 +46,8 @@ class Option
         if (!$result) {
             throw new InvalidArgumentException();
         }
+
+        return true;
     }
 }
  

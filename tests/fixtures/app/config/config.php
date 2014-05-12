@@ -5,9 +5,10 @@ return array(
     'application' => array(
         'servicesDir'   =>  APP_ROOT . '/app/services/',
         'configDir'     => dirname(__FILE__) . DIRECTORY_SEPARATOR,
-        'libraryDir'     => dirname(APP_ROOT) . DIRECTORY_SEPARATOR,
+        'libraryDir'     => dirname(APP_ROOT) . DIRECTORY_SEPARATOR . '/lib/',
         'pluginDir'      => APP_ROOT . '/app/plugins/',
         'moduleDir'      => APP_ROOT . '/app/module/',
+        'tasksDir'      => APP_ROOT . '/app/tasks/',
         'baseUri'        => '/',
         'language'       => 'nl_NL',
         'subModules'    =>  array(
