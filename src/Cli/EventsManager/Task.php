@@ -15,15 +15,21 @@ namespace Vegas\Cli\EventsManager;
 use Phalcon\CLI\Console;
 use Phalcon\CLI\Dispatcher;
 use Phalcon\Events\Event;
+use Vegas\Cli\OptionParser;
 
 class Task
 {
-    public static function beforeHandleTask()
+    public static function beforeHandleTask($argv)
     {
-        return function(Event $event, Console $console, Dispatcher $dispatcher) {
-            $params = $event->getData()->getParams();
+        return function(Event $event, Console $console, Dispatcher $dispatcher) use ($argv) {
             //parse parameters
-            $dispatcher->setParams($params);
+            $parsedOptions = OptionParser::parse($argv);
+
+            $dispatcher->setParams(array(
+                'activeTask'  => $parsedOptions[0],
+                'activeAction'  => $parsedOptions[1],
+                'args'    =>  array_slice($parsedOptions, 2)
+            ));
         };
     }
 

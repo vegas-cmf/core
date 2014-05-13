@@ -14,7 +14,14 @@ namespace Vegas\Cli\Exception;
 
 use Vegas\Cli\Exception as CliException;
 
+/**
+ * Class TaskNotFoundException
+ * @package Vegas\Cli\Exception
+ */
 class TaskNotFoundException extends CliException
 {
+    /**
+     * @var string
+     */
     protected $message = 'Task class not found';
 } 

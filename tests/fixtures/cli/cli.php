@@ -11,12 +11,12 @@ try {
     $bootstrap = new \Bootstrap(new \Phalcon\Config($config));
     $bootstrap->setArguments($argv);
 
+    echo PHP_EOL;
     $bootstrap->setup()->run();
+    echo PHP_EOL;
     echo PHP_EOL;
 } catch (\Exception $ex) {
     echo $ex->getMessage();
     echo PHP_EOL;
-    echo $ex->getLine();
     echo PHP_EOL;
-    echo $ex->getTraceAsString();
 }

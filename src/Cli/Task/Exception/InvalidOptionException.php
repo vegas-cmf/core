@@ -15,39 +15,24 @@ namespace Vegas\Cli\Task\Exception;
 use Vegas\Cli\Exception as CliException;
 
 /**
- * Class InvalidArgumentException
+ * Class InvalidOptionException
  * @package Vegas\Cli\Task\Exception
  */
-class InvalidArgumentException extends CliException
+class InvalidOptionException extends CliException
 {
     /**
      * @param string $option
-     * @param int $argument
      */
-    public function __construct($option, $argument)
+    public function __construct($option)
     {
-        parent::__construct(sprintf('%s %s', $option, $argument));
+        parent::__construct($option);
         $this->option = $option;
-        $this->argument = $argument;
     }
 
     /**
      * @var string
      */
     protected $option;
-
-    /**
-     * @var int
-     */
-    protected $argument;
-
-    /**
-     * @return int
-     */
-    public function getArgument()
-    {
-        return $this->argument;
-    }
 
     /**
      * @return string
@@ -60,6 +45,6 @@ class InvalidArgumentException extends CliException
     /**
      * @var string
      */
-    protected $message = 'Invalid argument';
+    protected $message = 'Invalid option';
 }
  

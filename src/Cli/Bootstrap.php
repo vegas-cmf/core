@@ -87,14 +87,14 @@ class Bootstrap implements BootstrapInterface
     }
 
     /**
-     *
+     * Setups CLI events manager
      */
     protected function initEventsManager()
     {
         //extracts default events manager
         $eventsManager = $this->di->getShared('eventsManager');
         //attaches new event console:beforeTaskHandle and console:afterTaskHandle
-        $eventsManager->attach('console:beforeHandleTask', \Vegas\Cli\EventsManager\Task::beforeHandleTask());
+        $eventsManager->attach('console:beforeHandleTask', \Vegas\Cli\EventsManager\Task::beforeHandleTask($this->arguments));
         $eventsManager->attach('console:afterHandleTask', \Vegas\Cli\EventsManager\Task::afterHandleTask());
         $this->console->setEventsManager($eventsManager);
     }
