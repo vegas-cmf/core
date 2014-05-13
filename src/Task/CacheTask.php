@@ -12,10 +12,20 @@
  
 namespace Vegas\Cli\Task;
 
-class CacheTask extends \Phalcon\CLI\Task
+class CacheTask extends \Vegas\Cli\Task
 {
     public function cleanAction()
     {
         echo "Cleaning cache..";
     }
-} 
+
+    /**
+     * Task must implement this method to set available options
+     *
+     * @return mixed
+     */
+    public function setOptions()
+    {
+        // TODO: Implement setOptions() method.
+    }
+}

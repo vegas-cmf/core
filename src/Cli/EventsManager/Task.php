@@ -17,8 +17,16 @@ use Phalcon\CLI\Dispatcher;
 use Phalcon\Events\Event;
 use Vegas\Cli\OptionParser;
 
+/**
+ * Class Task
+ * @package Vegas\Cli\EventsManager
+ */
 class Task
 {
+    /**
+     * @param $argv
+     * @return callable
+     */
     public static function beforeHandleTask($argv)
     {
         return function(Event $event, Console $console, Dispatcher $dispatcher) use ($argv) {
@@ -33,6 +41,9 @@ class Task
         };
     }
 
+    /**
+     * @return callable
+     */
     public static function afterHandleTask()
     {
         return function(Event $event, Console $console, \Vegas\Cli\Task $task) {

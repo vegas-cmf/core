@@ -8,7 +8,10 @@
 
 namespace Vegas\Cli;
 
-
+/**
+ * Class ColorsOuputTrait
+ * @package Vegas\Cli
+ */
 trait ColorsOuputTrait 
 {
     /**

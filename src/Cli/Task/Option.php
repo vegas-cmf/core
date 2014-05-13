@@ -49,7 +49,7 @@ class Option
     /**
      * @var bool
      */
-    protected $isRequired;
+    protected $isRequired = false;
 
     /**
      * @param $name
@@ -136,7 +136,7 @@ class Option
      */
     public function validate($value)
     {
-        $result = !$this->isRequired();
+        $result = !$this->isRequired;
         if (is_callable($this->validator)) {
             $result = call_user_func($this->validator, $value);
         }
