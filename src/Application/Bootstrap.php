@@ -43,11 +43,13 @@ class Bootstrap implements BootstrapInterface
 
     /**
      * @param \Phalcon\Config $config
+     * @param \Phalcon\DI\FactoryDefault $di
      */
-    public function __construct(\Phalcon\Config $config)
+    public function __construct(\Phalcon\Config $config, FactoryDefault $di = null)
     {
         $this->config = $config;
-        $this->di = new FactoryDefault();
+        //the bootstrap DI can be overridden by already existing DI passed to constructor
+        $this->di = ($di == null) ? new FactoryDefault() : $di;
         $this->application = new \Vegas\Mvc\Application();
     }
 
