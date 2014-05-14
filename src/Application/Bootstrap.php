@@ -26,6 +26,8 @@ use Vegas\Mvc\Module\SubModuleManager;
  */
 class Bootstrap implements BootstrapInterface
 {
+    const DEFAULT_ENV = 'production';
+
     /**
      * @var DiInterface
      */
@@ -60,6 +62,23 @@ class Bootstrap implements BootstrapInterface
     }
 
     /**
+     * Initializes application environment
+     */
+    protected function initEnvironment()
+    {
+        if (isset($this->config->application->environment)) {
+            $env = $this->config->application->environment;
+        } else {
+            $env = self::DEFAULT_ENV;
+        }
+
+        define('APPLICATION_ENV', $env);
+        $this->di->set('environment', function() use ($env) {
+            return $env;
+        }, true);
+    }
+
+    /**
      * Initializes loader
      * Registers library and plugin directory
      */
@@ -89,7 +108,7 @@ class Bootstrap implements BootstrapInterface
 
         //registers modules defined in modules.php file
         $modulesFile = $this->config->application->configDir . 'modules.php';
-        if (!file_exists($modulesFile)) {
+        if (!file_exists($modulesFile) || $this->di->get('environment') != self::DEFAULT_ENV) {
             ModuleLoader::dump($this->di);
         }
         $this->application->registerModules(require $modulesFile);
@@ -147,6 +166,7 @@ class Bootstrap implements BootstrapInterface
     {
         $this->di->set('config', $this->config);
 
+        $this->initEnvironment();
         $this->initLoader();
         $this->initModules();
         $this->initRoutes();

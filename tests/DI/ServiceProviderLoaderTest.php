@@ -26,6 +26,9 @@ class ServiceProviderLoaderTest extends \PHPUnit_Framework_TestCase
     public function testAutoload()
     {
         $di = DI::getDefault();
+        $di->set('environment', function() {
+            return 'development';
+        }, true);
         ServiceProviderLoader::autoload($di);
 
         $this->assertTrue($di->has('url'));

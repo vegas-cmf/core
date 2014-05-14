@@ -56,7 +56,7 @@ class ServiceProviderLoader
     {
         $config = $di->get('config');
         $configDir = $config->application->configDir;
-        if (!file_exists($configDir . 'services.php')) {
+        if (!file_exists($configDir . 'services.php') || $di->get('environment') != 'production') {
             $services = self::dump($di);
         } else {
             $services = require($configDir . 'services.php');
