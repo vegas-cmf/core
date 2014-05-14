@@ -15,6 +15,11 @@ namespace Test\Controllers\Frontend;
 
 use Vegas\Mvc\Controller\ControllerAbstract;
 
+/**
+ * Class FakeController
+ * @package Test\Controllers\Frontend
+ * @Auth(name='authUser')
+ */
 class FakeController extends ControllerAbstract
 {
     public function testAction()

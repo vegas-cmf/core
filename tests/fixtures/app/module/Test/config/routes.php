@@ -7,6 +7,9 @@ return array(
             'controller' => 'Backend\Fake',
             'action' => 'test'
         ),
-        'params' => array()
+
+        'params' => array(
+            'auth' => 'authUser'
+        )
     )
 );
