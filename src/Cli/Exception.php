@@ -14,6 +14,10 @@ namespace Vegas\Cli;
 
 use Vegas\Exception as VegasException;
 
+/**
+ * Class Exception
+ * @package Vegas\Cli
+ */
 class Exception extends VegasException
 {
     protected $message = 'Cli exception';

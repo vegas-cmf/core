@@ -4,18 +4,24 @@
  *
  * @author Slawomir Zytko <slawomir.zytko@gmail.com>
  * @copyright Amsterdam Standard Sp. Z o.o.
- * @homepage https://github.com/vegas-cmf
+ * @homepage https://bitbucket.org/amsdard/vegas-phalcon
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Vegas\Cli\Command\Exception;
+ 
+namespace Vegas\Cli\Exception;
 
 use Vegas\Cli\Exception as CliException;
 
-class InvalidArgumentException extends CliException
+/**
+ * Class TaskNotFoundException
+ * @package Vegas\Cli\Exception
+ */
+class TaskNotFoundException extends CliException
 {
-    protected $message = 'Invalid argument';
-}
- 
+    /**
+     * @var string
+     */
+    protected $message = 'Task class not found';
+} 

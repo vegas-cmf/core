@@ -4,18 +4,16 @@
  *
  * @author Slawomir Zytko <slawomir.zytko@gmail.com>
  * @copyright Amsterdam Standard Sp. Z o.o.
- * @homepage https://github.com/vegas-cmf
+ * @homepage https://bitbucket.org/amsdard/vegas-phalcon
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
-namespace Vegas\Cli\Exception;
-
-use Vegas\Cli\Exception as CliException;
-
-class CommandDuplicateException extends CliException
-{
-    protected $message = 'Command with the same name has been already registered';
-}
  
+use Vegas\Db\Mapping\Json;
+use Vegas\Db\MappingManager;
+
+class Bootstrap extends \Vegas\Cli\Bootstrap
+{
+
+} 

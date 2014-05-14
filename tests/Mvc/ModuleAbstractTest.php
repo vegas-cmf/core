@@ -25,6 +25,7 @@ class ModuleAbstractTest extends \PHPUnit_Framework_TestCase
 
         $app = new Application(DI::getDefault());
         $app->registerModules($modules);
+        print_r($app->getModules());
 
         //forms and controller are registered in Module
         $this->assertFalse(class_exists('Test\Controllers\Backend\FakeController'));
