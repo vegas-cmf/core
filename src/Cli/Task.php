@@ -103,11 +103,15 @@ abstract class Task extends \Phalcon\CLI\Task
                 ':option' => $ex->getOption(),
                 ':argument' => $ex->getArgument()
             )));
+
+            $this->renderHelp();
         } catch (InvalidOptionException $ex) {
             $this->putError(strtr(':command: Invalid option `:option`', array(
                 ':command' => sprintf('%s %s', $this->dispatcher->getParam('activeTask'), $this->dispatcher->getParam('activeAction')),
                 ':option' => $ex->getOption()
             )));
+
+            $this->renderHelp();
         }
     }
 
@@ -189,7 +193,7 @@ abstract class Task extends \Phalcon\CLI\Task
      * @param Action $action
      * @return $this
      */
-    protected function addAction(Action $action)
+    final protected function addTaskAction(Action $action)
     {
         $this->actions[$action->getName()] = $action;
         return $this;
@@ -277,12 +281,7 @@ abstract class Task extends \Phalcon\CLI\Task
         $args = $this->dispatcher->getParam('args');
         if (isset($this->actions[$this->actionName])) {
             $action = $this->actions[$this->actionName];
-            foreach ($args as $arg => $value) {
-                //non-named option are skipped from validation
-                if (is_numeric($arg)) continue;
-                //validates action parameters
-                $action->validate($arg, $value);
-            }
+            $action->validate($args);
         }
     }
 }

@@ -157,6 +157,8 @@ class Option
         if (isset($args[$this->shortName])) {
             return $args[$this->shortName];
         }
+
+        return null;
     }
 }
  

@@ -16,6 +16,7 @@ use Phalcon\CLI\Console;
 use Phalcon\DI\FactoryDefault\CLI;
 use Vegas\BootstrapInterface;
 use Vegas\Mvc\Module\ModuleLoader;
+use Vegas\Cli\Exception as CliException;
 
 class Bootstrap implements BootstrapInterface
 {
@@ -116,8 +117,8 @@ class Bootstrap implements BootstrapInterface
      */
     public function run()
     {
-        $argumentParser = new Arguments();
-        $arguments = $argumentParser->parse($this->console, $this->arguments);
+        $argumentParser = new Loader();
+        $arguments = $argumentParser->parseArguments($this->console, $this->arguments);
 
         $this->console->handle($arguments);
     }

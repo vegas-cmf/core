@@ -25,13 +25,14 @@ class CustomTask extends \Vegas\Cli\Task
             if (!is_numeric($value)) return false;
             return true;
         });
+        $foo->setRequired(true);
         $action->addOption($foo);
-        $this->addAction($action);
+        $this->addTaskAction($action);
     }
 
     public function testAction()
     {
-        $this->putText($this->getArg(0));
-        $this->putText($this->getOption('f'));
+//        $this->putText($this->getArg(0));
+//        $this->putText($this->getOption('f'));
     }
 }

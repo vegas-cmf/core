@@ -14,6 +14,8 @@ namespace Vegas\Cli\Task;
 
 use Vegas\Cli\Task\Exception\InvalidArgumentException;
 use Vegas\Cli\Task\Exception\InvalidOptionException;
+use Vegas\Cli\Task\Exception\MissingArgumentException;
+use Vegas\Cli\Task\Exception\MissingRequiredArgumentException;
 
 /**
  * Class Action
@@ -93,27 +95,44 @@ class Action
     /**
      * Validates current action options
      *
-     * @param $param
-     * @param $value
-     * @return bool
+     * @param array $args
+     * @throws Exception\MissingRequiredArgumentException
      * @throws Exception\InvalidArgumentException
      * @throws Exception\InvalidOptionException
+     * @return bool
      */
-    public function validate($param, $value)
+    public function validate($args)
     {
         $matched = false;
-        foreach ($this->options as $option) {
-            //checks if options matches specified parameter
-            if ($option->matchParam($param)) {
-                //validates option
-                if (!$option->validate($value)) {
-                    throw new InvalidArgumentException($param, $value);
+
+        //validates arguments
+        foreach ($args as $arg => $value) {
+            //non-named option are skipped from validation
+            if (is_numeric($arg)) continue;
+            //validates action options
+            foreach ($this->options as $option) {
+                //checks if options matches specified parameter
+                if ($option->matchParam($arg)) {
+                    //validates option
+                    if (!$option->validate($value)) {
+                        throw new InvalidArgumentException($arg, $value);
+                    }
+                    $matched = true;
                 }
-                $matched = true;
+            }
+            if (!$matched) {
+                throw new InvalidOptionException($arg);
             }
         }
-        if (!$matched) {
-            throw new InvalidOptionException($param);
+        //validates required options
+        foreach ($this->options as $option) {
+            if (!$option->isRequired()) {
+                continue;
+            }
+
+            if (!$option->getValue($args)) {
+                throw new MissingRequiredArgumentException($option->getShortName());
+            }
         }
 
         return true;

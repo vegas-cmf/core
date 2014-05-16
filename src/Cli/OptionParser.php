@@ -141,6 +141,12 @@ class OptionParser
 
     /**
      * Converts string argument value to strict boolean value
+     *
+     * @author              Patrick Fisher <patrick@pwfisher.com>
+     * @since               August 21, 2009
+     * @see                 https://github.com/pwfisher/CommandLine.php
+     * @see                 http://www.php.net/manual/en/features.commandline.php
+     * @usage               $args = OptionParser::parse($argv);
      */
     public static function toBoolean($key, $default = false)
     {

@@ -13,16 +13,18 @@
 namespace Vegas\Cli;
 
 use Phalcon\CLI\Console;
+use Vegas\Cli\Exception\TaskActionNotSpecifiedException;
 use Vegas\Cli\Exception\TaskNotFoundException;
+use Vegas\Cli\Exception as CliException;
 
 /**
- * Class Arguments
+ * Class Loader
  *
- * Parses command line arguments passed to CLI application
+ * Parses command line arguments passed to CLI application and loads indicated tasks
  *
  * @package Vegas\Cli
  */
-class Arguments
+class Loader
 {
     const SEPARATOR = ':';
     const APP_TASK_PREFIX = 'app';
@@ -39,11 +41,19 @@ class Arguments
      *
      * @param Console $console
      * @param $arguments
+     * @throws Exception\TaskActionNotSpecifiedException
+     * @throws Exception\TaskNotFoundException
      * @return array
      */
-    public function parse(Console $console, $arguments)
+    public function parseArguments(Console $console, $arguments)
     {
         $this->consoleApp = $console;
+        if (count($arguments) == 1) {
+            throw new TaskNotFoundException();
+        }
+        if (count($arguments) == 2) {
+            throw new TaskActionNotSpecifiedException();
+        }
         $taskName = $this->lookupTaskClass($arguments);
 
         //prepares an array containing arguments for CLI handler
@@ -93,14 +103,14 @@ class Arguments
      * Converts indicated string to namespace format.
      *
      * @param string $str
-     * @throws Exception
+     * @throws CliException
      * @return string
      */
     private function toNamespace($str) {
         $string_parts = preg_split('/_+/', $str);
 
         if (!is_array($string_parts) || (sizeof($string_parts) < 1)){
-            throw new Exception("Unable to split the input string");
+            throw new CliException("Unable to split the input string");
         }
         foreach($string_parts as $key => $string_part){
             $string_parts[$key] = ucfirst(strtolower($string_part));

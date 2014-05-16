@@ -3,6 +3,7 @@ error_reporting(E_ALL);
 
 define('APP_ROOT', dirname(dirname(__FILE__)));
 
+echo PHP_EOL;
 try {
     require APP_ROOT . '/../../vendor/autoload.php';
     require APP_ROOT . '/cli/Bootstrap.php';
@@ -11,12 +12,12 @@ try {
     $bootstrap = new \Bootstrap(new \Phalcon\Config($config));
     $bootstrap->setArguments($argv);
 
-    echo PHP_EOL;
     $bootstrap->setup()->run();
-    echo PHP_EOL;
-    echo PHP_EOL;
 } catch (\Exception $ex) {
-    echo $ex->getMessage();
+    echo "\033[47m\033[0;31m" . $ex->getMessage() . "\033[0m";
     echo PHP_EOL;
     echo PHP_EOL;
+    echo sprintf("\033[47m\033[0;31m%s\033[0m", "Use -h (--help) option for more help");
 }
+echo PHP_EOL;
+echo PHP_EOL;
