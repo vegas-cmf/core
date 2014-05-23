@@ -14,8 +14,12 @@ namespace Vegas\Db;
 
 use Vegas\Exception as VegasException;
 
+/**
+ * Class Exception
+ * @package Vegas\Db
+ */
 class Exception extends VegasException
 {
-    
+    protected $message = 'Database exception';
 }
  

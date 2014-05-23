@@ -11,15 +11,21 @@
  */
 namespace Vegas\Db\Decorator;
 
-use Phalcon\Utils\Slug;
+use Vegas\Db\Decorator\Helper\MappingHelperTrait;
+use Vegas\Db\Decorator\Helper\SlugTrait;
+use Vegas\Db\Decorator\Helper\WriteAttributesTrait;
 use Vegas\Db\HasMappingTrait;
 
+/**
+ * Class CollectionAbstract
+ * @package Vegas\Db\Decorator
+ */
 abstract class CollectionAbstract extends \Phalcon\Mvc\Collection
 {
     use HasMappingTrait;
     use MappingHelperTrait;
-
-    protected $mappings = array();
+    use SlugTrait;
+    use WriteAttributesTrait;
 
     public function beforeCreate()
     {
@@ -29,18 +35,5 @@ abstract class CollectionAbstract extends \Phalcon\Mvc\Collection
     public function beforeUpdate()
     {
         $this->updated_at = new \MongoInt32(time());
-    }
-
-    public function generateSlug($string)
-    {
-        $slug = new Slug();
-        $this->slug = $slug->generate($string);
-    }
-    
-    public function writeAttributes($attributes)
-    {
-        foreach ($attributes as $attribute => $value) {
-            $this->writeAttribute($attribute, $value);
-        }
     }
 }

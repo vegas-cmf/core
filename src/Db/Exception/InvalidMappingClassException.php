@@ -14,7 +14,11 @@ namespace Vegas\Db\Exception;
 
 use \Vegas\Db\Exception as DbException;
 
+/**
+ * Class InvalidMappingClassException
+ * @package Vegas\Db\Exception
+ */
 class InvalidMappingClassException extends DbException
 {
-
+    protected $message = 'Mapping class is invalid';
 } 

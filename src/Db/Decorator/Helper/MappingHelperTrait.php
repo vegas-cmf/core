@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
  
-namespace Vegas\Db\Decorator;
+namespace Vegas\Db\Decorator\Helper;
 
 /**
  * Class MappingHelperTrait
@@ -18,6 +18,8 @@ namespace Vegas\Db\Decorator;
  */
 trait MappingHelperTrait
 {
+    protected $mappings = array();
+
     /**
      * Returns array of attributes with mapped values
      *

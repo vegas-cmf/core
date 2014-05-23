@@ -12,25 +12,35 @@
  
 namespace Vegas\Db\Decorator;
 
-
-use Phalcon\Utils\Slug;
+use Vegas\Db\Decorator\Helper\MappingHelperTrait;
+use Vegas\Db\Decorator\Helper\SlugTrait;
+use Vegas\Db\Decorator\Helper\WriteAttributesTrait;
 use Vegas\Db\HasMappingTrait;
 
+/**
+ * Class ModelAbstract
+ * @package Vegas\Db\Decorator
+ */
 abstract class ModelAbstract extends \Phalcon\Mvc\Model
 {
     use HasMappingTrait;
     use MappingHelperTrait;
+    use SlugTrait;
+    use WriteAttributesTrait;
 
-    public function generateSlug($string)
+    /**
+     *
+     */
+    public function beforeCreate()
     {
-        $slug = new Slug();
-        $this->slug = $slug->generate($string);
+        $this->created_at = time();
     }
 
-    public function writeAttributes($attributes)
+    /**
+     *
+     */
+    public function beforeUpdate()
     {
-        foreach ($attributes as $attribute => $value) {
-            $this->writeAttribute($attribute, $value);
-        }
+        $this->updated_at = time();
     }
 } 
