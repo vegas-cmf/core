@@ -12,30 +12,45 @@
  
 namespace Vegas\Tests\Db\Adapter\Decorator;
 
+use Phalcon\DI;
 use Phalcon\Utils\Slug;
-use Vegas\Db\Decorator\CollectionAbstract;
+use Vegas\Db\Decorator\ModelAbstract;
 
-class Fake extends CollectionAbstract
+class FakeModel extends ModelAbstract
 {
     public function getSource()
     {
-        return 'fake';
+        return 'fake_table';
     }
 }
 
-class CollectionAbstractTest extends \PHPUnit_Framework_TestCase
+class ModelAbstractTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testCreateDocument()
+    public static function setUpBeforeClass()
+    {
+        $di = DI::getDefault();
+        $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
+        $di->get('db')->execute(
+            'CREATE TABLE fake_table(
+            id int not null primary key auto_increment,
+            title varchar(250) null,
+            content text null,
+            category_id int null
+            )'
+        );
+    }
+
+    public function testCreateRecord()
     {
         $data = array(
             'title' =>  'Title test',
             'content'   =>  'Content test',
-            'category_id' => new \MongoId()
+            'category_id' => rand(1000, 9999)
         );
 
-        $fake = new Fake();
-        $this->assertInstanceOf('\Vegas\Db\Decorator\CollectionAbstract', $fake);
+        $fake = new FakeModel();
+        $this->assertInstanceOf('\Vegas\Db\Decorator\ModelAbstract', $fake);
         $fake->writeAttributes($data);
 
         foreach ($data as $key => $value) {
@@ -52,15 +67,15 @@ class CollectionAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($fake->save());
     }
 
-    public function testUpdateDocument()
+    public function testUpdateRecord()
     {
-        $fake = Fake::findFirst();
+        $fake = FakeModel::findFirst();
         $fake->title = 'New title';
 
         $this->assertTrue($fake->save());
-        $this->assertInstanceOf('MongoInt32', $fake->updated_at);
+        $this->assertInternalType('int', $fake->updated_at);
 
-        $fake = Fake::findFirst();
+        $fake = FakeModel::findFirst();
         $this->assertEquals('New title', $fake->title);
     }
 } 

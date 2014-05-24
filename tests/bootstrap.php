@@ -23,4 +23,8 @@ $di->set('mongo', function() use ($config) {
     return $mongo->selectDb($config->mongo->db);
 }, true);
 
+$di->set('db', function() use ($config) {
+    return new \Phalcon\Db\Adapter\Pdo\Mysql($config->db->toArray());
+});
+
 Phalcon\DI::setDefault($di);

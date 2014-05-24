@@ -14,6 +14,7 @@ namespace Vegas\Tests\Db;
 
 use Phalcon\DI;
 use Vegas\Db\Decorator\CollectionAbstract;
+use Vegas\Db\Decorator\ModelAbstract;
 use Vegas\Db\Mapping\Json;
 use Vegas\Db\MappingManager;
 
@@ -22,6 +23,19 @@ class Fake extends CollectionAbstract
     public function getSource()
     {
         return 'fake';
+    }
+
+    protected $mappings = array(
+        'somedata'  =>  'json',
+        'somecamel' =>  'camelize'
+    );
+}
+
+class FakeModel extends ModelAbstract
+{
+    public function getSource()
+    {
+        return 'fake_table';
     }
 
     protected $mappings = array(
@@ -46,7 +60,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Vegas\Db\MappingInterface', MappingManager::find('camelize'));
     }
 
-    public function testResolveMappings()
+    public function testResolveCollectionMappings()
     {
         DI::getDefault()->get('mongo')->selectCollection('fake')->remove(array());
 
@@ -73,6 +87,46 @@ class MappingTest extends \PHPUnit_Framework_TestCase
             'somecamel'   =>  $fakeDoc->readMapped('somecamel'),
         );
         $mappedValues = $fakeDoc->toMappedArray();
+
+        $this->assertEquals($mappedValues['somedata'], $ownMappedValues['somedata']);
+        $this->assertEquals($mappedValues['somecamel'], $ownMappedValues['somecamel']);
+    }
+
+    public function testResolveModelMappings()
+    {
+        $di = DI::getDefault();
+        $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
+        $di->get('db')->execute(
+            'CREATE TABLE fake_table(
+            id int not null primary key auto_increment,
+            somedata varchar(250) null,
+            somecamel varchar(250) null
+            )'
+        );
+
+        $someData = json_encode(array(1,2,3,4,5,6));
+        $fake = new FakeModel();
+        $fake->somedata = $someData;
+        $nonCamelText = 'this_is_non_camel_case_text';
+        $fake->somecamel = $nonCamelText;
+        $this->assertTrue($fake->save());
+
+        $fakeRecord = FakeModel::findFirst();
+
+        $this->assertInternalType('array', $fakeRecord->readMapped('somedata'));
+        $this->assertEquals(\Phalcon\Text::camelize($nonCamelText), $fakeRecord->readMapped('somecamel'));
+
+        $this->assertEquals($nonCamelText, $fakeRecord->somecamel);
+        $this->assertEquals($someData, $fakeRecord->somedata);
+        $this->assertEquals($someData, $fakeRecord->readAttribute('somedata'));
+        $this->assertEquals($nonCamelText, $fakeRecord->readAttribute('somecamel'));
+
+        $ownMappedValues = array(
+            '_id'   =>  $fakeRecord->readMapped('_id'),
+            'somedata'   =>  $fakeRecord->readMapped('somedata'),
+            'somecamel'   =>  $fakeRecord->readMapped('somecamel'),
+        );
+        $mappedValues = $fakeRecord->toMappedArray();
 
         $this->assertEquals($mappedValues['somedata'], $ownMappedValues['somedata']);
         $this->assertEquals($mappedValues['somecamel'], $ownMappedValues['somecamel']);
