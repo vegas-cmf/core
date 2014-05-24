@@ -32,7 +32,7 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
     {
         $config = $this->di->get('config');
         
-        if ($config->environment === \Vegas\Core::DEV_ENV) {
+        if ($config->environment === $this->di->get('environment')) {
             $error = $this->prepareDevEnvException($exception);
         } else {
             $error = $this->prepareLiveEnvException($exception);

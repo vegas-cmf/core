@@ -10,13 +10,22 @@
  * file that was distributed with this source code.
  */
 
-namespace Vegas;
+use Phalcon\Events\Event;
+use Phalcon\Mvc\Dispatcher;
 
 /**
- * Class Exception
- * @package Vegas
+ *
+ * @package App\Plugins
  */
-class Exception extends \Exception
+class Foo
 {
-    protected $message = 'Vegas core exception';
+    /**
+     * @param Event $event
+     * @param Dispatcher $dispatcher
+     * @return bool
+     */
+    public function beforeDispatch(Event $event, Dispatcher $dispatcher)
+    {
+        return false;
+    }
 } 

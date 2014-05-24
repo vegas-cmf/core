@@ -47,4 +47,10 @@ class ModuleAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue(class_exists('Test\Controllers\Backend\FakeController'));
         $this->assertTrue(class_exists('Test\Forms\Fake'));
     }
+
+    public function testPlugins()
+    {
+        $app = new Application(DI::getDefault());
+
+    }
 } 

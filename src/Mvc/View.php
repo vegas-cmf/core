@@ -40,20 +40,18 @@ class View extends PhalconView
 
         $this->registerEngines(array(
             '.volt' => function ($this, $di) use ($options) {
-                    $volt = new \Vegas\Mvc\View\Engine\Volt($this, $di);
-                    if (isset($options['cacheDir'])) {
-                        $volt->setOptions(array(
-                            'compiledPath' => $options['cacheDir'],
-                            'compiledSeparator' => '_'
-                        ));
-                    }
-                    
-                    $volt->registerFilter('toString');
-                    $volt->registerHelper('shortenText');
-                    $volt->registerHelper('pagination');
-                    
-                    return $volt;
-                },
+                $volt = new \Vegas\Mvc\View\Engine\Volt($this, $di);
+                if (isset($options['cacheDir'])) {
+                    $volt->setOptions(array(
+                        'compiledPath' => $options['cacheDir'],
+                        'compiledSeparator' => '_'
+                    ));
+                }
+                $volt->registerFilters();
+                $volt->registerHelpers();
+
+                return $volt;
+            },
             '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
         ));
     }

@@ -22,6 +22,9 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
         $this->registerFormsAutoloader();
     }
 
+    /**
+     * Registers controllers in registered sub-modules
+     */
     public function registerSubModulesAutoloader()
     {
         $namespaces = array();
@@ -35,6 +38,9 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
         $loader->register();
     }
 
+    /**
+     * Registers classes in Forms namespace
+     */
     public function registerFormsAutoloader()
     {
         $loader = new Loader();
@@ -43,14 +49,24 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
         ), true);
         $loader->register();
     }
-    
+
+    /**
+     * Registers dispatcher, view, application plugins
+     *
+     * @param \Phalcon\DiInterface $di
+     */
     public function registerServices($di)
     {
         $this->registerDispatcher($di);
         $this->registerViewComponent($di);
         $this->registerPlugins($di);
     }
-    
+
+    /**
+     * Registers default dispatcher
+     *
+     * @param $di
+     */
     protected function registerDispatcher($di)
     {
         $di->set('dispatcher', function() use ($di) {
@@ -58,7 +74,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
             $dispatcher->setDefaultNamespace($this->namespace."\Controllers");
 
             $eventsManager = $di->getShared('eventsManager');
-            $eventsManager->attach('dispatch:beforeException', BeforeException::fire());
+            $eventsManager->attach('dispatch:beforeException', BeforeException::getEvent());
 
             $dispatcher->setEventsManager($eventsManager);
             
@@ -66,6 +82,11 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
         });
     }
 
+    /**
+     * Registers application plugins
+     *
+     * @param $di
+     */
     protected function registerPlugins($di)
     {
         $dispatcher = $di->get('dispatcher');
@@ -80,7 +101,12 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
         }
         $dispatcher->setEventsManager($eventsManager);
     }
-    
+
+    /**
+     * Registers views
+     *
+     * @param $di
+     */
     protected function registerViewComponent($di)
     {
         $di->set('view', function() use ($di) {

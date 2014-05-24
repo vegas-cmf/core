@@ -23,6 +23,9 @@ use Vegas\Mvc\View\Engine\Volt\VoltHelperAbstract;
  */
 class Volt extends \Phalcon\Mvc\View\Engine\Volt
 {
+    use RegisterFilters;
+    use RegisterHelpers;
+
     /**
      * Registers a new filter in the compiler
      *

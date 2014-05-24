@@ -24,7 +24,7 @@ class BeforeException
     /**
      * @return callable
      */
-    public static function fire()
+    public static function getEvent()
     {
         return function(Event $event, Dispatcher $dispatcher, \Exception $exception) {
             $resolver = new ExceptionResolver();

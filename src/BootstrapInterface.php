@@ -12,10 +12,20 @@
 
 namespace Vegas;
 
+/**
+ * Interface BootstrapInterface
+ * @package Vegas
+ */
 interface BootstrapInterface
 {
+    /**
+     * @return mixed
+     */
     public function setup();
 
+    /**
+     * @return mixed
+     */
     public function run();
 }
  
