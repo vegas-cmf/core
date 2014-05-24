@@ -15,6 +15,8 @@ namespace Vegas\Tests\Db;
 use Phalcon\DI;
 use Vegas\Db\Decorator\CollectionAbstract;
 use Vegas\Db\Decorator\ModelAbstract;
+use Vegas\Db\Exception\InvalidMappingClassException;
+use Vegas\Db\Exception\MappingClassNotFoundException;
 use Vegas\Db\Mapping\Json;
 use Vegas\Db\MappingManager;
 
@@ -58,10 +60,36 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotEmpty(MappingManager::find('camelize'));
         $this->assertInstanceOf('\Vegas\Db\MappingInterface', MappingManager::find('camelize'));
+
+        try {
+            $mappingManager->add(new \stdClass());
+        } catch (InvalidMappingClassException $e) {
+            $m = $e->getMessage();
+        }
+        $this->assertEquals('Mapping class must be an instance of MappingInterface', $m);
+
+        try {
+            $mappingManager->remove('json');
+            $mappingManager->find('json');
+        } catch (MappingClassNotFoundException $e) {
+            $m = $e->getMessage();
+        }
+        $this->assertEquals(sprintf('Mapping class \'%s\' was not found', 'json'), $m);
+
+        try {
+            $mappingManager->find('fake_mapping');
+        } catch (MappingClassNotFoundException $e) {
+            $m = $e->getMessage();
+        }
+        $this->assertEquals(sprintf('Mapping class \'%s\' was not found', 'fake_mapping'), $m);
     }
 
     public function testResolveCollectionMappings()
     {
+        $mappingManager = new MappingManager();
+        $mappingManager->add(new Json());
+        $mappingManager->add('\Vegas\Db\Mapping\Camelize');
+
         DI::getDefault()->get('mongo')->selectCollection('fake')->remove(array());
 
         $someData = json_encode(array(1,2,3,4,5,6));
@@ -90,10 +118,20 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($mappedValues['somedata'], $ownMappedValues['somedata']);
         $this->assertEquals($mappedValues['somecamel'], $ownMappedValues['somecamel']);
+
+        $fakeDoc->removeMapping('somedata');
+        $this->assertEquals($someData, $fakeDoc->readMapped('somedata'));
+
+        $fakeDoc->clearMappings();
+        $this->assertEquals($nonCamelText, $fakeDoc->readMapped('somecamel'));
     }
 
     public function testResolveModelMappings()
     {
+        $mappingManager = new MappingManager();
+        $mappingManager->add(new Json());
+        $mappingManager->add('\Vegas\Db\Mapping\Camelize');
+
         $di = DI::getDefault();
         $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
         $di->get('db')->execute(
@@ -130,5 +168,11 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($mappedValues['somedata'], $ownMappedValues['somedata']);
         $this->assertEquals($mappedValues['somecamel'], $ownMappedValues['somecamel']);
+
+        $fakeRecord->removeMapping('somedata');
+        $this->assertEquals($someData, $fakeRecord->readMapped('somedata'));
+
+        $fakeRecord->clearMappings();
+        $this->assertEquals($nonCamelText, $fakeRecord->readMapped('somecamel'));
     }
 } 

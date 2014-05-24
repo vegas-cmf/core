@@ -13,6 +13,7 @@
 namespace Vegas\Db;
 
 use Vegas\Db\Exception\InvalidMappingClassException;
+use Vegas\Db\Exception\MappingClassNotFoundException;
 
 /**
  * Class MappingManager
@@ -65,12 +66,13 @@ class MappingManager
      * Finds the mapper by its name
      *
      * @param $mappingName
+     * @throws Exception\MappingClassNotFoundException
      * @return bool
      */
     public static function find($mappingName)
     {
         if (!array_key_exists($mappingName, self::$container)) {
-            return false;
+            throw new MappingClassNotFoundException($mappingName);
         }
 
         return self::$container[$mappingName];

@@ -36,10 +36,11 @@ trait HasMappingTrait
         if (!$this->hasMapping($attributeName)) {
             $this->mappingsContainer[$attributeName] = array();
         }
-        foreach ($mappings as $mapping) {
-            $this->mappingsContainer[$attributeName][] = $mapping;
+        if ($this->mappingsContainer[$attributeName] !== null) {
+            foreach ($mappings as $mapping) {
+                $this->mappingsContainer[$attributeName][] = $mapping;
+            }
         }
-
         return $this;
     }
 
@@ -52,7 +53,7 @@ trait HasMappingTrait
     public function removeMapping($attributeName)
     {
         if ($this->hasMapping($attributeName)) {
-            unset($this->mappingsContainer[$attributeName]);
+            $this->mappingsContainer[$attributeName] = null;
         }
 
         return $this;
@@ -76,7 +77,9 @@ trait HasMappingTrait
      */
     public function clearMappings()
     {
-        $this->mappingsContainer = array();
+        foreach ($this->mappingsContainer as $attributeName => $mapping) {
+            $this->mappingsContainer[$attributeName] = null;
+        }
         return $this;
     }
 
@@ -95,10 +98,12 @@ trait HasMappingTrait
         }
 
         $mappings = $this->mappingsContainer[$attributeName];
-        foreach ($mappings as $mapping) {
-            //get mapping instance from mapping manager
-            $mappingResolver = MappingManager::find($mapping);
-            $mappingResolver->resolve($value);
+        if (is_array($mappings)) {
+            foreach ($mappings as $mapping) {
+                //get mapping instance from mapping manager
+                $mappingResolver = MappingManager::find($mapping);
+                $mappingResolver->resolve($value);
+            }
         }
 
         return $value;
