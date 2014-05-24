@@ -14,7 +14,11 @@ namespace Vegas\Mvc\View\Engine;
 
 use Vegas\Mvc\View\Exception as ViewException;
 
+/**
+ * Class Exception
+ * @package Vegas\Mvc\View\Engine
+ */
 class Exception extends ViewException
 {
-
+    protected $message = 'View engine exception';
 } 
