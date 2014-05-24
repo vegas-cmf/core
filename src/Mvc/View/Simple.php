@@ -21,17 +21,17 @@ class Simple extends PhalconSimpleView
     public function __construct($options=null) {
         parent::__construct($options);
 
-        $config = require APP_CONFIG.'/config.php';
+        $config = $this->di->get('config');
 
         $this->registerEngines(array(
             '.volt' => function ($this, $di) use ($config) {
-                    $volt = new PhalconView\Engine\Volt($this, $di);
-                    $volt->setOptions(array(
-                        'compiledPath' => $config->application->cacheDir,
-                        'compiledSeparator' => '_'
-                    ));
-                    return $volt;
-                },
+                $volt = new PhalconView\Engine\Volt($this, $di);
+                $volt->setOptions(array(
+                    'compiledPath' => $config->application->cacheDir,
+                    'compiledSeparator' => '_'
+                ));
+                return $volt;
+            },
             '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
         ));
     }
