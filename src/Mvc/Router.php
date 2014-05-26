@@ -12,6 +12,9 @@
 
 namespace Vegas\Mvc;
 
+use Phalcon\DI\InjectionAwareInterface;
+use Phalcon\DiInterface;
+use Vegas\DI\InjectionAwareTrait;
 use Vegas\Mvc\Router\Exception\InvalidRouteTypeException;
 use Vegas\Mvc\Router\Route;
 
@@ -19,8 +22,10 @@ use Vegas\Mvc\Router\Route;
  * Class Router
  * @package Vegas\Mvc
  */
-class Router
+class Router implements InjectionAwareInterface
 {
+    use InjectionAwareTrait;
+
     const DEFAULT_ROUTE = 'default';
     const STATIC_ROUTE = 'static';
     const REST_ROUTE = 'rest';
@@ -60,10 +65,12 @@ class Router
 
     /**
      *
+     * @param DiInterface $di
      * @param \Phalcon\Mvc\RouterInterface $routerAdapter
      */
-    public function __construct(\Phalcon\Mvc\RouterInterface $routerAdapter)
+    public function __construct(DiInterface $di, \Phalcon\Mvc\RouterInterface $routerAdapter)
     {
+        $this->setDI($di);
         $this->adapter = $routerAdapter;
     }
 
@@ -180,10 +187,33 @@ class Router
 
         foreach ($this->routes as $type => $routes) {
             foreach ($routes as $name => $route) {
+                $newRoute = new Route($name, $route);
+                if (!$newRoute->hasParam('hostname')) {
+                    $newRoute->setParam('hostname', $this->resolveDefaultHostName());
+                }
+
                 $routeType = $this->resolveRouteType($type);
                 $routeType->add($this->getRouter(), new Route($name, $route));
             }
         }
+    }
+
+    /**
+     * @return string|null
+     */
+    private function resolveDefaultHostName()
+    {
+        $request = $this->di->get('request');
+        $config = $this->di->get('config');
+        if (isset($config->application->host)) {
+            $hostName = $config->application->hostname;
+        } else if ($request->getServer('HTTP_HOST')) {
+            $hostName = $request->getServer('HTTP_HOST');
+        } else {
+            $hostName = null;
+        }
+
+        return $hostName;
     }
 
     /**

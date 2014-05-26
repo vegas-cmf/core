@@ -35,7 +35,10 @@ class DefaultRoute implements RouteInterface
             ->setName($route->getName());
 
         if ($route->getParam('hostname')) {
-            $newRoute->setHostName($route->getParam('hostname'));
+            $hostName = $route->getParam('hostname');
+        } else {
+            $hostName = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : null;
         }
+        $newRoute->setHostName($hostName);
     }
 } 

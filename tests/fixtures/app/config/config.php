@@ -20,7 +20,9 @@ return array(
             'cacheDir'  =>  APP_ROOT . '/cache/',
             'layout'    =>  'main.volt',
             'layoutsDir'    =>  APP_ROOT . '/app/layouts'
-        )
+        ),
+
+        'hostname' => 'vegas.dev'
     ),
 
     'plugins' => array(),

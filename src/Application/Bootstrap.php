@@ -137,7 +137,7 @@ class Bootstrap implements BootstrapInterface
     {
         //setups router
         $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard($this->di);
-        $router = new \Vegas\Mvc\Router($routerAdapter);
+        $router = new \Vegas\Mvc\Router($this->di, $routerAdapter);
 
         //adds routes defined in modules
         $modules = $this->application->getModules();
