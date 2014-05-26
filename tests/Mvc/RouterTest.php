@@ -87,6 +87,16 @@ class RouterTest extends \PHPUnit_Framework_TestCase
                 'controller' => 'galleries'
             ),
             'type' => 'rest'
+        ),
+        'dashboard' =>  array(
+            'route' =>  '/dashboard',
+            'paths' =>  array(
+                'controller'    =>  'dashboard',
+                'action'    =>  'index'
+            ),
+            'params' => array(
+                'hostname'  =>  'test.vegas.com'
+            )
         )
     );
 
@@ -222,6 +232,24 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $matchedRoute = $defaultRouter->getMatchedRoute();
         $paths = $matchedRoute->getPaths();
         $this->assertEquals('nonstatictest', $paths['controller']);
+    }
+
+    public function testHostNameConstraints()
+    {
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router($routerAdapter);
+        $router->addRoutes($this->testRoutes);
+
+        $router->setup();
+
+        $defaultRouter = $router->getRouter();
+
+        $_SERVER['HTTP_HOST'] = 'test.vegas.com';
+        $defaultRouter->handle('/dashboard');
+        $this->assertNotEmpty($defaultRouter->getMatchedRoute());
+        $matchedRoute = $defaultRouter->getMatchedRoute();
+        $paths = $matchedRoute->getPaths();
+        $this->assertEquals('dashboard', $paths['controller']);
     }
 
     public function testModuleRoutes()

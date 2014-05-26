@@ -60,7 +60,7 @@ class CollectionAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($fake->save());
         $this->assertInstanceOf('MongoInt32', $fake->updated_at);
 
-        $fake = Fake::findFirst();
+        $fake = Fake::findFirst(array(array('_id' => $fake->getId())));
         $this->assertEquals('New title', $fake->title);
     }
 } 
