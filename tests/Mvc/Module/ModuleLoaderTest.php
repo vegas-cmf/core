@@ -20,10 +20,12 @@ class ModuleLoaderTest extends \PHPUnit_Framework_TestCase
     public function testDump()
     {
         $modules = ModuleLoader::dump(DI::getDefault());
+
         $this->assertInternalType('array', $modules);
 
         $this->assertTrue(file_exists(TESTS_ROOT_DIR . '/fixtures/app/config/modules.php'));
-        $modulesArray = require_once TESTS_ROOT_DIR . '/fixtures/app/config/modules.php';
+        $modulesArray = require TESTS_ROOT_DIR . '/fixtures/app/config/modules.php';
+
         $this->assertInternalType('array', $modulesArray);
 
         $this->assertInternalType('string', ModuleLoader::MODULE_SETTINGS_FILE);
