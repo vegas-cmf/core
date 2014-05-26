@@ -11,9 +11,9 @@
  */
 namespace Vegas\Tests\Stub\Models;
 
-use \Phalcon\Forms\Form,
-    \Phalcon\Forms\Element\Text,
-    \Phalcon\Validation\Validator\PresenceOf;
+use Phalcon\Forms\Element\Text;
+use Phalcon\Forms\Form;
+use Phalcon\Validation\Validator\PresenceOf;
 
 class FakeForm extends Form
 {
