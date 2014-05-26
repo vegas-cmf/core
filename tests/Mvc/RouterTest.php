@@ -89,7 +89,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             'type' => 'rest'
         ),
         'dashboard' =>  array(
-            'route' =>  '/dashboard',
+            'route' =>  '/',
             'paths' =>  array(
                 'controller'    =>  'dashboard',
                 'action'    =>  'index'
@@ -245,7 +245,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $defaultRouter = $router->getRouter();
 
         $_SERVER['HTTP_HOST'] = 'test.vegas.com';
-        $defaultRouter->handle('/dashboard');
+        $defaultRouter->handle('/');
         $this->assertNotEmpty($defaultRouter->getMatchedRoute());
         $matchedRoute = $defaultRouter->getMatchedRoute();
         $paths = $matchedRoute->getPaths();
