@@ -14,7 +14,6 @@ namespace Vegas\Cli\Task;
 
 use Vegas\Cli\Task\Exception\InvalidArgumentException;
 use Vegas\Cli\Task\Exception\InvalidOptionException;
-use Vegas\Cli\Task\Exception\MissingArgumentException;
 use Vegas\Cli\Task\Exception\MissingRequiredArgumentException;
 
 /**

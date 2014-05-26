@@ -13,9 +13,9 @@
 namespace Vegas\Cli;
 
 use Phalcon\CLI\Console;
+use Vegas\Cli\Exception as CliException;
 use Vegas\Cli\Exception\TaskActionNotSpecifiedException;
 use Vegas\Cli\Exception\TaskNotFoundException;
-use Vegas\Cli\Exception as CliException;
 
 /**
  * Class Loader

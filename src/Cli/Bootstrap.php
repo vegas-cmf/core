@@ -15,8 +15,8 @@ namespace Vegas\Cli;
 use Phalcon\CLI\Console;
 use Phalcon\DI\FactoryDefault\CLI;
 use Vegas\BootstrapInterface;
-use Vegas\Mvc\Module\ModuleLoader;
 use Vegas\Cli\Exception as CliException;
+use Vegas\Mvc\Module\ModuleLoader;
 
 class Bootstrap implements BootstrapInterface
 {

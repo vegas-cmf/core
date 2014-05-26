@@ -12,8 +12,8 @@
 
 namespace Vegas\Tests\DI;
 
-use \Phalcon\DI;
-use \Vegas\DI\Scaffolding\Adapter;
+use Phalcon\DI;
+use Vegas\DI\Scaffolding\Adapter;
 
 
 class MongoTest extends \PHPUnit_Framework_TestCase

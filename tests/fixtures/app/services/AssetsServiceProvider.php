@@ -11,8 +11,8 @@
  */
 
 use Phalcon\DiInterface;
-use Vegas\DI\ServiceProviderInterface;
 use Phalcon\Mvc\Url as UrlResolver;
+use Vegas\DI\ServiceProviderInterface;
 
 /**
  * Class AssetsServiceProvider

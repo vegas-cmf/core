@@ -109,4 +109,29 @@ class Route
 
         return null;
     }
+
+    /**
+     * Adds route param
+     *
+     * @param $param
+     * @param $value
+     * @return $this
+     */
+    public function setParam($param, $value)
+    {
+        $this->params[$param] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Determines if route has an indicated param
+     *
+     * @param $param
+     * @return null
+     */
+    public function hasParam($param)
+    {
+        return array_key_exists($param, $this->params);
+    }
 } 

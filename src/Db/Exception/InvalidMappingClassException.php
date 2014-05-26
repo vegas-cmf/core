@@ -12,7 +12,7 @@
  
 namespace Vegas\Db\Exception;
 
-use \Vegas\Db\Exception as DbException;
+use Vegas\Db\Exception as DbException;
 
 /**
  * Class InvalidMappingClassException

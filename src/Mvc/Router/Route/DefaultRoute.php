@@ -30,12 +30,8 @@ class DefaultRoute implements RouteInterface
      */
     public function add(\Phalcon\Mvc\RouterInterface $router, Route $route)
     {
-        $newRoute = $router
+        $router
             ->add($route->getRoute(), $route->getPaths())
             ->setName($route->getName());
-
-        if ($route->getParam('hostname')) {
-            $newRoute->setHostName($route->getParam('hostname'));
-        }
     }
 } 
