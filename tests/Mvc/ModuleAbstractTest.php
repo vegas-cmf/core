@@ -41,6 +41,7 @@ class ModuleAbstractTest extends \PHPUnit_Framework_TestCase
         $config = new \Phalcon\Config($config);
         $bootstrap = new \Bootstrap($config);
 
+        $_SERVER['HTTP_HOST'] = 'vegas.dev';
         $_SERVER['REQUEST_URI'] = '/test/fake/test';
         $bootstrap->setup()->run('/test/fake/test');
 
