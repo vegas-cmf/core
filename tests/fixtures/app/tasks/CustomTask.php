@@ -32,7 +32,7 @@ class CustomTask extends \Vegas\Cli\Task
 
     public function testAction()
     {
-//        $this->putText($this->getArg(0));
-//        $this->putText($this->getOption('f'));
+        $this->putText($this->getArg(0));
+        $this->putText($this->getOption('f'));
     }
 }

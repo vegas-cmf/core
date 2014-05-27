@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
  
-namespace Vegas\Cli\Task;
+namespace Vegas\Task;
 
 class CacheTask extends \Vegas\Cli\Task
 {

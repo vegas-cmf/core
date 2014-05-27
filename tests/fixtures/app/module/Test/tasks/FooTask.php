@@ -12,10 +12,20 @@
  
 namespace Test\Tasks;
 
-class FooTask extends \Phalcon\CLI\Task
+class FooTask extends \Vegas\Cli\Task
 {
     public function testAction()
     {
         echo 'FOO';
+    }
+
+    /**
+     * Task must implement this method to set available options
+     *
+     * @return mixed
+     */
+    public function setOptions()
+    {
+        // TODO: Implement setOptions() method.
     }
 } 
