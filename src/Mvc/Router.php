@@ -193,7 +193,7 @@ class Router implements InjectionAwareInterface
                 }
 
                 $routeType = $this->resolveRouteType($type);
-                $routeType->add($this->getRouter(), new Route($name, $route));
+                $routeType->add($this->getRouter(), $newRoute);
             }
         }
     }
@@ -205,7 +205,7 @@ class Router implements InjectionAwareInterface
     {
         $request = $this->di->get('request');
         $config = $this->di->get('config');
-        if (isset($config->application->host)) {
+        if (isset($config->application->hostname)) {
             $hostName = $config->application->hostname;
         } else if ($request->getServer('HTTP_HOST')) {
             $hostName = $request->getServer('HTTP_HOST');
