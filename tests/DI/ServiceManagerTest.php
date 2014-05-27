@@ -47,7 +47,9 @@ class ServiceManagerTest extends \PHPUnit_Framework_TestCase
         $sm->setDI($di);
         
         $service = $sm->getService('vegas\Tests\Stub:fakeService');
-        
+        $this->assertInstanceOf('Vegas\Tests\Stub\Services\FakeService', $service);
+
+        $service = $sm->get('vegas\Tests\Stub:fakeService');
         $this->assertInstanceOf('Vegas\Tests\Stub\Services\FakeService', $service);
     }
 }

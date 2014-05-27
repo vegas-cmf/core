@@ -26,7 +26,11 @@ use Vegas\DI\Service\Exception;
 class ServiceManager implements \Phalcon\DI\InjectionAwareInterface
 {
     use InjectionAwareTrait;
-    
+
+    public function get($name) {
+        return $this->getService($name);
+    }
+
     public function getService($name)
     {
         try {
