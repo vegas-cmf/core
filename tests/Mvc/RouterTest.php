@@ -19,6 +19,10 @@ use Vegas\Mvc\Router;
 
 class RouterTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        $_SERVER['HTTP_HOST'] = 'vegas.dev';
+    }
 
     private $testRoutes = array(
         'statictest' => array(
@@ -102,8 +106,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRouteDefinition()
     {
-        $_SERVER['HTTP_HOST'] = 'vegas.dev';
-
         $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
         $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
         $router->addRoutes($this->testRoutes);
@@ -162,8 +164,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testRouteMatching()
     {
-        $_SERVER['HTTP_HOST'] = 'vegas.dev';
-
         $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
         $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
         $router->addRoutes($this->testRoutes);
@@ -217,8 +217,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testStaticRoutes()
     {
-        $_SERVER['HTTP_HOST'] = 'vegas.dev';
-
         $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
         $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
         $router->addRoutes($this->testRoutes);
@@ -260,7 +258,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testModuleRoutes()
     {
-        $_SERVER['HTTP_HOST'] = 'vegas.dev';
 
         $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
         $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
