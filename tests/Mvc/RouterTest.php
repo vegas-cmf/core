@@ -95,7 +95,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
                 'action'    =>  'index'
             ),
             'params' => array(
-                'hostname'  =>  'test.vegas.com'
+                'hostname'  =>  'test.vegas.dev'
             )
         )
     );
@@ -250,7 +250,7 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
         $defaultRouter = $router->getRouter();
 
-        $_SERVER['HTTP_HOST'] = 'test.vegas.com';
+        $_SERVER['HTTP_HOST'] = 'test.vegas.dev';
         $defaultRouter->handle('/');
         $this->assertNotEmpty($defaultRouter->getMatchedRoute());
         $matchedRoute = $defaultRouter->getMatchedRoute();
