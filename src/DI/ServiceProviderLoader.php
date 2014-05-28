@@ -13,6 +13,7 @@
 namespace Vegas\DI;
 
 use Phalcon\DiInterface;
+use Vegas\Constants;
 
 /**
  * Class ServiceProviderLoader
@@ -56,7 +57,7 @@ class ServiceProviderLoader
     {
         $config = $di->get('config');
         $configDir = $config->application->configDir;
-        if (!file_exists($configDir . 'services.php') || $di->get('environment') != 'production') {
+        if (!file_exists($configDir . 'services.php') || $di->get('environment') != Constants::DEFAULT_ENV) {
             $services = self::dump($di);
         } else {
             $services = require($configDir . 'services.php');

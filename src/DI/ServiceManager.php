@@ -27,7 +27,8 @@ class ServiceManager implements \Phalcon\DI\InjectionAwareInterface
 {
     use InjectionAwareTrait;
 
-    public function get($name) {
+    public function get($name)
+    {
         return $this->getService($name);
     }
 

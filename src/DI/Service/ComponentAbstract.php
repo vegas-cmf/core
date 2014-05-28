@@ -45,7 +45,7 @@ abstract class ComponentAbstract implements ComponentInterface, InjectionAwareIn
         
         $moduleName = $nameArray[0];
         $templateName = lcfirst($nameArray[count($nameArray)-1]);
-        
+
         $this->renderer = $renderer;
         $this->renderer->setModuleName($moduleName);
         $this->renderer->setTemplateName($templateName);

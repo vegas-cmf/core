@@ -3,7 +3,7 @@ if (!defined('APP_ROOT')) define('APP_ROOT', dirname(dirname(__DIR__)));
 
 return array(
     'application' => array(
-        'environment'   =>  'production',
+        'environment'   =>  'development',
 
         'servicesDir'   =>  APP_ROOT . '/app/services/',
         'configDir'     => dirname(__FILE__) . DIRECTORY_SEPARATOR,
@@ -26,8 +26,6 @@ return array(
     ),
 
     'plugins' => array(),
-
-    'environment'    => 'development',
 
     'mongo' => array(
         'db' => 'vegas_test',

@@ -66,12 +66,14 @@ class ScaffoldingTest extends \PHPUnit_Framework_TestCase
         
         try {
             $this->scaffolding->doRead(new \MongoId());
+            throw new \Exception('Not this exception.');
         } catch (\Exception $ex) {
             $this->assertInstanceOf('\Vegas\DI\Scaffolding\Exception\RecordNotFoundException', $ex);
         }
         
         try {
             $this->scaffolding->doRead('not_existing_id');
+            throw new \Exception('Not this exception.');
         } catch (\Exception $ex) {
             $this->assertInstanceOf('\MongoException', $ex);
         }
@@ -106,6 +108,7 @@ class ScaffoldingTest extends \PHPUnit_Framework_TestCase
         
         try {
             $this->scaffolding->doDelete($this->record->getId());
+            throw new \Exception('Not this exception.');
         } catch (\Exception $ex) {
             $this->assertInstanceOf('\Vegas\DI\Scaffolding\Exception\RecordNotFoundException', $ex);
         }

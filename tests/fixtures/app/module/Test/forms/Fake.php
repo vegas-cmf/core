@@ -12,8 +12,15 @@
  
 namespace Test\Forms;
 
+use Phalcon\Forms\Element\Text;
+use Phalcon\Validation\Validator\PresenceOf;
 
 class Fake extends \Phalcon\Forms\Form
 {
-
+    public function initialize()
+    {
+        $field = new Text('fake_field');
+        $field->addValidator(new PresenceOf());
+        $this->add($field);
+    }
 } 

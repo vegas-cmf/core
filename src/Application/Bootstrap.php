@@ -16,6 +16,7 @@ use Phalcon\DI\FactoryDefault;
 use Phalcon\DI;
 use Phalcon\DiInterface;
 use Vegas\BootstrapInterface;
+use Vegas\Constants;
 use Vegas\DI\ServiceProviderLoader;
 use Vegas\Mvc\Module\ModuleLoader;
 use Vegas\Mvc\Module\SubModuleManager;
@@ -69,10 +70,13 @@ class Bootstrap implements BootstrapInterface
         if (isset($this->config->application->environment)) {
             $env = $this->config->application->environment;
         } else {
-            $env = self::DEFAULT_ENV;
+            $env = Constants::DEFAULT_ENV;
         }
 
-        define('APPLICATION_ENV', $env);
+        if (!defined('APPLICATION_ENV')) {
+            define('APPLICATION_ENV', $env);
+        }
+
         $this->di->set('environment', function() use ($env) {
             return $env;
         }, true);
@@ -108,7 +112,7 @@ class Bootstrap implements BootstrapInterface
 
         //registers modules defined in modules.php file
         $modulesFile = $this->config->application->configDir . 'modules.php';
-        if (!file_exists($modulesFile) || $this->di->get('environment') != self::DEFAULT_ENV) {
+        if (!file_exists($modulesFile) || $this->di->get('environment') != Constants::DEFAULT_ENV) {
             ModuleLoader::dump($this->di);
         }
         $this->application->registerModules(require $modulesFile);

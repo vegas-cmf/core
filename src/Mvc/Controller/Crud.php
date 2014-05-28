@@ -78,7 +78,7 @@ class Crud extends ControllerAbstract
     public function createAction()
     {
         $this->checkRequest();
-        
+
         $this->dispatcher->getEventsManager()->fire(Crud\Events::BEFORE_CREATE, $this);
         
         try {
@@ -115,7 +115,7 @@ class Crud extends ControllerAbstract
     public function updateAction($id)
     {
         $this->checkRequest();
-        
+
         $this->dispatcher->getEventsManager()->fire(Crud\Events::BEFORE_UPDATE, $this);
         
         try {

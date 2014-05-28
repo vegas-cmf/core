@@ -12,8 +12,10 @@
 namespace Vegas\Mvc\Dispatcher;
 
 use Phalcon\Dispatcher;
+use Vegas\Constants;
 use Vegas\Dispatcher\Exception\CannotHandleErrorException;
 use Vegas\Exception as VegasException;
+use Vegas\Mvc\View;
 
 /**
  * Class ExceptionResolver
@@ -30,27 +32,22 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
      */
     public function resolve(\Exception $exception)
     {
-        $config = $this->di->get('config');
-        
-        if ($config->environment === $this->di->get('environment')) {
+        if (Constants::DEFAULT_ENV === $this->di->get('environment')) {
             $error = $this->prepareDevEnvException($exception);
         } else {
             $error = $this->prepareLiveEnvException($exception);
         }
         
         try {
-            $view = $this->di->getShared('view');
-            $view->setLayout('error');
-            $view->disableLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
-            $view->error = $error;
-            
+            $this->renderLayoutForError($error);
+
             $response = $this->di->getShared('response');
             $response->setStatusCode($error->getCode(), $error->getMessage());
         } catch (\Exception $ex) {
             throw new CannotHandleErrorException();
         }
-        if (!$response->isSent()) {
 
+        if (!$response->isSent()) {
             return $response->send();
         }
     }
@@ -95,5 +92,27 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
             default:
                 return new VegasException($exception->getMessage(), 500);
        }
+    }
+
+    /**
+     * @param VegasException $error
+     * @return bool
+     */
+    private function renderLayoutForError(VegasException $error)
+    {
+        $view = $this->di->getShared('view');
+        $engines = $view->getRegisteredEngines();
+
+        foreach ($engines As $ext => $engine) {
+            if (file_exists($view->getLayoutsDir().'error'.$ext)) {
+                $view->setLayout('error');
+                $view->disableLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
+                $view->error = $error;
+
+                return true;
+            }
+        }
+
+        return false;
     }
 }

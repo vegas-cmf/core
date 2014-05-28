@@ -13,19 +13,13 @@
 namespace Vegas\Tests\Mvc;
 
 use Phalcon\DI;
-use Vegas\Mvc\Application;
-use Vegas\Mvc\Module\ModuleLoader;
+use Vegas\Mvc\Controller\Crud;
+use Vegas\Tests\App\TestCase;
 
-class ModuleAbstractTest extends \PHPUnit_Framework_TestCase
+class ModuleAbstractTest extends TestCase
 {
-
     public function testModuleAutoloaders()
     {
-        $modules = ModuleLoader::dump(DI::getDefault());
-
-        $app = new Application(DI::getDefault());
-        $app->registerModules($modules);
-
         //forms and controller are registered in Module
         $this->assertFalse(class_exists('Test\Controllers\Backend\FakeController'));
         $this->assertFalse(class_exists('Test\Forms\Fake'));
@@ -36,22 +30,12 @@ class ModuleAbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testModuleHandling()
     {
-        require_once dirname(__DIR__) . '/fixtures/app/Bootstrap.php';
-        $config = require dirname(__DIR__) . '/fixtures/app/config/config.php';
-        $config = new \Phalcon\Config($config);
-        $bootstrap = new \Bootstrap($config);
-
         $_SERVER['HTTP_HOST'] = 'vegas.dev';
         $_SERVER['REQUEST_URI'] = '/test/fake/test';
-        $bootstrap->setup()->run('/test/fake/test');
+
+        $this->assertEquals('Test view', $this->bootstrap->run('/test/fake/test'));
 
         $this->assertTrue(class_exists('Test\Controllers\Backend\FakeController'));
         $this->assertTrue(class_exists('Test\Forms\Fake'));
-    }
-
-    public function testPlugins()
-    {
-        $app = new Application(DI::getDefault());
-
     }
 } 
