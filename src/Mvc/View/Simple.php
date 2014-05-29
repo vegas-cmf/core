@@ -22,11 +22,10 @@ class Simple extends PhalconSimpleView
         parent::__construct($options);
 
         $this->registerEngines(array(
-            '.volt' => function ($this, $di) {
-                $config = $di->get('config');
+            '.volt' => function ($this, $di) use ($options) {
                 $volt = new PhalconView\Engine\Volt($this, $di);
                 $volt->setOptions(array(
-                    'compiledPath' => $config->application->cacheDir,
+                    'compiledPath' => $options['cacheDir'],
                     'compiledSeparator' => '_'
                 ));
                 return $volt;
