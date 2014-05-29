@@ -27,7 +27,5 @@ class SubModuleManagerTest  extends \PHPUnit_Framework_TestCase
         $this->assertTrue(SubModuleManager::isRegistered('frontend'));
         $this->assertTrue(SubModuleManager::isRegistered('backend'));
         $this->assertTrue(SubModuleManager::isRegistered('custom'));
-
-        $this->assertEquals(3, count(SubModuleManager::getSubModules()));
     }
 } 

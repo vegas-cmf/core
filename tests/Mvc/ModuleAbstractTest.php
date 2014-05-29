@@ -20,10 +20,6 @@ class ModuleAbstractTest extends TestCase
 {
     public function testModuleAutoloaders()
     {
-        //forms and controller are registered in Module
-        $this->assertFalse(class_exists('Test\Controllers\Backend\FakeController'));
-        $this->assertFalse(class_exists('Test\Forms\Fake'));
-
         $this->assertTrue(class_exists('Test\Services\Fake'));
         $this->assertTrue(class_exists('Test\Models\Fake'));
     }

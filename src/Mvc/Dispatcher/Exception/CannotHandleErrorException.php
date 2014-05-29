@@ -9,10 +9,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace Vegas\Mvc\Dispatcher\Exception;
 
-namespace Vegas\Dispatcher\Exception;
-
-use Vegas\Dispatcher\Exception as Exception;
+use Vegas\Mvc\Dispatcher\Exception as Exception;
 
 /**
  * Class CannotHandleErrorException

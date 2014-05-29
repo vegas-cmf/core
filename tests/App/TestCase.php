@@ -23,10 +23,13 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $_SERVER['HTTP_HOST'] = 'vegas.dev';
+        $_SERVER['REQUEST_URI'] = '/';
+
         $this->di = DI::getDefault();
         $modules = ModuleLoader::dump($this->di);
 
-        $app = new Application($this->di);
+        $app = new Application();
         $app->registerModules($modules);
 
         require_once TESTS_ROOT_DIR . '/fixtures/app/Bootstrap.php';

@@ -13,7 +13,7 @@ namespace Vegas\Mvc\Dispatcher;
 
 use Phalcon\Dispatcher;
 use Vegas\Constants;
-use Vegas\Dispatcher\Exception\CannotHandleErrorException;
+use Vegas\Mvc\Dispatcher\Exception\CannotHandleErrorException;
 use Vegas\Exception as VegasException;
 use Vegas\Mvc\View;
 
@@ -28,14 +28,13 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
     /**
      * @param \Exception $exception
      * @return mixed
-     * @throws \Vegas\Dispatcher\Exception\CannotHandleErrorException
      */
     public function resolve(\Exception $exception)
     {
         if (Constants::DEFAULT_ENV === $this->di->get('environment')) {
-            $error = $this->prepareDevEnvException($exception);
-        } else {
             $error = $this->prepareLiveEnvException($exception);
+        } else {
+            $error = $this->prepareDevEnvException($exception);
         }
         
         try {
@@ -50,6 +49,8 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
         if (!$response->isSent()) {
             return $response->send();
         }
+
+        return $response;
     }
 
     /**
@@ -70,7 +71,7 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
             case Dispatcher::EXCEPTION_INVALID_PARAMS:
             case Dispatcher::EXCEPTION_CYCLIC_ROUTING:
             case 500:
-                return new VegasException('Application error', 500);
+                return new VegasException('Application error.', 500);
             default:
                 return new VegasException('Bad request.', 400);
        }

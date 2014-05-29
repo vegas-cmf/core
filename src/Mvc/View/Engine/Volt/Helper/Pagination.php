@@ -29,19 +29,13 @@ class Pagination extends VoltHelperAbstract
     {
         return function($resolvedArgs, $exprArgs) {
             $page = $this->compiler->expression($exprArgs[0]['expr']);
-            $options = array();
+            $options = 'array()';
 
             if (isset($exprArgs[1])) {
                 $options = $this->compiler->expression($exprArgs[1]['expr']);
             }
 
-            $optionString = 'array(';
-            foreach ($options As $key => $option) {
-                $optionString .= '"'.$key.'" => '.$option;
-            }
-            $optionString .= ')';
-
-            return '\Vegas\Tag::pagination('.$page.','.$optionString.')';
+            return '\Vegas\Tag::pagination('.$page.','.$options.')';
         };
     }
 }
