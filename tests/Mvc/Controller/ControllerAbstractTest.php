@@ -15,21 +15,38 @@ use Vegas\Tests\App\TestCase;
 
 class ControllerAbstractTest extends TestCase
 {
-    /**
-     * @TODO fill this
-     */
-    public function testErrors()
+    public function test403Error()
     {
         $this->bootstrap->run('/test/front/error/403');
+    }
+
+    public function test403ErrorResponse()
+    {
+        $this->assertEquals('403 Message', $this->di->get('response')->getHeaders()->get('Status'));
+    }
+
+    public function test404Error()
+    {
         $this->bootstrap->run('/test/front/error/404');
+    }
+
+    public function test404ErrorResponse()
+    {
+        $this->assertEquals('404 Message', $this->di->get('response')->getHeaders()->get('Status'));
+    }
+
+    public function test500Error()
+    {
         $this->bootstrap->run('/test/front/error/500');
     }
 
-    /**
-     * @TODO fill this
-     */
+    public function test500ErrorResponse()
+    {
+        $this->assertEquals('500 Message', $this->di->get('response')->getHeaders()->get('Status'));
+    }
+
     public function testJson()
     {
-        $this->bootstrap->run('/test/front/json');
+        $this->assertEquals('{"foo":"bar"}', $this->bootstrap->run('/test/front/json'));
     }
 }

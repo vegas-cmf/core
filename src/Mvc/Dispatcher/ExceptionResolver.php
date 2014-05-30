@@ -13,6 +13,7 @@ namespace Vegas\Mvc\Dispatcher;
 
 use Phalcon\Dispatcher;
 use Vegas\Constants;
+use Vegas\Exception;
 use Vegas\Mvc\Dispatcher\Exception\CannotHandleErrorException;
 use Vegas\Exception as VegasException;
 use Vegas\Mvc\View;
@@ -38,15 +39,19 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
         }
         
         try {
-            $this->renderLayoutForError($error);
+            $rendered = $this->renderLayoutForError($error);
 
             $response = $this->di->getShared('response');
             $response->setStatusCode($error->getCode(), $error->getMessage());
         } catch (\Exception $ex) {
-            throw new CannotHandleErrorException();
+            throw new CannotHandleErrorException($ex->getMessage());
         }
 
         if (!$response->isSent()) {
+            if (!$rendered) {
+                echo $error->getCode().' '.$error->getMessage();
+            }
+            
             return $response->send();
         }
 

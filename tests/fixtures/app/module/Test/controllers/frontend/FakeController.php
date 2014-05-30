@@ -29,12 +29,12 @@ class FakeController extends ControllerAbstract
 
     public function jsonAction()
     {
-        $this->jsonResponse(array('foo' => 'bar'));
+        return $this->jsonResponse(array('foo' => 'bar'));
     }
 
     public function errorAction($code)
     {
         $throwName = 'throw'.$code;
-        $this->$throwName();
+        $this->$throwName('Message');
     }
 } 
