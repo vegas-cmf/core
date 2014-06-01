@@ -20,6 +20,11 @@ use Vegas\Mvc\View;
 
 class ExceptionResolverTest extends \PHPUnit_Framework_TestCase
 {
+    public function setUp()
+    {
+        ob_start();
+    }
+
     public function testLiveEnv()
     {
         $resolver = $this->getFreshResolver();
@@ -81,5 +86,10 @@ class ExceptionResolverTest extends \PHPUnit_Framework_TestCase
         $resolver->setDI($di);
 
         return $resolver;
+    }
+
+    public function tearDown()
+    {
+        ob_clean();
     }
 }

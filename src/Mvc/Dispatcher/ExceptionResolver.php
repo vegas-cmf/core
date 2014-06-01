@@ -51,7 +51,7 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
             if (!$rendered) {
                 echo $error->getCode().' '.$error->getMessage();
             }
-            
+
             return $response->send();
         }
 

@@ -17,6 +17,12 @@ class ShortenTextTest extends \PHPUnit_Framework_TestCase
 {
     public function testRender()
     {
-        //$shortenText = new ShortenText();
+        $shortenText = new ShortenText();
+
+        $text = 'Abcdefg <strong>hijk</strong> test aksof';
+
+        $this->assertEquals('Abcdefg hijk test aksof', $shortenText->prepare($text));
+        $this->assertEquals('Abcdefg hijk...', $shortenText->prepare($text, 10));
+        $this->assertEquals('Abcdefg hijk test ak123', $shortenText->prepare($text, 20, '123'));
     }
 }

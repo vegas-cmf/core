@@ -12,11 +12,41 @@
  
 namespace Vegas\Task;
 
+use Phalcon\DI;
+
 class CacheTask extends \Vegas\Cli\Task
 {
     public function cleanAction()
     {
         echo "Cleaning cache..";
+
+        $di = DI::getDefault();
+
+        if ($di->has('config')) {
+            $config = $di->get('config');
+
+            if (!empty($config->application->view->cacheDir)) {
+                $this->removeFilesFromDir($config->application->view->cacheDir);
+            }
+
+            echo "\nDone.";
+        }
+    }
+
+    private function removeFilesFromDir($dir)
+    {
+        if ($handle = opendir($dir)) {
+            while (false !== ($entry = readdir($handle))) {
+                if ($entry == "." || $entry == "..") {
+                    continue;
+                }
+
+                if (!unlink($dir.DIRECTORY_SEPARATOR.$entry)) {
+                    echo "\nCan not remove: ".$dir.DIRECTORY_SEPARATOR.$entry;
+                }
+            }
+            closedir($handle);
+        }
     }
 
     /**

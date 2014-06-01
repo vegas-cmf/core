@@ -235,25 +235,6 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($correctBase, $returnedValue);
     }
 
-    public function testValidCoreTask()
-    {
-        $cli = new Bootstrap($this->di->get('config'));
-        $cli->setArguments(array(
-            0 => 'cli/cli.php',
-            1 => 'vegas:cache',
-            2 => 'clean'
-        ));
-
-        ob_start();
-
-        $cli->setup()->run();
-        $returnedValue = base64_encode(ob_get_contents());
-
-        ob_end_clean();
-
-        $this->assertEquals('Q2xlYW5pbmcgY2FjaGUuLg==', $returnedValue);
-    }
-
     public function testValidModuleTask()
     {
         $cli = new Bootstrap($this->di->get('config'));

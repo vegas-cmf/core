@@ -148,7 +148,7 @@ class Option
      * @param $args
      * @return mixed
      */
-    public function getValue($args)
+    public function getValue($args, $default = null)
     {
         if (isset($args[$this->name])) {
             return $args[$this->name];
@@ -158,7 +158,7 @@ class Option
             return $args[$this->shortName];
         }
 
-        return null;
+        return $default;
     }
 }
  

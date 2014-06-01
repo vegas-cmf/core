@@ -167,7 +167,7 @@ abstract class Task extends \Phalcon\CLI\Task
      * @return mixed
      * @throws
      */
-    protected function getOption($name)
+    protected function getOption($name, $default = null)
     {
         $matchedOption = null;
         foreach ($this->actions[$this->actionName]->getOptions() as $option) {
@@ -176,7 +176,7 @@ abstract class Task extends \Phalcon\CLI\Task
             }
         }
         if ($matchedOption instanceof Option) {
-            $value = $matchedOption->getValue($this->args);
+            $value = $matchedOption->getValue($this->args, $default);
             if (!$value) {
                 throw new MissingArgumentException($name);
             }

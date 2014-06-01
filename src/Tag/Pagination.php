@@ -55,7 +55,9 @@ class Pagination
         $this->di = $di;
         $this->settings = array(
             'start_end_offset' => 2,
-            'middle_offset' => 3
+            'middle_offset' => 3,
+            'label_next' => 'Next',
+            'label_previous' => 'Previous'
         );
     }
 
@@ -107,7 +109,7 @@ class Pagination
         if (empty($before)) {
             $before = 1;
         }
-        return $this->renderElement($before, $this->di->get('i18n')->_('Previous'), 'prev'.$extraClass);
+        return $this->renderElement($before, $this->settings['label_previous'], 'prev'.$extraClass);
     }
 
     /**
@@ -118,9 +120,9 @@ class Pagination
         $next = $this->page->next;
         $extraClass = $next ? '' : ' not-active';
         if (empty($next)) {
-            $next = 1;
+            $next = $this->page->total_pages;
         }
-        return $this->renderElement($next, $this->di->get('i18n')->_('Next'), 'next'.$extraClass);
+        return $this->renderElement($next, $this->settings['label_next'], 'next'.$extraClass);
     }
 
     /**
