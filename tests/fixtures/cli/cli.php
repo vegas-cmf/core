@@ -6,7 +6,6 @@ define('APP_ROOT', dirname(dirname(__FILE__)));
 echo PHP_EOL;
 try {
     require APP_ROOT . '/../../vendor/autoload.php';
-    require APP_ROOT . '/cli/Bootstrap.php';
     $config = require APP_ROOT . '/app/config/config.php';
 
     $bootstrap = new \Vegas\Cli\Bootstrap(new \Phalcon\Config($config));
