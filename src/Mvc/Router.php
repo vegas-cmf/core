@@ -212,6 +212,9 @@ class Router implements InjectionAwareInterface
         } else {
             $hostName = null;
         }
+        if (null !== $hostName) {
+            $hostName = '(www\.)?' . $hostName;
+        }
 
         return $hostName;
     }
