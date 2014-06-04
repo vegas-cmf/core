@@ -56,7 +56,12 @@ class AssetsTask extends \Vegas\Cli\Task
 
         // Simple copy for a file
         if (is_file($source)) {
-            return copy($source, $dest);
+            if (is_file($dest)) {
+                echo "\nCannot copy $source. File already exists.";
+                return false;
+            } else {
+                return copy($source, $dest);
+            }
         }
 
         // Make destination directory
