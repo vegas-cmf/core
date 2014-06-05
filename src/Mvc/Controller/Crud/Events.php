@@ -19,6 +19,8 @@ namespace Vegas\Mvc\Controller\Crud;
  */
 class Events
 {
+    const AFTER_READ = 'crud:afterRead';
+
     const BEFORE_NEW = 'crud:beforeNew';
     const AFTER_NEW = 'crud:afterNew';
 

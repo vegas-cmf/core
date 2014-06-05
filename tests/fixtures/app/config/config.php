@@ -3,7 +3,7 @@ if (!defined('APP_ROOT')) define('APP_ROOT', dirname(dirname(__DIR__)));
 
 return array(
     'application' => array(
-        'environment'   =>  'development',
+        'environment'   =>  \Vegas\Constants::DEV_ENV,
 
         'servicesDir'   =>  APP_ROOT . '/app/services/',
         'configDir'     => dirname(__FILE__) . DIRECTORY_SEPARATOR,

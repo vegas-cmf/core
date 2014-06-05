@@ -13,6 +13,7 @@
 namespace Vegas\Tests\DI;
 
 use Phalcon\DI;
+use Vegas\Constants;
 use Vegas\DI\ServiceProviderLoader;
 
 class ServiceProviderLoaderTest extends \PHPUnit_Framework_TestCase
@@ -27,7 +28,7 @@ class ServiceProviderLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $di = DI::getDefault();
         $di->set('environment', function() {
-            return 'development';
+            return Constants::DEV_ENV;
         }, true);
         ServiceProviderLoader::autoload($di);
 

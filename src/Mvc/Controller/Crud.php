@@ -104,6 +104,7 @@ class Crud extends ControllerAbstract
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::BEFORE_EDIT, $this);
         $this->view->record = $this->scaffolding->doRead($id);
+        $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_READ, $this);
         $this->view->form =  $this->scaffolding->getForm($this->view->record);
         $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_EDIT, $this);
     }

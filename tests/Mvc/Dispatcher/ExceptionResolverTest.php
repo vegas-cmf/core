@@ -52,7 +52,7 @@ class ExceptionResolverTest extends \PHPUnit_Framework_TestCase
 
     public function testDevEnv()
     {
-        $resolver = $this->getFreshResolver('development');
+        $resolver = $this->getFreshResolver(Constants::DEV_ENV);
 
         $ex403 = new \Exception('Message 403', 403);
         $response = $resolver->resolve($ex403);
