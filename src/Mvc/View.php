@@ -96,7 +96,7 @@ class View extends PhalconView
         }
 
         if ($viewDir) {
-            $modPath = str_replace(APP_ROOT, '', realpath($viewDir));
+            $modPath = str_replace(APP_ROOT, '', realpath(dirname($viewDir)));
             $nbOfDirs = count(explode('/', $modPath)) - $nbOfDirs;
 
             for ($i=0; $i<$nbOfDirs; $i++) {
