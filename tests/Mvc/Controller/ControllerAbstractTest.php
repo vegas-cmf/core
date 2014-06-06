@@ -15,6 +15,12 @@ use Vegas\Tests\App\TestCase;
 
 class ControllerAbstractTest extends TestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+        error_reporting(2);
+    }
+
     public function test403Error()
     {
         $this->bootstrap->run('/test/front/error/403');

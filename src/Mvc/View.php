@@ -31,19 +31,20 @@ class View extends PhalconView
     public function __construct($options = null) {
         parent::__construct($options);
 
-        if (isset($options['layoutsDir'])) {
-            $this->setLayoutsDir($options['layoutsDir']);
+        if (!empty($options['view']['layoutsDir'])) {
+            $this->setLayoutsDir($this->prepareRelativeLatoutsPath($options));
         }
-        if (isset($options['layout'])) {
-            $this->setLayout($options['layout']);
+
+        if (!empty($options['view']['layout'])) {
+            $this->setLayout($options['view']['layout']);
         }
 
         $this->registerEngines(array(
             '.volt' => function ($this, $di) use ($options) {
                 $volt = new \Vegas\Mvc\View\Engine\Volt($this, $di);
-                if (isset($options['cacheDir'])) {
+                if (!empty($options['view']['cacheDir'])) {
                     $volt->setOptions(array(
-                        'compiledPath' => $options['cacheDir'],
+                        'compiledPath' => $options['view']['cacheDir'],
                         'compiledSeparator' => '_'
                     ));
                 }
@@ -77,5 +78,32 @@ class View extends PhalconView
     private function prepareControllerViewPath($controllerName)
     {
         return str_replace('\\','/',strtolower($controllerName));
+    }
+
+    /**
+     * @param array $options
+     * @return string
+     */
+    private function prepareRelativeLatoutsPath(array $options)
+    {
+        $path = str_replace(APP_ROOT, '', realpath($options['view']['layoutsDir']));
+
+        $nbOfDirs = count(explode('/', $path));
+
+        $baseDepth = '';
+        for ($i=0; $i<$nbOfDirs; $i++) {
+            $baseDepth .= ($i ? '/' : '').'..';
+        }
+
+        if (isset($options['moduleDir'])) {
+            $modPath = str_replace(APP_ROOT, '', realpath($options['moduleDir']));
+            $nbOfDirs = count(explode('/', $modPath));
+
+            for ($i=0; $i<$nbOfDirs; $i++) {
+                $path = '/..'.$path;
+            }
+        }
+
+        return $baseDepth.$path;
     }
 }

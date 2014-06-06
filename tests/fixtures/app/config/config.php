@@ -3,7 +3,7 @@ if (!defined('APP_ROOT')) define('APP_ROOT', dirname(dirname(__DIR__)));
 
 return array(
     'application' => array(
-        'environment'   =>  \Vegas\Constants::DEV_ENV,
+        'environment'   =>  \Vegas\Constants::TEST_ENV,
 
         'servicesDir'   =>  APP_ROOT . '/app/services/',
         'configDir'     => dirname(__FILE__) . DIRECTORY_SEPARATOR,
@@ -19,9 +19,8 @@ return array(
         'view'  => array(
             'cacheDir'  =>  APP_ROOT . '/cache/',
             'layout'    =>  'main.volt',
-            'layoutsDir'    =>  APP_ROOT . '/app/layouts'
+            'layoutsDir'    =>  APP_ROOT . '/app/layouts/'
         ),
-
         'hostname' => 'vegas.dev'
     ),
 

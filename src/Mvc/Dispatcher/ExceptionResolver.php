@@ -49,7 +49,7 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
 
         if (!$response->isSent()) {
             if (!$rendered) {
-                echo $error->getCode().' '.$error->getMessage();
+                $this->displayRawError($error);
             }
 
             return $response->send();
@@ -107,10 +107,16 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
     private function renderLayoutForError(VegasException $error)
     {
         $view = $this->di->getShared('view');
+        $config = $this->di->get('config');
+
         $engines = $view->getRegisteredEngines();
 
+        if (empty($config->application->view->layoutsDir)) {
+            return false;
+        }
+
         foreach ($engines As $ext => $engine) {
-            if (file_exists($view->getLayoutsDir().'error'.$ext)) {
+            if (file_exists($config->application->view->layoutsDir.'error'.$ext)) {
                 $view->setLayout('error');
                 $view->disableLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
                 $view->error = $error;
@@ -120,5 +126,14 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
         }
 
         return false;
+    }
+
+    private function displayRawError(VegasException $error)
+    {
+        if (Constants::DEV_ENV === $this->di->get('environment')) {
+            trigger_error($error->getCode().' '.$error->getMessage(), E_USER_ERROR);
+        } elseif (Constants::TEST_ENV === $this->di->get('environment')) {
+            echo $error->getCode().' '.$error->getMessage();
+        }
     }
 }
