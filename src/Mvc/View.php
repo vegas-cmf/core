@@ -28,23 +28,23 @@ class View extends PhalconView
     /**
      * @param null $options
      */
-    public function __construct($options = null) {
+    public function __construct($options = null, $viewDir = null) {
         parent::__construct($options);
 
-        if (!empty($options['view']['layoutsDir'])) {
-            $this->setLayoutsDir($this->prepareRelativeLatoutsPath($options));
+        if (isset($options['layoutsDir']) && $viewDir) {
+            $this->setLayoutsDir($this->prepareRelativeLayoutsPath($options, $viewDir));
         }
 
-        if (!empty($options['view']['layout'])) {
-            $this->setLayout($options['view']['layout']);
+        if (!empty($options['layout'])) {
+            $this->setLayout($options['layout']);
         }
 
         $this->registerEngines(array(
             '.volt' => function ($this, $di) use ($options) {
                 $volt = new \Vegas\Mvc\View\Engine\Volt($this, $di);
-                if (!empty($options['view']['cacheDir'])) {
+                if (isset($options['cacheDir'])) {
                     $volt->setOptions(array(
-                        'compiledPath' => $options['view']['cacheDir'],
+                        'compiledPath' => $options['cacheDir'],
                         'compiledSeparator' => '_'
                     ));
                 }
@@ -84,9 +84,9 @@ class View extends PhalconView
      * @param array $options
      * @return string
      */
-    private function prepareRelativeLatoutsPath(array $options)
+    private function prepareRelativeLayoutsPath(array $options, $viewDir = null)
     {
-        $path = str_replace(APP_ROOT, '', realpath($options['view']['layoutsDir']));
+        $path = str_replace(APP_ROOT, '', realpath($options['layoutsDir']));
 
         $nbOfDirs = count(explode('/', $path));
 
@@ -95,9 +95,9 @@ class View extends PhalconView
             $baseDepth .= ($i ? '/' : '').'..';
         }
 
-        if (isset($options['moduleDir'])) {
-            $modPath = str_replace(APP_ROOT, '', realpath($options['moduleDir']));
-            $nbOfDirs = count(explode('/', $modPath));
+        if ($viewDir) {
+            $modPath = str_replace(APP_ROOT, '', realpath($viewDir));
+            $nbOfDirs = count(explode('/', $modPath)) - $nbOfDirs;
 
             for ($i=0; $i<$nbOfDirs; $i++) {
                 $path = '/..'.$path;

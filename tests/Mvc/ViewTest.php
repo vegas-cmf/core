@@ -38,16 +38,13 @@ class ViewTest extends \PHPUnit_Framework_TestCase
     public function testViewOptions()
     {
         $options = array(
-            'view' => array(
-                'layout'    =>  'main.volt',
-                'layoutsDir'    =>  APP_ROOT.'/app/layouts/'
-            ),
-            'moduleDir' => APP_ROOT.'/app/modules/'
+            'layout'    =>  'main.volt',
+            'layoutsDir'    =>  APP_ROOT.'/app/layouts/'
         );
-        $view = new View($options);
+        $view = new View($options, __DIR__);
 
         $this->assertEquals('main.volt', $view->getLayout());
-        $this->assertEquals('../../../../app/layouts/', $view->getLayoutsDir());
+        $this->assertEquals('../../../../../../app/layouts/', $view->getLayoutsDir());
     }
 }
  

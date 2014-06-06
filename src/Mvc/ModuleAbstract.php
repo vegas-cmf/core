@@ -92,7 +92,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
         $dispatcher = $di->get('dispatcher');
         $eventsManager = $di->getShared('eventsManager');
         $plugins = $di->get('config')->plugins;
-        foreach ((array) $plugins as $pluginName => $plugin) {
+        foreach ((array) $plugins As $plugin) {
             $className = $plugin['class'];
             $reflectionClass = new \ReflectionClass($className);
             $authenticationPlugin = $reflectionClass->newInstance();
@@ -110,9 +110,11 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     protected function registerViewComponent($di)
     {
         $di->set('view', function() use ($di) {
-            $view = new View($di->get('config')->application->toArray());
-            if (file_exists($this->dir . '/views')) {
-                $view->setViewsDir($this->dir.'/views/');
+            $viewDir = $this->dir . '/views';
+            $view = new View($di->get('config')->application->view->toArray(), $viewDir);
+
+            if (file_exists($viewDir)) {
+                $view->setViewsDir($viewDir);
             }
             
             return $view;
