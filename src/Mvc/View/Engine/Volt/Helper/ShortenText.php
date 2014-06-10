@@ -40,7 +40,7 @@ class ShortenText extends VoltHelperAbstract
                 $endString = $this->compiler->expression($exprArgs[2]['expr']);
             }
 
-            return '\Vegas\Tag::shortenText('.$text.','.$length.', '.$endString.')';
+            return '(new \Vegas\Tag\ShortenText())->render('.$text.','.$length.', '.$endString.')';
         };
     }
 }
