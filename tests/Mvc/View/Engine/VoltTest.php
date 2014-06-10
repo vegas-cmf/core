@@ -28,8 +28,8 @@ class VoltTest extends \PHPUnit_Framework_TestCase
 
         $compiler = $volt->getCompiler();
 
-        $this->assertEquals('<?php echo (new \Vegas\Tag\ShortenText())->render(\'foo\',100, "..."); ?>', $compiler->compileString('{{ shortenText("foo") }}'));
-        $this->assertEquals('<?php echo (new \Vegas\Tag\ShortenText())->render(\'foo\',50, \'bar\'); ?>', $compiler->compileString('{{ shortenText("foo", 50, "bar") }}'));
+        $this->assertEquals('<?php echo (new \Vegas\Tag\ShortenText())->prepare(\'foo\',100, "..."); ?>', $compiler->compileString('{{ shortenText("foo") }}'));
+        $this->assertEquals('<?php echo (new \Vegas\Tag\ShortenText())->prepare(\'foo\',50, \'bar\'); ?>', $compiler->compileString('{{ shortenText("foo", 50, "bar") }}'));
 
         $this->assertEquals('<?php echo (new \Vegas\Tag\Pagination($this->getDI()))->render($page,array()); ?>', $compiler->compileString('{{ pagination(page) }}'));
         $this->assertEquals('<?php echo (new \Vegas\Tag\Pagination($this->getDI()))->render($page,array(\'class\' => \'test\')); ?>', $compiler->compileString('{{ pagination(page,["class": "test"]) }}'));
