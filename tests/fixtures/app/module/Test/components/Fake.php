@@ -17,8 +17,6 @@ use Vegas\DI\Service\ComponentAbstract;
 
 class Fake extends ComponentAbstract
 {
-    use InjectionAwareTrait;
-
     protected function setUp($params = array())
     {
         return array('test' => $params);

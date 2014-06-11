@@ -1,0 +1,36 @@
+<?php
+/**
+ * This file is part of Vegas package
+ *
+ * @author Slawomir Zytko <slawomir.zytko@gmail.com>
+ * @copyright Amsterdam Standard Sp. Z o.o.
+ * @homepage https://bitbucket.org/amsdard/vegas-phalcon
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+ 
+namespace Vegas\Mvc\Router\Route;
+
+
+use Vegas\Mvc\Router\Route;
+use Vegas\Mvc\Router\RouteInterface;
+
+/**
+ * Class NotfoundRoute
+ *
+ * When none of the routes specified in the router are matched, the following route will be use
+ *
+ * @package Vegas\Mvc\Router\Route
+ */
+class NotfoundRoute implements RouteInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function add(\Phalcon\Mvc\RouterInterface $router, Route $route)
+    {
+        $router
+            ->notFound($route->getPaths());
+    }
+} 

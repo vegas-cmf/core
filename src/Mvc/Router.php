@@ -29,6 +29,7 @@ class Router implements InjectionAwareInterface
     const DEFAULT_ROUTE = 'default';
     const STATIC_ROUTE = 'static';
     const REST_ROUTE = 'rest';
+    const NOTFOUND_ROUTE = 'notfound';
 
     /**
      * List of available route types
@@ -41,7 +42,8 @@ class Router implements InjectionAwareInterface
     private $routeTypes = array(
         self::DEFAULT_ROUTE => 0,
         self::REST_ROUTE => 1,
-        self::STATIC_ROUTE => 2
+        self::STATIC_ROUTE => 2,
+        self::NOTFOUND_ROUTE => 3
     );
 
     /**
