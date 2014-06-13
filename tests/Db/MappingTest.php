@@ -18,6 +18,7 @@ use Vegas\Db\Decorator\ModelAbstract;
 use Vegas\Db\Exception\InvalidMappingClassException;
 use Vegas\Db\Exception\MappingClassNotFoundException;
 use Vegas\Db\Mapping\Json;
+use Vegas\Db\MappingInterface;
 use Vegas\Db\MappingManager;
 
 class Fake extends CollectionAbstract
@@ -29,7 +30,8 @@ class Fake extends CollectionAbstract
 
     protected $mappings = array(
         'somedata'  =>  'json',
-        'somecamel' =>  'camelize'
+        'somecamel' =>  'camelize',
+        'encoded'   =>  'decoder'
     );
 }
 
@@ -42,8 +44,30 @@ class FakeModel extends ModelAbstract
 
     protected $mappings = array(
         'somedata'  =>  'json',
-        'somecamel' =>  'camelize'
+        'somecamel' =>  'camelize',
+        'encoded'   =>  'decoder'
     );
+}
+
+class Decoder implements MappingInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'decoder';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function resolve(& $value)
+    {
+        $value = base64_decode($value);
+
+        return $value;
+    }
 }
 
 class MappingTest extends \PHPUnit_Framework_TestCase
@@ -89,6 +113,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $mappingManager = new MappingManager();
         $mappingManager->add(new Json());
         $mappingManager->add('\Vegas\Db\Mapping\Camelize');
+        $mappingManager->add(new Decoder());
 
         DI::getDefault()->get('mongo')->selectCollection('fake')->remove(array());
 
@@ -97,6 +122,8 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $fake->somedata = $someData;
         $nonCamelText = 'this_is_non_camel_case_text';
         $fake->somecamel = $nonCamelText;
+        $encodedVal = base64_encode('test');
+        $fake->encoded = $encodedVal;
         $this->assertTrue($fake->save());
 
         $fakeDoc = Fake::findFirst();
@@ -106,18 +133,24 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($nonCamelText, $fakeDoc->somecamel);
         $this->assertEquals($someData, $fakeDoc->somedata);
+        $this->assertEquals($encodedVal, $fakeDoc->encoded);
         $this->assertEquals($someData, $fakeDoc->readAttribute('somedata'));
         $this->assertEquals($nonCamelText, $fakeDoc->readAttribute('somecamel'));
+        $this->assertEquals($encodedVal, $fakeDoc->readAttribute('encoded'));
 
         $ownMappedValues = array(
             '_id'   =>  $fakeDoc->readMapped('_id'),
             'somedata'   =>  $fakeDoc->readMapped('somedata'),
             'somecamel'   =>  $fakeDoc->readMapped('somecamel'),
+            'encoded'   =>  $fakeDoc->readMapped('encoded'),
         );
         $mappedValues = $fakeDoc->toMappedArray();
 
         $this->assertEquals($mappedValues['somedata'], $ownMappedValues['somedata']);
         $this->assertEquals($mappedValues['somecamel'], $ownMappedValues['somecamel']);
+        $this->assertEquals($mappedValues['encoded'], $ownMappedValues['encoded']);
+
+        $this->assertEquals('test', $fakeDoc->readMapped('encoded'));
 
         $fakeDoc->removeMapping('somedata');
         $this->assertEquals($someData, $fakeDoc->readMapped('somedata'));
