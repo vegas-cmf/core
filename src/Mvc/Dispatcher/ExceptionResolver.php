@@ -28,7 +28,8 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
 
     /**
      * @param \Exception $exception
-     * @return mixed
+     * @throws \Vegas\Mvc\Dispatcher\Exception\CannotHandleErrorException
+     * @return object
      */
     public function resolve(\Exception $exception)
     {
@@ -37,7 +38,7 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
         } else {
             $error = $this->prepareDevEnvException($exception);
         }
-        
+
         try {
             $rendered = $this->renderLayoutForError($error);
 
@@ -66,20 +67,20 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
     {
         switch ($exception->getCode()) {
             case 403:
-                return new VegasException('Access forbidden.', 403);
+                return new VegasException('Access forbidden.', 403, $exception);
             case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
             case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
             case 404:
-                return new VegasException('The page does not exist.', 404);
+                return new VegasException('The page does not exist.', 404, $exception);
             case 0:
             case Dispatcher::EXCEPTION_NO_DI:
             case Dispatcher::EXCEPTION_INVALID_PARAMS:
             case Dispatcher::EXCEPTION_CYCLIC_ROUTING:
             case 500:
-                return new VegasException('Application error.', 500);
+                return new VegasException('Application error.', 500, $exception);
             default:
-                return new VegasException('Bad request.', 400);
-       }
+                return new VegasException('Bad request.', 400, $exception);
+        }
     }
 
     /**
@@ -90,14 +91,14 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
     {
         switch ($exception->getCode()) {
             case 403:
-                return new VegasException($exception->getMessage(), 403);
+                return new VegasException($exception->getMessage(), 403, $exception);
             case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
             case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
             case 404:
-                return new VegasException($exception->getMessage(), 404);
+                return new VegasException($exception->getMessage(), 404, $exception);
             default:
-                return new VegasException($exception->getMessage(), 500);
-       }
+                return new VegasException($exception->getMessage(), 500, $exception);
+        }
     }
 
     /**
@@ -128,12 +129,20 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
         return false;
     }
 
+    /**
+     * @param Exception $error
+     */
     private function displayRawError(VegasException $error)
     {
         if (Constants::DEV_ENV === $this->di->get('environment')) {
-            trigger_error($error->getCode().' '.$error->getMessage(), E_USER_ERROR);
+            trigger_error(
+                $error->getCode() . ' ' .
+                $error->getMessage() . ' ' .
+                $error->getPrevious()->getTraceAsString(),
+                E_USER_ERROR
+            );
         } elseif (Constants::TEST_ENV === $this->di->get('environment')) {
-            echo $error->getCode().' '.$error->getMessage();
+            echo $error->getCode(). PHP_EOL .$error->getMessage() . PHP_EOL . $error->getPrevious()->getTraceAsString();
         }
     }
 }
