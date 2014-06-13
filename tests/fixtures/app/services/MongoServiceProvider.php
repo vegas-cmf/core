@@ -31,4 +31,11 @@ class MongoServiceProvider implements ServiceProviderInterface
             return $mongo->selectDb($di->get('config')->mongo->db);
         }, true);
     }
+
+    public function getDependencies()
+    {
+        return array(
+            CollectionManagerServiceProvider::SERVICE_NAME
+        );
+    }
 } 

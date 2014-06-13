@@ -29,4 +29,12 @@ class ScaffoldingServiceProvider implements ServiceProviderInterface
         $adapter = new Scaffolding\Adapter\Mongo();
         $di->set(self::SERVICE_NAME, new Scaffolding($adapter), true);
     }
+
+    public function getDependencies()
+    {
+        return array(
+            MongoServiceProvider::SERVICE_NAME,
+            CollectionManagerServiceProvider::SERVICE_NAME
+        );
+    }
 } 

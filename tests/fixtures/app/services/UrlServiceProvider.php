@@ -32,4 +32,9 @@ class UrlServiceProvider implements ServiceProviderInterface
             return $url;
         }, true);
     }
+
+    public function getDependencies()
+    {
+        return array();
+    }
 } 
