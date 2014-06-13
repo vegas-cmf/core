@@ -35,7 +35,7 @@ class Pagination extends VoltHelperAbstract
                 $options = $this->compiler->expression($exprArgs[1]['expr']);
             }
 
-            return '\Vegas\Tag::pagination('.$page.','.$options.')';
+            return '(new \Vegas\Tag\Pagination($this->getDI()))->render('.$page.','.$options.')';
         };
     }
 }

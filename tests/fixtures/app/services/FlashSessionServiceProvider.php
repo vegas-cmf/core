@@ -34,4 +34,9 @@ class FlashSessionServiceProvider implements ServiceProviderInterface
             ));
         });
     }
+
+    public function getDependencies()
+    {
+        return array();
+    }
 }

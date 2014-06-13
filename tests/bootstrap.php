@@ -5,7 +5,7 @@
  * Date: 4/24/14
  * Time: 1:24 PM
  */
-
+error_reporting(E_ALL);
 //Test Suite bootstrap
 include __DIR__ . "/../vendor/autoload.php";
 

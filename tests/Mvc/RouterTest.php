@@ -101,6 +101,14 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             'params' => array(
                 'hostname'  =>  'test.vegas.dev'
             )
+        ),
+        'notfound' => array(
+            'route' =>  '/not-found',
+            'paths' => array(
+                'controller' => 'error',
+                'action' => 'error404'
+            ),
+            'type' => 'notfound'
         )
     );
 
@@ -258,7 +266,6 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testModuleRoutes()
     {
-
         $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
         $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
 
@@ -276,6 +283,22 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($defaultRouter->getMatchedRoute());
         $this->assertEquals('Backend\Fake', $defaultRouter->getControllerName());
         $this->assertEquals('test', $defaultRouter->getActionName());
+    }
+
+    public function testNotFound()
+    {
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
+
+        $router->addRoutes($this->testRoutes);
+        $router->setup();
+
+        $defaultRouter = $router->getRouter();
+
+        $defaultRouter->handle('/fake-route-ever/123-5/454353');
+        $this->assertFalse($defaultRouter->wasMatched());
+        $this->assertEquals('error', $defaultRouter->getControllerName());
+        $this->assertEquals('error404', $defaultRouter->getActionName());
     }
 
     private function setRequestMethod($method)

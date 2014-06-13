@@ -28,4 +28,9 @@ class AssetsServiceProvider implements ServiceProviderInterface
     {
         $di->set(self::SERVICE_NAME, '\Vegas\Assets\Manager', true);
     }
-} 
+
+    public function getDependencies()
+    {
+        return array();
+    }
+}

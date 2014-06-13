@@ -45,6 +45,7 @@ class ServiceProviderLoader
             '<?php return ' . var_export($servicesList, true) . ';'
         );
 
+        ksort($servicesList);
         return $servicesList;
     }
 
@@ -65,10 +66,39 @@ class ServiceProviderLoader
 
         self::setupServiceProvidersAutoloader($config, $services);
 
+        //resolves services dependencies
+        $dependencies = array();
+        $servicesProviders = array();
         foreach ($services as $serviceProviderName => $path) {
             $reflectionClass = new \ReflectionClass($serviceProviderName);
             $serviceProviderInstance = $reflectionClass->newInstance();
-            $serviceProviderInstance->register($di);
+            //fetches services dependencies
+            $serviceDependencies = $serviceProviderInstance->getDependencies();
+
+            //fetches name of service
+            $serviceName = $reflectionClass->getConstant('SERVICE_NAME');
+
+            //all services are in dependencies
+            if (!isset($dependencies[$serviceName])) {
+                $dependencies[$serviceName] = 0;
+            }
+
+            /**
+             * Creates array of ordered dependencies
+             */
+            array_walk($serviceDependencies, function($dependency, $key) use (&$dependencies) {
+                if (!isset($dependencies[$dependency])) {
+                    $dependencies[$dependency] = 0;
+                }
+                $dependencies[$dependency]++;
+            });
+            $servicesProviders[$serviceName] = $serviceProviderInstance;
+        }
+        uasort($dependencies, function($a, $b) { return $b-$a; });
+
+        //registers ordered dependencies
+        foreach ($dependencies as $serviceProviderName => $dependency) {
+            $servicesProviders[$serviceProviderName]->register($di);
         }
     }
 
