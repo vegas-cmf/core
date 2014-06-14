@@ -105,9 +105,12 @@ class Bootstrap implements BootstrapInterface
      */
     public function setup()
     {
+        $this->di->set('config', $this->config);
+
         $this->initLoader();
         $this->initModules();
         $this->initEventsManager();
+
         $this->console->setDI($this->di);
         return $this;
     }
