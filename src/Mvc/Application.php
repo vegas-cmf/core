@@ -56,6 +56,7 @@ class Application extends \Phalcon\Mvc\Application
         {
             $loader->registerNamespaces(
                 array(
+                    $name.'\Forms'   => dirname($module['path']).'/forms/',
                     $name.'\Models'   => dirname($module['path']).'/models/',
                     $name.'\Services' => dirname($module['path']).'/services/',
                     $name.'\Components' => dirname($module['path']).'/components/',
