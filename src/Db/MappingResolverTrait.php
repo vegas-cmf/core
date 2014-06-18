@@ -9,10 +9,10 @@
 namespace Vegas\Db;
 
 /**
- * Class HasMappingTrait
+ * Class MappingResolverTrait
  * @package Vegas\Db
  */
-trait HasMappingTrait
+trait MappingResolverTrait
 {
     /**
      * List of attached mappings
@@ -99,9 +99,11 @@ trait HasMappingTrait
 
         $mappings = $this->mappingsContainer[$attributeName];
         if (is_array($mappings)) {
-            foreach ($mappings as $mapping) {
-                //get mapping instance from mapping manager
-                $mappingResolver = MappingManager::find($mapping);
+            foreach ($mappings as $mappingResolver) {
+                if (!$mappingResolver instanceof MappingInterface) {
+                    //get mapping instance from mapping manager
+                    $mappingResolver = MappingManager::find($mappingResolver);
+                }
                 $mappingResolver->resolve($value);
             }
         }

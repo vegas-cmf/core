@@ -15,7 +15,7 @@ namespace Vegas\Db\Decorator;
 use Vegas\Db\Decorator\Helper\MappingHelperTrait;
 use Vegas\Db\Decorator\Helper\SlugTrait;
 use Vegas\Db\Decorator\Helper\WriteAttributesTrait;
-use Vegas\Db\HasMappingTrait;
+use Vegas\Db\MappingResolverTrait;
 
 /**
  * Class ModelAbstract
@@ -23,7 +23,7 @@ use Vegas\Db\HasMappingTrait;
  */
 abstract class ModelAbstract extends \Phalcon\Mvc\Model
 {
-    use HasMappingTrait;
+    use MappingResolverTrait;
     use MappingHelperTrait;
     use SlugTrait;
     use WriteAttributesTrait;
