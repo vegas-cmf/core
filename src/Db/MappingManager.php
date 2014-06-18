@@ -77,4 +77,14 @@ class MappingManager
 
         return self::$container[$mappingName];
     }
+
+    /**
+     * Returns list of available mappers
+     *
+     * @return array
+     */
+    public function getMappers()
+    {
+        return self::$container;
+    }
 } 
