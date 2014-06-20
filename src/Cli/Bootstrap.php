@@ -15,6 +15,7 @@ namespace Vegas\Cli;
 use Phalcon\DI\FactoryDefault\CLI;
 use Vegas\BootstrapInterface;
 use Vegas\Cli\Exception as CliException;
+use Vegas\DI\ServiceProviderLoader;
 use Vegas\Mvc\Module\ModuleLoader;
 
 class Bootstrap implements BootstrapInterface
@@ -77,6 +78,15 @@ class Bootstrap implements BootstrapInterface
     }
 
     /**
+     * Initializes services
+     */
+    protected function initServices()
+    {
+        ServiceProviderLoader::autoload($this->di);
+    }
+
+
+    /**
      * Sets command line arguments
      *
      * @param $args
@@ -108,6 +118,7 @@ class Bootstrap implements BootstrapInterface
 
         $this->initLoader();
         $this->initModules();
+        $this->initServices();
         $this->initEventsManager();
 
         $this->console->setDI($this->di);
