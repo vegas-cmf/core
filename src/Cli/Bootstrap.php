@@ -15,6 +15,7 @@ namespace Vegas\Cli;
 use Phalcon\DI\FactoryDefault\CLI;
 use Vegas\BootstrapInterface;
 use Vegas\Cli\Exception as CliException;
+use Vegas\Constants;
 use Vegas\DI\ServiceProviderLoader;
 use Vegas\Mvc\Module\ModuleLoader;
 
@@ -46,6 +47,26 @@ class Bootstrap implements BootstrapInterface
                 $this->config->application->tasksDir
             )
         )->register();
+    }
+
+    /**
+     * Initializes application environment
+     */
+    protected function initEnvironment()
+    {
+        if (isset($this->config->application->environment)) {
+            $env = $this->config->application->environment;
+        } else {
+            $env = Constants::DEFAULT_ENV;
+        }
+
+        if (!defined('APPLICATION_ENV')) {
+            define('APPLICATION_ENV', $env);
+        }
+
+        $this->di->set('environment', function() use ($env) {
+            return $env;
+        }, true);
     }
 
     /**
@@ -116,6 +137,7 @@ class Bootstrap implements BootstrapInterface
     {
         $this->di->set('config', $this->config);
 
+        $this->initEnvironment();
         $this->initLoader();
         $this->initModules();
         $this->initServices();
