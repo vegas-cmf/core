@@ -12,7 +12,6 @@
 
 namespace Vegas\Cli;
 
-use Phalcon\CLI\Console;
 use Phalcon\DI\FactoryDefault\CLI;
 use Vegas\BootstrapInterface;
 use Vegas\Cli\Exception as CliException;
