@@ -96,6 +96,8 @@ class Bootstrap implements BootstrapInterface
         $loader = new \Phalcon\Loader();
         $loader->registerNamespaces($namespaces, true);
         $loader->register();
+
+        $this->di->set('modules', $this->console->getModules());
     }
 
     /**
