@@ -137,6 +137,9 @@ class Option
     public function validate($value)
     {
         $result = !$this->isRequired;
+        if ($this->isRequired()) {
+            $result = !empty($value);
+        }
         if (is_callable($this->validator)) {
             $result = call_user_func($this->validator, $value);
         }
