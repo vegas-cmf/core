@@ -125,7 +125,9 @@ class Bootstrap implements BootstrapInterface
             }
         }
 
-        $this->di->set('modules', $this->application->getModules());
+        $this->di->set('modules', function() {
+            return $this->application->getModules();
+        });
     }
 
     /**

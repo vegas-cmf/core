@@ -97,7 +97,9 @@ class Bootstrap implements BootstrapInterface
         $loader->registerNamespaces($namespaces, true);
         $loader->register();
 
-        $this->di->set('modules', $this->console->getModules());
+        $this->di->set('modules', function() {
+            return $this->console->getModules();
+        });
     }
 
     /**
