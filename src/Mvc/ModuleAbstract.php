@@ -19,7 +19,6 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     public function registerAutoloaders()
     {
         $this->registerSubModulesAutoloader();
-        $this->registerFormsAutoloader();
     }
 
     /**
@@ -35,18 +34,6 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
 
         $loader = new Loader();
         $loader->registerNamespaces($namespaces, true);
-        $loader->register();
-    }
-
-    /**
-     * Registers classes in Forms namespace
-     */
-    public function registerFormsAutoloader()
-    {
-        $loader = new Loader();
-        $loader->registerNamespaces(array(
-            $this->namespace . '\Forms' =>  $this->dir . DIRECTORY_SEPARATOR . 'forms' . DIRECTORY_SEPARATOR
-        ), true);
         $loader->register();
     }
 

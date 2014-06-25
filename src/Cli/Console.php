@@ -2,22 +2,19 @@
 /**
  * This file is part of Vegas package
  *
- * @author Arkadiusz Ostrycharz <arkadiusz.ostrycharz@gmail.com>
+ * @author Slawomir Zytko <slawomir.zytko@gmail.com>
  * @copyright Amsterdam Standard Sp. Z o.o.
- * @homepage https://bitbucket.org/amsdard/vegas-phalcon
+ * @homepage http://vegas-cmf.github.io
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Vegas\Mvc;
+namespace Vegas\Cli;
 
-/**
- * Class Application
- * @package Vegas\Mvc
- */
-class Application extends \Phalcon\Mvc\Application
+class Console extends \Phalcon\CLI\Console
 {
+
     /**
      * Register an array of modules present in the application
      *
@@ -35,12 +32,11 @@ class Application extends \Phalcon\Mvc\Application
      *</code>
      *
      * @param array $modules
-     * @param boolean $merge
      */
-    public function registerModules($modules, $merge = null)
+    public function registerModules($modules)
     {
         $this->registerSharedData($modules);
-        parent::registerModules($modules, $merge);
+        parent::registerModules($modules);
     }
 
     /**
@@ -51,15 +47,13 @@ class Application extends \Phalcon\Mvc\Application
     private function registerSharedData($modules)
     {
         $loader = new \Phalcon\Loader();
-        
+
         foreach ($modules As $name => $module)
         {
             $loader->registerNamespaces(
                 array(
-                    $name.'\Forms'   => dirname($module['path']).'/forms/',
                     $name.'\Models'   => dirname($module['path']).'/models/',
-                    $name.'\Services' => dirname($module['path']).'/services/',
-                    $name.'\Components' => dirname($module['path']).'/components/',
+                    $name.'\Services' => dirname($module['path']).'/services/'
                 ), true
             );
         }
@@ -67,3 +61,4 @@ class Application extends \Phalcon\Mvc\Application
         $loader->register();
     }
 }
+ 

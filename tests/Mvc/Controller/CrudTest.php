@@ -58,12 +58,13 @@ class CrudTest extends TestCase
     public function testNotPostCreate()
     {
         $content = $this->bootstrap->run('/test/crud/create');
-        $this->assertTrue((bool)stristr($content, "This is not a POST request!"));
+        $this->assertContains('500', $content);
+        $this->assertContains('This is not a POST request!', $content);
     }
 
     public function testNotPostCreateResponse()
     {
-        $this->assertTrue((bool)stristr($this->di->get('response')->getHeaders()->get('Status'), "This is not a POST request!"));
+        $this->assertEquals('500 This is not a POST request!', $this->di->get('response')->getHeaders()->get('Status'));
     }
 
     public function testPostCreate()
@@ -112,12 +113,14 @@ class CrudTest extends TestCase
         $this->prepareFakeObject();
 
         $content = $this->bootstrap->run('/test/crud/update/'.$this->model->getId());
-        $this->assertTrue((bool)stristr($content, "This is not a POST request!"));
+        $this->assertContains('500', $content);
+        $this->assertContains('This is not a POST request!', $content);
     }
 
     public function testNotPostUpdateResponse()
     {
-        $this->assertTrue((bool)stristr($this->di->get('response')->getHeaders()->get('Status'), "This is not a POST request!"));
+        $this->assertContains('500', $this->di->get('response')->getHeaders()->get('Status'));
+        $this->assertContains('This is not a POST request!', $this->di->get('response')->getHeaders()->get('Status'));
     }
 
     public function testPostUpdate()
