@@ -18,6 +18,7 @@ use Vegas\Cli\Exception as CliException;
 use Vegas\Constants;
 use Vegas\DI\ServiceProviderLoader;
 use Vegas\Mvc\Module\ModuleLoader;
+use Vegas\Mvc\Module\SubModuleManager;
 
 class Bootstrap implements BootstrapInterface
 {
@@ -74,6 +75,14 @@ class Bootstrap implements BootstrapInterface
      */
     protected function initModules()
     {
+        //registers sub modules if defined in configuration
+        $subModuleManager = new SubModuleManager();
+        if (isset($this->config->application->subModules)) {
+            foreach ($this->config->application->subModules->toArray() as $subModuleName) {
+                $subModuleManager->registerSubModule($subModuleName);
+            }
+        }
+
         //registers modules defined in modules.php file
         $modulesFile = $this->config->application->configDir . 'modules.php';
         if (!file_exists($modulesFile)) {
