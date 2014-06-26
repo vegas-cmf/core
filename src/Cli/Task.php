@@ -177,7 +177,8 @@ abstract class Task extends \Phalcon\CLI\Task
         }
         if ($matchedOption instanceof Option) {
             $value = $matchedOption->getValue($this->args, $default);
-            if (!$value) {
+
+            if ($matchedOption->isRequired() && empty($value)) {
                 throw new MissingArgumentException($name);
             }
         } else {

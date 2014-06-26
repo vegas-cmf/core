@@ -124,6 +124,10 @@ class Bootstrap implements BootstrapInterface
                 $this->config->merge(require $moduleConfigFile);
             }
         }
+
+        $this->di->set('modules', function() {
+            return $this->application->getModules();
+        });
     }
 
     /**

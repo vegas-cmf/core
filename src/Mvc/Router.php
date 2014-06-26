@@ -26,6 +26,7 @@ class Router implements InjectionAwareInterface
 {
     use InjectionAwareTrait;
 
+    const BASE_ROUTE = 'base';
     const DEFAULT_ROUTE = 'default';
     const STATIC_ROUTE = 'static';
     const REST_ROUTE = 'rest';
@@ -40,10 +41,11 @@ class Router implements InjectionAwareInterface
      * @var array
      */
     private $routeTypes = array(
-        self::DEFAULT_ROUTE => 0,
-        self::REST_ROUTE => 1,
-        self::STATIC_ROUTE => 2,
-        self::NOTFOUND_ROUTE => 3
+        self::BASE_ROUTE => 0,
+        self::DEFAULT_ROUTE => 1,
+        self::REST_ROUTE => 2,
+        self::STATIC_ROUTE => 3,
+        self::NOTFOUND_ROUTE => 4
     );
 
     /**

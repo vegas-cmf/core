@@ -12,11 +12,13 @@
 
 namespace Vegas\Cli;
 
-use Phalcon\CLI\Console;
 use Phalcon\DI\FactoryDefault\CLI;
 use Vegas\BootstrapInterface;
 use Vegas\Cli\Exception as CliException;
+use Vegas\Constants;
+use Vegas\DI\ServiceProviderLoader;
 use Vegas\Mvc\Module\ModuleLoader;
+use Vegas\Mvc\Module\SubModuleManager;
 
 class Bootstrap implements BootstrapInterface
 {
@@ -49,10 +51,38 @@ class Bootstrap implements BootstrapInterface
     }
 
     /**
+     * Initializes application environment
+     */
+    protected function initEnvironment()
+    {
+        if (isset($this->config->application->environment)) {
+            $env = $this->config->application->environment;
+        } else {
+            $env = Constants::DEFAULT_ENV;
+        }
+
+        if (!defined('APPLICATION_ENV')) {
+            define('APPLICATION_ENV', $env);
+        }
+
+        $this->di->set('environment', function() use ($env) {
+            return $env;
+        }, true);
+    }
+
+    /**
      *
      */
     protected function initModules()
     {
+        //registers sub modules if defined in configuration
+        $subModuleManager = new SubModuleManager();
+        if (isset($this->config->application->subModules)) {
+            foreach ($this->config->application->subModules->toArray() as $subModuleName) {
+                $subModuleManager->registerSubModule($subModuleName);
+            }
+        }
+
         //registers modules defined in modules.php file
         $modulesFile = $this->config->application->configDir . 'modules.php';
         if (!file_exists($modulesFile)) {
@@ -75,7 +105,20 @@ class Bootstrap implements BootstrapInterface
         $loader = new \Phalcon\Loader();
         $loader->registerNamespaces($namespaces, true);
         $loader->register();
+
+        $this->di->set('modules', function() {
+            return $this->console->getModules();
+        });
     }
+
+    /**
+     * Initializes services
+     */
+    protected function initServices()
+    {
+        ServiceProviderLoader::autoload($this->di);
+    }
+
 
     /**
      * Sets command line arguments
@@ -107,8 +150,10 @@ class Bootstrap implements BootstrapInterface
     {
         $this->di->set('config', $this->config);
 
+        $this->initEnvironment();
         $this->initLoader();
         $this->initModules();
+        $this->initServices();
         $this->initEventsManager();
 
         $this->console->setDI($this->di);
