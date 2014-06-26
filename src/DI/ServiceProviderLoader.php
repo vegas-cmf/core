@@ -39,10 +39,26 @@ class ServiceProviderLoader
             $servicesList[$fileInfo->getBasename('.php')] = $fileInfo->getPathname();
         }
 
+        //creates path to modules.php file
+        $servicesFilePath = $config->application->configDir . 'services.php';
+        //prepares string content for modules.php file
+        $servicesListStr = self::createFileContent($servicesList);
+
+        //compares current modules.php content with new modules array
+        //when file content are equal, then don't create a new modules file
+        if (file_exists($servicesFilePath)) {
+            $currentContent = file_get_contents($servicesFilePath);
+            if (strcmp($currentContent, $servicesListStr) === 0) {
+                ksort($servicesList);
+                return $servicesList;
+            }
+        }
+
+
         //saves generated array to php source file
         file_put_contents(
-            $config->application->configDir . 'services.php',
-            '<?php return ' . var_export($servicesList, true) . ';'
+            $servicesFilePath,
+            $servicesListStr
         );
 
         ksort($servicesList);
@@ -50,7 +66,16 @@ class ServiceProviderLoader
     }
 
     /**
-     * Creates autoloader for services
+     * @param $servicesList
+     * @return string
+     */
+    private static function createFileContent($servicesList)
+    {
+        return '<?php return ' . var_export($servicesList, true) . ';';
+    }
+
+    /**
+     * Creates services autoloader
      *
      * @param DiInterface $di
      */

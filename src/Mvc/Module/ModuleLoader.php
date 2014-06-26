@@ -50,12 +50,35 @@ class ModuleLoader
             );
         }
 
+        //creates path to modules.php file
+        $modulesFilePath = $config->application->configDir . 'modules.php';
+        //prepares string content for modules.php file
+        $modulesListStr = self::createFileContent($modulesList);
+
+        //compares current modules.php content with new modules array
+        //when file content are equal, then don't create a new modules file
+        if (file_exists($modulesFilePath)) {
+            $currentContent = file_get_contents($modulesFilePath);
+            if (strcmp($currentContent, $modulesListStr) === 0) {
+                return $modulesList;
+            }
+        }
+
         //saves generated array to php source file
         file_put_contents(
-            $config->application->configDir . 'modules.php',
-            '<?php return ' . var_export($modulesList, true) . ';'
+            $modulesFilePath,
+            $modulesListStr
         );
 
         return $modulesList;
+    }
+
+    /**
+     * @param $modulesList
+     * @return string
+     */
+    private static function createFileContent($modulesList)
+    {
+        return '<?php return ' . var_export($modulesList, true) . ';';
     }
 } 
