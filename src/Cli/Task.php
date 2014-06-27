@@ -231,6 +231,16 @@ abstract class Task extends \Phalcon\CLI\Task
     }
 
     /**
+     * Puts success into buffer
+     *
+     * @param $str
+     */
+    public function putSuccess($str)
+    {
+        $this->appendLine($this->getColoredString($str, 'green'));
+    }
+
+    /**
      * Puts error into console
      *
      * @param $str
