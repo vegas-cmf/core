@@ -123,7 +123,7 @@ abstract class Task extends \Phalcon\CLI\Task
      */
     private function containHelpOption($args)
     {
-        return array_search(self::HELP_OPTION, $args, true) || array_search(self::HELP_SHORTOPTION, $args, true);
+        return array_key_exists(self::HELP_OPTION, $args) || array_key_exists(self::HELP_SHORTOPTION, $args);
     }
 
     /**
@@ -241,7 +241,7 @@ abstract class Task extends \Phalcon\CLI\Task
     }
 
     /**
-     * Puts error into console
+     * Puts error into buffer
      *
      * @param $str
      * @throws \Exception

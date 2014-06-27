@@ -130,7 +130,7 @@ class Action
             }
 
             if (!$option->getValue($args)) {
-                throw new MissingRequiredArgumentException($option->getShortName());
+                throw new MissingRequiredArgumentException($option->getName());
             }
         }
 
