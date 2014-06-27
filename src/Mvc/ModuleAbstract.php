@@ -104,6 +104,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
                 $view->setViewsDir($viewDir);
             }
             
+            $view->setEventsManager($di->getShared('eventsManager'));
             return $view;
         });
     }
