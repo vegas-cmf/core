@@ -123,7 +123,7 @@ abstract class Task extends \Phalcon\CLI\Task
      */
     private function containHelpOption($args)
     {
-        return array_search(self::HELP_OPTION, $args) || array_search(self::HELP_SHORTOPTION, $args);
+        return array_search(self::HELP_OPTION, $args, true) || array_search(self::HELP_SHORTOPTION, $args, true);
     }
 
     /**
