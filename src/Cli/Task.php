@@ -221,6 +221,16 @@ abstract class Task extends \Phalcon\CLI\Task
     }
 
     /**
+     * Puts warning into buffer
+     *
+     * @param $str
+     */
+    public function putWarn($str)
+    {
+        $this->appendLine($this->getColoredString($str, 'yellow'));
+    }
+
+    /**
      * Puts error into console
      *
      * @param $str
