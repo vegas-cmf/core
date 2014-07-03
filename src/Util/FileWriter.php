@@ -26,7 +26,7 @@ class FileWriter
      * @param $filePath
      * @param $newContent
      * @param bool $compareContents     Determines if new content should be compared with the
-     *                                  current file content. When content are the same, then
+     *                                  current file content. When contents are the same, then
      *                                  new content will not be written to the file.
      * @return int                      Number of bytes that were written to the file
      */
