@@ -13,6 +13,7 @@
 namespace Vegas\Mvc\Module;
 
 use Phalcon\DiInterface;
+use Vegas\Util\FileWriter;
 
 /**
  * Class ModuleLoader
@@ -50,25 +51,8 @@ class ModuleLoader
             );
         }
 
-        //creates path to modules.php file
-        $modulesFilePath = $config->application->configDir . 'modules.php';
-        //prepares string content for modules.php file
-        $modulesListStr = self::createFileContent($modulesList);
-
-        //compares current modules.php content with new modules array
-        //when file content are equal, then don't create a new modules file
-        if (file_exists($modulesFilePath)) {
-            $currentContent = file_get_contents($modulesFilePath);
-            if (strcmp($currentContent, $modulesListStr) === 0) {
-                return $modulesList;
-            }
-        }
-
         //saves generated array to php source file
-        file_put_contents(
-            $modulesFilePath,
-            $modulesListStr
-        );
+        FileWriter::write($config->application->configDir . 'modules.php', self::createFileContent($modulesList), true);
 
         return $modulesList;
     }

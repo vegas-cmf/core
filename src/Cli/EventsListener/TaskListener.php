@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
  
-namespace Vegas\Cli\EventsManager;
+namespace Vegas\Cli\EventsListener;
 
 use Phalcon\CLI\Console;
 use Phalcon\CLI\Dispatcher;
@@ -18,10 +18,10 @@ use Phalcon\Events\Event;
 use Vegas\Cli\OptionParser;
 
 /**
- * Class Task
+ * Class TaskListener
  * @package Vegas\Cli\EventsManager
  */
-class Task
+class TaskListener
 {
     /**
      * @param $argv

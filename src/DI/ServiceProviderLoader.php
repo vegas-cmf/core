@@ -14,6 +14,7 @@ namespace Vegas\DI;
 
 use Phalcon\DiInterface;
 use Vegas\Constants;
+use Vegas\Util\FileWriter;
 
 /**
  * Class ServiceProviderLoader
@@ -39,27 +40,8 @@ class ServiceProviderLoader
             $servicesList[$fileInfo->getBasename('.php')] = $fileInfo->getPathname();
         }
 
-        //creates path to modules.php file
-        $servicesFilePath = $config->application->configDir . 'services.php';
-        //prepares string content for modules.php file
-        $servicesListStr = self::createFileContent($servicesList);
-
-        //compares current modules.php content with new modules array
-        //when file content are equal, then don't create a new modules file
-        if (file_exists($servicesFilePath)) {
-            $currentContent = file_get_contents($servicesFilePath);
-            if (strcmp($currentContent, $servicesListStr) === 0) {
-                ksort($servicesList);
-                return $servicesList;
-            }
-        }
-
-
         //saves generated array to php source file
-        file_put_contents(
-            $servicesFilePath,
-            $servicesListStr
-        );
+        FileWriter::write($config->application->configDir . 'services.php', self::createFileContent($servicesList), true);
 
         ksort($servicesList);
         return $servicesList;

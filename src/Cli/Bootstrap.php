@@ -13,6 +13,7 @@
 namespace Vegas\Cli;
 
 use Phalcon\DI\FactoryDefault\CLI;
+use Vegas\BootstrapAbstract;
 use Vegas\BootstrapInterface;
 use Vegas\Cli\Exception as CliException;
 use Vegas\Constants;
@@ -85,7 +86,7 @@ class Bootstrap implements BootstrapInterface
 
         //registers modules defined in modules.php file
         $modulesFile = $this->config->application->configDir . 'modules.php';
-        if (!file_exists($modulesFile)) {
+        if (!file_exists($modulesFile) || $this->di->get('environment') != Constants::DEFAULT_ENV) {
             ModuleLoader::dump($this->di);
         }
         $this->console->registerModules(require $modulesFile);
@@ -138,8 +139,8 @@ class Bootstrap implements BootstrapInterface
         //extracts default events manager
         $eventsManager = $this->di->getShared('eventsManager');
         //attaches new event console:beforeTaskHandle and console:afterTaskHandle
-        $eventsManager->attach('console:beforeHandleTask', \Vegas\Cli\EventsManager\Task::beforeHandleTask($this->arguments));
-        $eventsManager->attach('console:afterHandleTask', \Vegas\Cli\EventsManager\Task::afterHandleTask());
+        $eventsManager->attach('console:beforeHandleTask', \Vegas\Cli\EventsListener\TaskListener::beforeHandleTask($this->arguments));
+        $eventsManager->attach('console:afterHandleTask', \Vegas\Cli\EventsListener\TaskListener::afterHandleTask());
         $this->console->setEventsManager($eventsManager);
     }
 
