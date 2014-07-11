@@ -27,6 +27,7 @@ class View extends PhalconView
 
     /**
      * @param null $options
+     * @param null $viewDir
      */
     public function __construct($options = null, $viewDir = null) {
         parent::__construct($options);
@@ -82,6 +83,7 @@ class View extends PhalconView
 
     /**
      * @param array $options
+     * @param null $viewDir
      * @return string
      */
     private function prepareRelativeLayoutsPath(array $options, $viewDir = null)

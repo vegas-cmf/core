@@ -23,13 +23,13 @@ class Application extends \Phalcon\Mvc\Application
      *
      *<code>
      *	$this->registerModules(array(
-     *		'frontend' => array(
-     *			'className' => 'Multiple\Frontend\Module',
-     *			'path' => '../apps/frontend/Module.php'
+     *		'Example' => array(
+     *			'className' => 'Example\\Module',
+     *			'path' => APP_ROOT . '/app/modules/Example/Module.php'
      *		),
-     *		'backend' => array(
-     *			'className' => 'Multiple\Backend\Module',
-     *			'path' => '../apps/backend/Module.php'
+     *		'Test' => array(
+     *			'className' => 'Test\\Module',
+     *			'path' => APP_ROOT . '/app/modules/Test/Module.php'
      *		)
      *	));
      *</code>

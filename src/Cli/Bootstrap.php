@@ -21,6 +21,10 @@ use Vegas\DI\ServiceProviderLoader;
 use Vegas\Mvc\Module\ModuleLoader;
 use Vegas\Mvc\Module\SubModuleManager;
 
+/**
+ * Class Bootstrap
+ * @package Vegas\Cli
+ */
 class Bootstrap implements BootstrapInterface
 {
     private $arguments;
@@ -46,7 +50,7 @@ class Bootstrap implements BootstrapInterface
             array(
                 $this->config->application->libraryDir,
                 $this->config->application->pluginDir,
-                $this->config->application->tasksDir
+                $this->config->application->taskDir
             )
         )->register();
     }
@@ -76,14 +80,6 @@ class Bootstrap implements BootstrapInterface
      */
     protected function initModules()
     {
-        //registers sub modules if defined in configuration
-        $subModuleManager = new SubModuleManager();
-        if (isset($this->config->application->subModules)) {
-            foreach ($this->config->application->subModules->toArray() as $subModuleName) {
-                $subModuleManager->registerSubModule($subModuleName);
-            }
-        }
-
         //registers modules defined in modules.php file
         $modulesFile = $this->config->application->configDir . 'modules.php';
         if (!file_exists($modulesFile) || $this->di->get('environment') != Constants::DEFAULT_ENV) {
@@ -139,8 +135,12 @@ class Bootstrap implements BootstrapInterface
         //extracts default events manager
         $eventsManager = $this->di->getShared('eventsManager');
         //attaches new event console:beforeTaskHandle and console:afterTaskHandle
-        $eventsManager->attach('console:beforeHandleTask', \Vegas\Cli\EventsListener\TaskListener::beforeHandleTask($this->arguments));
-        $eventsManager->attach('console:afterHandleTask', \Vegas\Cli\EventsListener\TaskListener::afterHandleTask());
+        $eventsManager->attach(
+            'console:beforeHandleTask', \Vegas\Cli\EventsListener\TaskListener::beforeHandleTask($this->arguments)
+        );
+        $eventsManager->attach(
+            'console:afterHandleTask', \Vegas\Cli\EventsListener\TaskListener::afterHandleTask()
+        );
         $this->console->setEventsManager($eventsManager);
     }
 

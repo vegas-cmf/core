@@ -14,20 +14,28 @@ namespace Vegas\Task;
 
 use Vegas\Cli\Task\Option;
 
+/**
+ * Class AssetsTask
+ * @package Vegas\Task
+ */
 class AssetsTask extends \Vegas\Cli\Task
 {
+    /**
+     *
+     */
     public function publishAction()
     {
-        echo "Copying assets..";
-
+        $this->putText("Copying assets...");
         $this->copyAllAssets();
-
-        echo "\nDone.";
+        $this->putSuccess("Done.");
     }
 
+    /**
+     *
+     */
     private function copyAllAssets()
     {
-        $vegasCmfPath = APP_ROOT.DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR.'vegas-cmf';
+        $vegasCmfPath = APP_ROOT . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'vegas-cmf';
         $publicAssetsDir = $this->getOption('d', APP_ROOT.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'assets');
 
         $handle = opendir($vegasCmfPath);
@@ -47,6 +55,12 @@ class AssetsTask extends \Vegas\Cli\Task
         }
     }
 
+    /**
+     * @param $source
+     * @param $dest
+     * @param int $permissions
+     * @return bool
+     */
     private function copyRecursive($source, $dest, $permissions = 0755)
     {
         // Check for symlinks
@@ -57,7 +71,7 @@ class AssetsTask extends \Vegas\Cli\Task
         // Simple copy for a file
         if (is_file($source)) {
             if (is_file($dest)) {
-                echo "\nCannot copy $source. File already exists.";
+                $this->putWarn("Cannot copy $source. File already exists.");
                 return false;
             } else {
                 return copy($source, $dest);

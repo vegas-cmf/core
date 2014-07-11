@@ -92,6 +92,36 @@ class Decoder implements MappingInterface
     }
 }
 
+/**
+ * Class Camelize
+ *
+ * Simple mapper for converting text to camelize style
+ *
+ * @package Vegas\Db\Mapping
+ */
+class Camelize implements MappingInterface
+{
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'camelize';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function resolve(& $value)
+    {
+        if (is_string($value) && strlen($value) > 0) {
+            $value = \Phalcon\Text::camelize($value);
+        }
+
+        return $value;
+    }
+}
+
 class MappingTest extends \PHPUnit_Framework_TestCase
 {
     public function testMappingManager()
@@ -99,7 +129,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         //define mappings
         $mappingManager = new MappingManager();
         $mappingManager->add(new Json());
-        $mappingManager->add('\Vegas\Db\Mapping\Camelize');
+        $mappingManager->add(new Camelize());
         $mappingManager->add(new UpperCase());
 
         $this->assertNotEmpty(MappingManager::find('json'));
@@ -135,7 +165,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
     {
         $mappingManager = new MappingManager();
         $mappingManager->add(new Json());
-        $mappingManager->add('\Vegas\Db\Mapping\Camelize');
+        $mappingManager->add(new Camelize());
         $mappingManager->add(new Decoder());
         $mappingManager->add(new UpperCase());
 
@@ -203,7 +233,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
     {
         $mappingManager = new MappingManager();
         $mappingManager->add(new Json());
-        $mappingManager->add('\Vegas\Db\Mapping\Camelize');
+        $mappingManager->add(new Camelize());
 
         $di = DI::getDefault();
         $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');

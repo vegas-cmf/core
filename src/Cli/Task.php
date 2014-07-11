@@ -164,8 +164,9 @@ abstract class Task extends \Phalcon\CLI\Task
      * Get option value for action from command line
      *
      * @param $name
+     * @param null $default
+     * @throws Task\Exception\MissingArgumentException
      * @return mixed
-     * @throws
      */
     protected function getOption($name, $default = null)
     {
