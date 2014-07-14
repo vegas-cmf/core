@@ -20,5 +20,10 @@ use Vegas\Cli\Exception as CliException;
  */
 class TaskActionNotSpecifiedException extends CliException
 {
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
     protected $message = 'Task action was not specified';
 } 

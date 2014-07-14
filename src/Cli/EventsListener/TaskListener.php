@@ -34,9 +34,9 @@ class TaskListener
             $parsedOptions = OptionParser::parse($argv);
 
             $dispatcher->setParams(array(
-                'activeTask'  => $parsedOptions[0],
-                'activeAction'  => $parsedOptions[1],
-                'args'    =>  array_slice($parsedOptions, 2)
+                'activeTask'  => isset($parsedOptions[0]) ? $parsedOptions[0] : false,
+                'activeAction'  => isset($parsedOptions[1]) ? $parsedOptions[1] : false,
+                'args'    =>  count($parsedOptions) > 2 ? array_slice($parsedOptions, 2) : array()
             ));
         };
     }

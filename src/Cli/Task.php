@@ -91,7 +91,7 @@ abstract class Task extends \Phalcon\CLI\Task
         //if -h or --help option was typed in command line then show only help
         $this->args = $this->dispatcher->getParam('args');
         if ($this->containHelpOption($this->args)) {
-            $this->renderHelp();
+            $this->renderActionHelp();
             //stop dispatching
             return false;
         }
@@ -104,15 +104,23 @@ abstract class Task extends \Phalcon\CLI\Task
                 ':argument' => $ex->getArgument()
             )));
 
-            $this->renderHelp();
+            $this->renderActionHelp();
         } catch (InvalidOptionException $ex) {
             $this->putError(strtr(':command: Invalid option `:option`', array(
                 ':command' => sprintf('%s %s', $this->dispatcher->getParam('activeTask'), $this->dispatcher->getParam('activeAction')),
                 ':option' => $ex->getOption()
             )));
 
-            $this->renderHelp();
+            $this->renderActionHelp();
         }
+    }
+
+    /**
+     * Action executed by default when no action was specified in execution
+     */
+    final public function mainAction()
+    {
+        $this->renderTaskHelp();
     }
 
     /**
@@ -164,8 +172,9 @@ abstract class Task extends \Phalcon\CLI\Task
      * Get option value for action from command line
      *
      * @param $name
+     * @param null $default
+     * @throws Task\Exception\MissingArgumentException
      * @return mixed
-     * @throws
      */
     protected function getOption($name, $default = null)
     {
@@ -262,9 +271,9 @@ abstract class Task extends \Phalcon\CLI\Task
     }
 
     /**
-     *  Renders help for command
+     *  Renders help for task action
      */
-    protected function renderHelp()
+    protected function renderActionHelp()
     {
         if (!isset($this->actions[$this->actionName])) {
             $this->appendLine('No help available');
@@ -291,6 +300,22 @@ abstract class Task extends \Phalcon\CLI\Task
                     $option->getName(), $option->getShortName(), $option->getDescription()
                 ), 'light_green'));
             }
+        }
+    }
+
+    /**
+     *  Renders help for task
+     */
+    protected function renderTaskHelp()
+    {
+        $this->appendLine($this->getColoredString('Available actions', 'dark_gray'));
+        $this->appendLine(PHP_EOL);
+        foreach ($this->actions as $action) {
+            $this->appendLine(sprintf(
+                '   %s      %s',
+                $this->getColoredString($action->getName(), 'light_green'),
+                $this->getColoredString($action->getDescription(), 'green'))
+            );
         }
     }
 

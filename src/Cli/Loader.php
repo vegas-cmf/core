@@ -51,18 +51,15 @@ class Loader
         if (count($arguments) == 1) {
             throw new TaskNotFoundException();
         }
-        if (count($arguments) == 2) {
-            throw new TaskActionNotSpecifiedException();
-        }
         $taskName = $this->lookupTaskClass($arguments);
 
         //prepares an array containing arguments for CLI handler
         $parsedArguments = array(
             'task'  =>  $taskName,
-            'action'    =>  $arguments[2]
+            'action'    =>  isset($arguments[2]) ? $arguments[2] : false
         );
         //adds additional arguments
-        $parsedArguments[] = array_slice($arguments, 3);
+        $parsedArguments[] = count($arguments) > 3 ? array_slice($arguments, 3) : array();
         return $parsedArguments;
     }
 
