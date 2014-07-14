@@ -38,10 +38,14 @@ class MappingManager
     public function add($mappingClass)
     {
         try {
-            $reflectionClass = new \ReflectionClass($mappingClass);
-            $mappingClassInstance = $reflectionClass->newInstance();
-            if (!$mappingClassInstance instanceof MappingInterface) {
-                throw new InvalidMappingClassException('Mapping class must be an instance of MappingInterface');
+            if ($mappingClass instanceof MappingInterface) {
+                $mappingClassInstance = $mappingClass;
+            } else {
+                $reflectionClass = new \ReflectionClass($mappingClass);
+                $mappingClassInstance = $reflectionClass->newInstance();
+                if (!$mappingClassInstance instanceof MappingInterface) {
+                    throw new InvalidMappingClassException('Mapping class must be an instance of MappingInterface');
+                }
             }
             self::$container[$mappingClassInstance->getName()] = $mappingClassInstance;
         } catch (\Exception $ex) {
