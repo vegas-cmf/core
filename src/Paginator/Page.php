@@ -11,11 +11,37 @@
  */
 namespace Vegas\Paginator;
 
+/**
+ * Class Page
+ *
+ * Represents page from paginator
+ *
+ * @package Vegas\Paginator
+ */
 class Page
 {
+    /**
+     * @var
+     */
     public $total_pages;
+
+    /**
+     * @var
+     */
     public $before;
+
+    /**
+     * @var
+     */
     public $current;
+
+    /**
+     * @var
+     */
     public $next;
+
+    /**
+     * @var
+     */
     public $items;
 }

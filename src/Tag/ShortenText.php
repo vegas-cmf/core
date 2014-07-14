@@ -19,6 +19,8 @@ namespace Vegas\Tag;
 class ShortenText
 {
     /**
+     * Cuts text to specified length and appends end string.
+     *
      * @param $text
      * @param int $length
      * @param string $endString

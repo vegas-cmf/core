@@ -22,7 +22,7 @@ use Vegas\Cli\Task\Action;
 class CacheTask extends \Vegas\Cli\Task
 {
     /**
-     *
+     * Cleans application cache
      */
     public function cleanAction()
     {
@@ -42,6 +42,8 @@ class CacheTask extends \Vegas\Cli\Task
     }
 
     /**
+     * Removes files from cache dir
+     *
      * @param $dir
      */
     private function removeFilesFromDir($dir)
@@ -61,7 +63,7 @@ class CacheTask extends \Vegas\Cli\Task
     }
 
     /**
-     * Task must implement this method to set available options
+     * Task's available options
      *
      * @return mixed
      */

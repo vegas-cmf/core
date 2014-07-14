@@ -13,9 +13,13 @@ namespace Vegas\Paginator\Adapter;
 
 use Vegas\Exception as VegasException;
 
+/**
+ * Class Exception
+ * @package Vegas\Paginator\Adapter
+ */
 class Exception extends VegasException
 {
-    
+    protected $message = 'Paginator error';
 }
 
  

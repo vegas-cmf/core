@@ -33,7 +33,7 @@ abstract class Task extends \Phalcon\CLI\Task
     use ColorsOuputTrait;
 
     /**
-     * Task must implement this method to set available options
+     * Task's available options
      *
      * @return mixed
      */

@@ -23,6 +23,9 @@ use Vegas\Mvc\Module\SubModuleManager;
 
 /**
  * Class Bootstrap
+ *
+ * Bootstraps mvc application
+ *
  * @package Vegas\Application
  */
 class Bootstrap implements BootstrapInterface
@@ -179,7 +182,7 @@ class Bootstrap implements BootstrapInterface
     /**
      * Start handling MVC requests
      *
-     * @param null $uri
+     * @param string $uri
      * @return string
      */
     public function run($uri = null)

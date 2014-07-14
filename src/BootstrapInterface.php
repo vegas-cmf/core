@@ -19,11 +19,15 @@ namespace Vegas;
 interface BootstrapInterface
 {
     /**
+     * Executes all bootstrap initializator
+     * This method can be overloaded to load own initializator.
      * @return mixed
      */
     public function setup();
 
     /**
+     * Runs application
+     *
      * @return mixed
      */
     public function run();
