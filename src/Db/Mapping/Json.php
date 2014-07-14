@@ -37,7 +37,7 @@ class Json implements MappingInterface
     public function resolve(& $value)
     {
         if (is_string($value) && strlen($value) > 0) {
-            $value = json_decode($value);
+            $value = json_decode($value, true);
         }
 
         return $value;
