@@ -27,11 +27,24 @@ class ServiceManager implements \Phalcon\DI\InjectionAwareInterface
 {
     use InjectionAwareTrait;
 
+    /**
+     * Alias for getService.
+     *
+     * @param $name
+     * @return object
+     */
     public function get($name)
     {
         return $this->getService($name);
     }
 
+    /**
+     * Try to register and return service.
+     *
+     * @param $name
+     * @return object
+     * @throws Service\Exception
+     */
     public function getService($name)
     {
         try {
@@ -43,7 +56,34 @@ class ServiceManager implements \Phalcon\DI\InjectionAwareInterface
             throw new Exception($ex->getMessage().', using: '.$name);
         }
     }
-    
+
+    /**
+     * Alias for hasService.
+     *
+     * @param $name
+     * @return bool
+     */
+    public function has($name)
+    {
+        return $this->hasService($name);
+    }
+
+    /**
+     * Try to register service and return information about service existence.
+     *
+     * @param $name
+     * @return bool
+     */
+    public function hasService($name)
+    {
+        try {
+            $service = $this->getService($name);
+            return !empty($service);
+        } catch (\Phalcon\DI\Exception $ex) {
+            return false;
+        }
+    }
+
     private function isRegisteredService($name)
     {
         if ($this->di->has($name)) {
