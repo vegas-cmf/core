@@ -68,17 +68,23 @@ class Pagination
      * @param array $settings
      * @return string
      */
-    public function render($page, $settings=array()) 
+    public function render($page, $settings=array())
     {
         $this->settings = array_merge($this->settings, $settings);
-        $this->currentUri = $this->di->get('router')->getRewriteUri();
+
+        if (!empty($page->currentUri)) {
+            $this->htmlHref = str_replace('?', '&', $this->htmlHref);
+            $this->currentUri = $page->currentUri;
+        } else {
+            $this->currentUri = $this->di->get('router')->getRewriteUri();
+        }
 
         $html = '';
         if ($page->total_pages > 1) {
             $this->page = $page;
-            
+
             $this->checkBoundary();
-            
+
             $html .= '<ul class="pagination">';
             $html .= $this->renderBefore();
             $html .= $this->renderPages();
@@ -95,7 +101,11 @@ class Pagination
     private function checkBoundary()
     {
         if($this->page->current > $this->page->total_pages) {
-            $this->di->get('response')->redirect(substr($this->currentUri,1).'?page='.$this->page->total_pages);
+
+            $queryLink = !empty($this->page->currentUri) ? '&' : '?';
+            $redirectUrl = substr($this->currentUri, 1) . $queryLink . 'page=' . $this->page->total_pages;
+
+            $this->di->get('response')->redirect($redirectUrl);
         }
     }
 
@@ -143,7 +153,7 @@ class Pagination
     private function renderPages()
     {
         $html = '';
-        
+
         for($i=1; $i<=$this->page->total_pages; $i++) {
             if ($i == $this->page->current) {
                 $html .= $this->renderElement($i, $i, 'active');
@@ -153,7 +163,7 @@ class Pagination
                 $html .= $this->renderElement($this->page->current, '...', 'more');
             }
         }
-        
+
         return $html;
     }
 
@@ -166,15 +176,15 @@ class Pagination
         if (abs($this->page->current-$pageNb) <= $this->settings['middle_offset']) {
             return true;
         }
-        
+
         if (($pageNb - $this->settings['start_end_offset']) <= 0) {
             return true;
         }
-        
+
         if (($this->page->total_pages-$pageNb) < $this->settings['start_end_offset']) {
             return true;
         }
-        
+
         return false;
     }
 
