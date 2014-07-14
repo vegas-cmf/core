@@ -134,7 +134,7 @@ class Crud extends ControllerAbstract
         $this->dispatcher->forward(array('action' => 'edit'));
     }
     
-    private function checkRequest()
+    protected function checkRequest()
     {
         if (!$this->request->isPost()) {
             throw new Crud\Exception\PostRequiredException();
