@@ -29,7 +29,7 @@ abstract class ModelAbstract extends \Phalcon\Mvc\Model
     use WriteAttributesTrait;
 
     /**
-     *
+     * Sets time of create
      */
     public function beforeCreate()
     {
@@ -37,10 +37,21 @@ abstract class ModelAbstract extends \Phalcon\Mvc\Model
     }
 
     /**
-     *
+     * Sets time of update
      */
     public function beforeUpdate()
     {
         $this->updated_at = time();
+    }
+
+    /**
+     * Finds record by its ID
+     *
+     * @param $id
+     * @return \Phalcon\Mvc\Model\ResultsetInterface
+     */
+    public function findById($id)
+    {
+        return parent::find(array('id' => $id));
     }
 } 
