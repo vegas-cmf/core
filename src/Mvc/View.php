@@ -26,6 +26,9 @@ class View extends PhalconView
     private $controllerViewPath;
 
     /**
+     * Constructor
+     * Prepares view settings and engine
+     *
      * @param null $options
      * @param null $viewDir
      */
@@ -59,6 +62,8 @@ class View extends PhalconView
     }
 
     /**
+     * Renders view for controller action
+     *
      * @param string $controllerName
      * @param string $actionName
      * @param null $params
@@ -73,6 +78,8 @@ class View extends PhalconView
     }
 
     /**
+     * Prepares path for controller view
+     *
      * @param $controllerName
      * @return mixed
      */
@@ -82,6 +89,8 @@ class View extends PhalconView
     }
 
     /**
+     * Prepares relative layout path
+     *
      * @param array $options
      * @param null $viewDir
      * @return string

@@ -19,6 +19,11 @@ use Vegas\Mvc\Dispatcher\Exception as Exception;
  */
 class CannotHandleErrorException extends Exception
 {
+    /**
+     * Exception default message
+     * 
+     * @var string
+     */
     protected $message = 'Dispatcher cannot handle this exception.';
 }
  

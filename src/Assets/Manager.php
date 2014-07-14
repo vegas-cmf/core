@@ -11,8 +11,18 @@
  */
 namespace Vegas\Assets;
 
+/**
+ * Class Manager
+ *
+ * Simple assets manager, that prevents assets duplicate
+ *
+ * @package Vegas\Assets
+ */
 class Manager extends \Phalcon\Assets\Manager
 {
+    /**
+     * {@inheritdoc}
+     */
     public function addCss($path, $local = true, $filter = null, $attributes = null)
     {
         foreach ($this->getCss()->getResources() As $resource) {
@@ -23,7 +33,10 @@ class Manager extends \Phalcon\Assets\Manager
         
         return parent::addCss($path, $local, $filter, $attributes);
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function addJs($path, $local = true, $filter = null, $attributes = null)
     {
         foreach ($this->getJs()->getResources() As $resource) {

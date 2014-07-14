@@ -86,6 +86,8 @@ class Json implements \JsonSerializable
     }
 
     /**
+     * Serializes array to JSON format
+     *
      * @return array|mixed
      */
     public function jsonSerialize()

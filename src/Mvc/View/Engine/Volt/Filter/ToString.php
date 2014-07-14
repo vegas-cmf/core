@@ -23,6 +23,8 @@ class ToString extends VoltFilterAbstract
 {
 
     /**
+     * Casts object to string
+     *
      * @return callable
      */
     public function getFilter()

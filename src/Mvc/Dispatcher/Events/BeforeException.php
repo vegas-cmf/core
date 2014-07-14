@@ -22,6 +22,8 @@ use Vegas\Mvc\Dispatcher\ExceptionResolver;
 class BeforeException
 {
     /**
+     * Event fired when exception is throwing
+     *
      * @return callable
      */
     public static function getEvent()

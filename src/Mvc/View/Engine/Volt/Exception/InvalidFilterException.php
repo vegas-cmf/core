@@ -14,7 +14,16 @@ namespace Vegas\Mvc\View\Engine\Volt\Exception;
 
 use Vegas\Mvc\View\Engine\Exception;
 
+/**
+ * Class InvalidFilterException
+ * @package Vegas\Mvc\View\Engine\Volt\Exception
+ */
 class InvalidFilterException extends Exception
 {
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
     protected $_message = 'Invalid filter. Filter must be an instance of VoltFilterAbstract';
 } 

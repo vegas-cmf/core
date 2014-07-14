@@ -9,7 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
- 
+
 namespace Vegas\Tests\Db\Adapter\Decorator;
 
 use Phalcon\DI;
@@ -24,6 +24,7 @@ class FakeModel extends ModelAbstract
     }
 }
 
+
 class ModelAbstractTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -36,7 +37,8 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
             id int not null primary key auto_increment,
             title varchar(250) null,
             content text null,
-            category_id int null
+            category_id int null,
+            created_at int null
             )'
         );
     }
@@ -78,4 +80,4 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
         $fake = FakeModel::findFirst();
         $this->assertEquals('New title', $fake->title);
     }
-} 
+}

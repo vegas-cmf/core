@@ -19,6 +19,10 @@ use Vegas\Paginator\Adapter\Exception;
  */
 class DbNotSetException extends Exception
 {
+    /**
+     * Exception default message
+     * @var string
+     */
     protected $message = 'You need to set mongo db for pagination.';
 }
  

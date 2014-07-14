@@ -14,8 +14,16 @@ namespace Vegas\DI\Service\Exception;
 
 use Vegas\DI\Service\Exception as VegasException;
 
+/**
+ * Class MethodNotFoundException
+ * @package Vegas\DI\Service\Exception
+ */
 class MethodNotFoundException extends VegasException
 {
-    
+    /**
+     * Exception default message
+     * @var string
+     */
+    protected $message = 'Method has not been found';
 }
  

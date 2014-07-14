@@ -27,11 +27,17 @@ abstract class CollectionAbstract extends \Phalcon\Mvc\Collection
     use SlugTrait;
     use WriteAttributesTrait;
 
+    /**
+     * Event fired when record is being created
+     */
     public function beforeCreate()
     {
         $this->created_at = new \MongoInt32(time());
     }
 
+    /**
+     * Event fired when record is being updated
+     */
     public function beforeUpdate()
     {
         $this->updated_at = new \MongoInt32(time());

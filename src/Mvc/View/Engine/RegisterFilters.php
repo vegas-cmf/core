@@ -13,6 +13,8 @@ namespace Vegas\Mvc\View\Engine;
 trait RegisterFilters
 {
     /**
+     * Returns the path to view filter directory
+     *
      * @return string
      */
     private function getFiltersDirectoryPath()
@@ -23,7 +25,7 @@ trait RegisterFilters
     }
 
     /**
-     *
+     * Registers view filters from directory
      */
     public function registerFilters ()
     {

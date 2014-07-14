@@ -27,6 +27,8 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
     use \Vegas\DI\InjectionAwareTrait;
 
     /**
+     * Resolves application error and renders error
+     *
      * @param \Exception $exception
      * @throws \Vegas\Mvc\Dispatcher\Exception\CannotHandleErrorException
      * @return object
@@ -60,6 +62,8 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
     }
 
     /**
+     * Prepares exception for live environment
+     *
      * @param \Exception $exception
      * @return VegasException
      */
@@ -84,6 +88,8 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
     }
 
     /**
+     * Prepares error for development environment
+     *
      * @param \Exception $exception
      * @return VegasException
      */
@@ -102,6 +108,8 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
     }
 
     /**
+     * Renders error using error layout
+     *
      * @param VegasException $error
      * @return bool
      */
@@ -130,6 +138,8 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
     }
 
     /**
+     * Displays raw error without using any layout
+     *
      * @param Exception $error
      */
     private function displayRawError(VegasException $error)

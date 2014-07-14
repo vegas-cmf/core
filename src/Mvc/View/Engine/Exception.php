@@ -20,5 +20,10 @@ use Vegas\Mvc\View\Exception as ViewException;
  */
 class Exception extends ViewException
 {
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
     protected $message = 'View engine exception';
 } 

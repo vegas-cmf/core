@@ -15,9 +15,19 @@ namespace Vegas\Mvc\View;
 use Phalcon\Mvc\View as PhalconView;
 use Phalcon\Mvc\View\Simple as PhalconSimpleView;
 
+/**
+ * Class Simple
+ * @package Vegas\Mvc\View
+ */
 class Simple extends PhalconSimpleView
 {
 
+    /**
+     * Constructor
+     * Initializes simple view
+     *
+     * @param null $options
+     */
     public function __construct($options=null) {
         parent::__construct($options);
 

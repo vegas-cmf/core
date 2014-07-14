@@ -47,11 +47,15 @@ class Option
     protected $description;
 
     /**
+     * Determines if option is required
+     *
      * @var bool
      */
     protected $isRequired = false;
 
     /**
+     * Constructor
+     * 
      * @param $name
      * @param $shortName
      * @param string $description
@@ -64,6 +68,8 @@ class Option
     }
 
     /**
+     * Returns full name of option
+     *
      * @return string
      */
     public function getName()
@@ -72,6 +78,8 @@ class Option
     }
 
     /**
+     * Returns short name of option
+     *
      * @return string
      */
     public function getShortName()
@@ -80,6 +88,8 @@ class Option
     }
 
     /**
+     * Return description of option
+     *
      * @return string
      */
     public function getDescription()
@@ -121,6 +131,8 @@ class Option
     }
 
     /**
+     * Determines if option is required
+     *
      * @return bool
      */
     public function isRequired()
@@ -148,6 +160,9 @@ class Option
     }
 
     /**
+     * Looks for value of option in specified arguments array.
+     * When option is not found then returns default value.
+     *
      * @param $args
      * @param null $default
      * @return mixed

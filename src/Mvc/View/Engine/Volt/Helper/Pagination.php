@@ -23,6 +23,8 @@ class Pagination extends VoltHelperAbstract
 {
 
     /**
+     * Creates pagination
+     *
      * @return callable
      */
     public function getHelper()

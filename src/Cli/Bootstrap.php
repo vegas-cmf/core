@@ -27,9 +27,18 @@ use Vegas\Mvc\Module\SubModuleManager;
  */
 class Bootstrap implements BootstrapInterface
 {
+    /**
+     * Application arguments
+     *
+     * @var array
+     */
     private $arguments;
 
     /**
+     * Constructor
+     * Initializes Console Application
+     * Initializes DI for CLI application
+     *
      * @param \Phalcon\Config $config
      */
     public function __construct(\Phalcon\Config $config)
@@ -76,7 +85,7 @@ class Bootstrap implements BootstrapInterface
     }
 
     /**
-     *
+     * Initializes application modules
      */
     protected function initModules()
     {

@@ -29,7 +29,7 @@ abstract class ModelAbstract extends \Phalcon\Mvc\Model
     use WriteAttributesTrait;
 
     /**
-     *
+     * Event fired when record is being created
      */
     public function beforeCreate()
     {
@@ -37,7 +37,7 @@ abstract class ModelAbstract extends \Phalcon\Mvc\Model
     }
 
     /**
-     *
+     * Event fired when record is being updated
      */
     public function beforeUpdate()
     {

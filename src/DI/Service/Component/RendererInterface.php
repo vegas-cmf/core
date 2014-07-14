@@ -11,10 +11,41 @@
  */
 namespace Vegas\DI\Service\Component;
 
+/**
+ * Interface RendererInterface
+ * @package Vegas\DI\Service\Component
+ */
 interface RendererInterface
 {
+    /**
+     * Constructor
+     * Sets view instance
+     *
+     * @param \Phalcon\Mvc\View $view
+     */
     public function __construct(\Phalcon\Mvc\View $view = null);
+
+    /**
+     * Sets name of template
+     *
+     * @param $name
+     * @return $this
+     */
     public function setModuleName($name);
+
+    /**
+     * Sets name of module
+     *
+     * @param $name
+     * @return $this
+     */
     public function setTemplateName($name);
+
+    /**
+     * Renders component's content from view
+     *
+     * @param array $params
+     * @return string|void
+     */
     public function render($params = array());
 }

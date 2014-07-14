@@ -58,6 +58,8 @@ class ModuleLoader
     }
 
     /**
+     * Creates file's content with list of modules
+     *
      * @param $modulesList
      * @return string
      */

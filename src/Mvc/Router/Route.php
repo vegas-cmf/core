@@ -52,6 +52,8 @@ class Route
     private $params = array();
 
     /**
+     * Constructor
+     *
      * @param $name     Name of route
      * @param $routeArray
      */
@@ -64,6 +66,8 @@ class Route
     }
 
     /**
+     * Returns name of route
+     *
      * @return string
      */
     public function getName()
@@ -72,6 +76,8 @@ class Route
     }
 
     /**
+     * Returns route
+     *
      * @return string
      */
     public function getRoute()
@@ -80,6 +86,8 @@ class Route
     }
 
     /**
+     * Returns route paths
+     *
      * @return array
      */
     public function getPaths()
@@ -88,6 +96,8 @@ class Route
     }
 
     /**
+     * Returns additional route params
+     *
      * @return array
      */
     public function getParams()

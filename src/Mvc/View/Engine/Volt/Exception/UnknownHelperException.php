@@ -14,7 +14,16 @@ namespace Vegas\Mvc\View\Engine\Volt\Exception;
 
 use Vegas\Mvc\View\Engine\Exception;
 
+/**
+ * Class UnknownHelperException
+ * @package Vegas\Mvc\View\Engine\Volt\Exception
+ */
 class UnknownHelperException extends Exception
 {
-
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
+    protected $message = 'Unknown helper';
 } 

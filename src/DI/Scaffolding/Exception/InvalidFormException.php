@@ -13,8 +13,15 @@ namespace Vegas\DI\Scaffolding\Exception;
 
 use Vegas\DI\Scaffolding\Exception;
 
+/**
+ * Class InvalidFormException
+ * @package Vegas\DI\Scaffolding\Exception
+ */
 class InvalidFormException extends Exception
 {
+    /**
+     * Exception default message
+     */
     protected $message = 'Form is invalid.';   
 }
  

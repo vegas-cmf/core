@@ -21,6 +21,8 @@ use Vegas\Cli\Exception as CliException;
 class InvalidArgumentException extends CliException
 {
     /**
+     * Constructor
+     * 
      * @param string $option
      * @param int $argument
      */
@@ -32,16 +34,22 @@ class InvalidArgumentException extends CliException
     }
 
     /**
+     * Option that caused exception
+     *
      * @var string
      */
     protected $option;
 
     /**
+     * Argument that caused exception
+     *
      * @var int
      */
     protected $argument;
 
     /**
+     * Returns argument that caused exception
+     *
      * @return int
      */
     public function getArgument()
@@ -50,6 +58,8 @@ class InvalidArgumentException extends CliException
     }
 
     /**
+     * Returns option that caused exception
+     *
      * @return string
      */
     public function getOption()
@@ -58,6 +68,7 @@ class InvalidArgumentException extends CliException
     }
 
     /**
+     * Exception default message
      * @var string
      */
     protected $message = 'Invalid argument';

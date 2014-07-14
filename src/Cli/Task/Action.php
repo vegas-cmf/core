@@ -44,6 +44,8 @@ class Action
     private $options = array();
 
     /**
+     * Constructor
+     *
      * @param $name
      * @param $description
      */
@@ -54,6 +56,8 @@ class Action
     }
 
     /**
+     * Returns name of action
+     *
      * @return string
      */
     public function getName()
@@ -62,6 +66,8 @@ class Action
     }
 
     /**
+     * Returns description of action
+     *
      * @return string
      */
     public function getDescription()

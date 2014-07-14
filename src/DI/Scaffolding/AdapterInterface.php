@@ -11,8 +11,25 @@
  */
 namespace Vegas\DI\Scaffolding;
 
+/**
+ * Interface AdapterInterface
+ * @package Vegas\DI\Scaffolding
+ */
 interface AdapterInterface
 {
+    /**
+     * Retrieves record by its ID
+     *
+     * @param $id
+     * @return mixed
+     */
     public function retrieveOne($id);
+
+    /**
+     * Sets scaffolding instance
+     *
+     * @param \Vegas\DI\Scaffolding $scaffolding
+     * @return mixed
+     */
     public function setScaffolding(\Vegas\DI\Scaffolding $scaffolding);
 }
