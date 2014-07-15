@@ -31,6 +31,8 @@ class Bootstrap implements BootstrapInterface
      * Application arguments
      *
      * @var array
+     * @internal
+     * @internal
      */
     private $arguments;
 

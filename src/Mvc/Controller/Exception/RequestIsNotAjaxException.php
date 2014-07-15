@@ -14,8 +14,17 @@ namespace Vegas\Mvc\Controller\Exception;
 
 use Vegas\Mvc\Controller\Exception;
 
+/**
+ * Class RequestIsNotAjaxException
+ * @package Vegas\Mvc\Controller\Exception
+ */
 class RequestIsNotAjaxException extends Exception
 {
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
     protected $message = 'Action require an AJAX request.';
 }
  

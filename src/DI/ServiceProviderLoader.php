@@ -50,6 +50,7 @@ class ServiceProviderLoader
     /**
      * @param $servicesList
      * @return string
+     * @internal
      */
     private static function createFileContent($servicesList)
     {
@@ -114,6 +115,7 @@ class ServiceProviderLoader
      *
      * @param \Phalcon\Config $config
      * @param $services
+     * @internal
      */
     private static function setupServiceProvidersAutoloader(\Phalcon\Config $config, $services)
     {

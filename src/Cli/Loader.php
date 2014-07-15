@@ -32,6 +32,7 @@ class Loader
 
     /**
      * @var Console
+     * @internal
      */
     private $consoleApp;
 
@@ -102,6 +103,7 @@ class Loader
      * @param string $str
      * @throws CliException
      * @return string
+     * @internal
      */
     private function toNamespace($str) {
         $string_parts = preg_split('/_+/', $str);
@@ -117,6 +119,7 @@ class Loader
 
     /**
      * @param $namespace
+     * @internal
      */
     private function registerClass($namespace)
     {
@@ -134,6 +137,7 @@ class Loader
      *
      * @param array $task
      * @return string
+     * @internal
      */
     private function loadAppTask(array $task)
     {
@@ -156,6 +160,7 @@ class Loader
      * @param $taskName
      * @return string
      * @throws Exception\TaskNotFoundException
+     * @internal
      */
     private function loadAppModuleTask($moduleName, $taskName)
     {
@@ -183,6 +188,7 @@ class Loader
      *
      * @param array $task
      * @return string
+     * @internal
      */
     private function loadCoreTask(array $task)
     {

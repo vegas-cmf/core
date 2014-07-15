@@ -26,6 +26,7 @@ class Action
      * Name of action
      *
      * @var string
+     * @internal
      */
     private $name;
 
@@ -33,6 +34,7 @@ class Action
      * Description of action
      *
      * @var string
+     * @internal
      */
     private $description;
 
@@ -40,6 +42,7 @@ class Action
      * Available options
      *
      * @var array
+     * @internal
      */
     private $options = array();
 

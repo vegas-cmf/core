@@ -76,6 +76,7 @@ class Renderer implements RendererInterface
 
     /**
      * {@inheritdoc}
+     * @internal
      */
     private function getServiceViewPath()
     {

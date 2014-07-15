@@ -49,6 +49,7 @@ class InvalidOptionException extends CliException
 
     /**
      * Exception default message
+     *
      * @var string
      */
     protected $message = 'Invalid option';

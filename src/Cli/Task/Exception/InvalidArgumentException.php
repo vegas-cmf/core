@@ -69,6 +69,7 @@ class InvalidArgumentException extends CliException
 
     /**
      * Exception default message
+     *
      * @var string
      */
     protected $message = 'Invalid argument';

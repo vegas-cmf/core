@@ -12,6 +12,10 @@
 
 namespace Vegas\Cli;
 
+/**
+ * Class Console
+ * @package Vegas\Cli
+ */
 class Console extends \Phalcon\CLI\Console
 {
 
@@ -43,6 +47,7 @@ class Console extends \Phalcon\CLI\Console
      * Registers namespaces for models and services within modules
      *
      * @param $modules
+     * @internal
      */
     private function registerSharedData($modules)
     {

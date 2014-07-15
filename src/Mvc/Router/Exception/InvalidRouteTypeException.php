@@ -24,6 +24,7 @@ class InvalidRouteTypeException extends RouterException
 {
     /**
      * Exception default message
+     *
      * @var string
      */
     protected $message = 'Invalid route type';

@@ -14,8 +14,17 @@ namespace Vegas\DI\Service;
 
 use Vegas\Exception as VegasException;
 
+/**
+ * Class Exception
+ * @package Vegas\DI\Service
+ */
 class Exception extends VegasException
 {
-    
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
+    protected $message = 'Service exception';
 }
  

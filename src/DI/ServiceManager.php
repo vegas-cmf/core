@@ -23,6 +23,10 @@ namespace Vegas\DI;
 
 use Vegas\DI\Service\Exception;
 
+/**
+ * Class ServiceManager
+ * @package Vegas\DI
+ */
 class ServiceManager implements \Phalcon\DI\InjectionAwareInterface
 {
     use InjectionAwareTrait;
@@ -84,6 +88,11 @@ class ServiceManager implements \Phalcon\DI\InjectionAwareInterface
         }
     }
 
+    /**
+     * @param $name
+     * @return bool
+     * @internal
+     */
     private function isRegisteredService($name)
     {
         if ($this->di->has($name)) {
@@ -92,13 +101,22 @@ class ServiceManager implements \Phalcon\DI\InjectionAwareInterface
         
         return false;
     }
-    
+
+    /**
+     * @param $name
+     * @internal
+     */
     private function registerService($name)
     {
         $namespace = $this->translateNameToNamespace($name);
         $this->di->set($name, $namespace, true);
     }
-    
+
+    /**
+     * @param $name
+     * @return string
+     * @internal
+     */
     private function translateNameToNamespace($name)
     {
         $nameParts = array_map('ucfirst', explode(':',$name));

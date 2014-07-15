@@ -18,6 +18,8 @@ namespace Vegas\Db;
 interface AdapterInterface
 {
     /**
+     * Verifies services required by db adapter
+     *
      * @param \Phalcon\DiInterface $di
      * @return mixed
      */

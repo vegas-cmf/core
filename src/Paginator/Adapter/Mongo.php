@@ -13,21 +13,69 @@ namespace Vegas\Paginator\Adapter;
 
 use Phalcon\Paginator\AdapterInterface;
 
+/**
+ * Class Mongo
+ * @package Vegas\Paginator\Adapter
+ */
 class Mongo implements AdapterInterface
 {
+    /**
+     * @var
+     * @internal
+     */
     private $db;
+
+    /**
+     * @var string
+     * @internal
+     */
     private $modelName;
+
+    /**
+     * @var
+     * @internal
+     */
     private $model;
+
+    /**
+     * @var int
+     * @internal
+     */
     private $totalPages;
-    
+
+    /**
+     * @var array
+     * @internal
+     */
     private $query = array();
+
+    /**
+     * @var int
+     * @internal
+     */
     private $limit = 10;
+
+    /**
+     * @var int
+     * @internal
+     */
     private $page = 1;
+
+    /**
+     * @var mixed
+     * @internal
+     */
     private $sort;
-    
+
+    /**
+     * Constructor
+     * Sets config as class properties
+     *
+     * @param $config
+     */
     public function __construct($config)
     {
-        foreach ($config As $key => $value) {
+        foreach ($config as $key => $value) {
             $this->$key = $value;
         }
         
@@ -36,6 +84,13 @@ class Mongo implements AdapterInterface
         $this->model = new $this->modelName();
     }
 
+    /**
+     * Validates model and database
+     *
+     * @throws Exception\ModelNotSetException
+     * @throws Exception\DbNotSetException
+     * @internal
+     */
     private function validate()
     {
         if (empty($this->modelName)) {
@@ -46,7 +101,10 @@ class Mongo implements AdapterInterface
             throw new Exception\DbNotSetException();
         }
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getPaginate()
     {
         $page = new \Vegas\Paginator\Page();
@@ -60,6 +118,11 @@ class Mongo implements AdapterInterface
         return $page;
     }
 
+    /**
+     * Returns previous page number
+     *
+     * @return int|null
+     */
     public function getPreviousPage()
     {
         if ($this->page > 1) {
@@ -68,7 +131,12 @@ class Mongo implements AdapterInterface
         
         return null;
     }
-    
+
+    /**
+     * Returns next page number
+     *
+     * @return int|null
+     */
     public function getNextPage()
     {
         if ($this->page < $this->getTotalPages()) {
@@ -77,7 +145,12 @@ class Mongo implements AdapterInterface
         
         return null;
     }
-    
+
+    /**
+     * Returns number of pages
+     *
+     * @return int
+     */
     public function getTotalPages()
     {
         if (empty($this->totalPages)) {
@@ -86,14 +159,25 @@ class Mongo implements AdapterInterface
         
         return $this->totalPages;
     }
-    
+
+    /**
+     * Sets current page
+     *
+     * @param int $page
+     * @return $this
+     */
     public function setCurrentPage($page)
     {
         $this->page = $page;
         
         return $this;
     }
-    
+
+    /**
+     * Returns results for current page
+     *
+     * @return array
+     */
     public function getResults()
     {
         $skip = ($this->page-1)*$this->limit;
@@ -116,7 +200,11 @@ class Mongo implements AdapterInterface
         
         return $results;
     }
-    
+
+    /**
+     * @return mixed
+     * @internal
+     */
     private function getCursor()
     {
         $source = $this->model->getSource();

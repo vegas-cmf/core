@@ -47,6 +47,7 @@ class Application extends \Phalcon\Mvc\Application
      * Registers namespaces for models and services within modules
      *
      * @param $modules
+     * @internal
      */
     private function registerSharedData($modules)
     {

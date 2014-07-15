@@ -15,13 +15,53 @@ namespace Vegas\DI\Service;
 use Vegas\DI\Service\Exception\MethodNotFoundException;
 use Vegas\DI\Service\Exception\ProxyMethodNotFoundException;
 
+/**
+ * Class ModelProxyAbstract
+ *
+ * By extending ModelProxyAbstract, class receives access to methods defined in $model object
+ * Usage
+ * <code>
+ * class Test extends \Vegas\DI\Service\ModelProxyAbstract implements \Phalcon\DI\InjectionAwareInterface
+ * {
+ *      use \Vegas\DI\InjectionAwareTrait;
+ *
+ *      public function __construct()
+ *      {
+ *          $this->model = new \TestModule\Models\TestModel();
+ *      }
+ *      //...
+ * }
+ *
+ * //...
+ * $test = new Test();
+ * $records = $test->find();
+ * </code>
+ *
+ * @package Vegas\DI\Service
+ */
 abstract class ModelProxyAbstract 
 {
+    /**
+     * Model object
+     *
+     * @var \stdClass
+     */
     protected $model = null;
 
-    public function __call($method, $args) {
-        if(!empty($this->model)) {
-            if(method_exists($this->model, $method)) {
+    /**
+     * Magic method that calls method which does not exist in child-class
+     * on the model object when it's initialized
+     *
+     * @param $method
+     * @param $args
+     * @return mixed
+     * @throws Exception\MethodNotFoundException
+     * @throws Exception\ProxyMethodNotFoundException
+     */
+    public function __call($method, $args)
+    {
+        if (!empty($this->model)) {
+            if (method_exists($this->model, $method)) {
                 return call_user_func_array(array($this->model, $method), $args);
             } else {
                 throw new ProxyMethodNotFoundException("Method: {$method} not 

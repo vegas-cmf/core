@@ -21,27 +21,37 @@ namespace Vegas\Paginator;
 class Page
 {
     /**
-     * @var
+     * Number of total pages
+     *
+     * @var int
      */
     public $total_pages;
 
     /**
-     * @var
+     * Number of previous page
+     *
+     * @var int
      */
     public $before;
 
     /**
-     * @var
+     * Number of current page
+     *
+     * @var int
      */
     public $current;
 
     /**
-     * @var
+     * Number of next page
+     *
+     * @var int
      */
     public $next;
 
     /**
-     * @var
+     * Pagination items
+     *
+     * @var array()|\Iterator
      */
     public $items;
 }

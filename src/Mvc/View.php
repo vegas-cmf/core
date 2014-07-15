@@ -21,7 +21,8 @@ use Phalcon\Mvc\View as PhalconView;
 class View extends PhalconView
 {
     /**
-     * @var
+     * @var string
+     * @internal
      */
     private $controllerViewPath;
 
@@ -82,6 +83,7 @@ class View extends PhalconView
      *
      * @param $controllerName
      * @return mixed
+     * @internal
      */
     private function prepareControllerViewPath($controllerName)
     {
@@ -94,6 +96,7 @@ class View extends PhalconView
      * @param array $options
      * @param null $viewDir
      * @return string
+     * @internal
      */
     private function prepareRelativeLayoutsPath(array $options, $viewDir = null)
     {

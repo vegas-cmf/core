@@ -22,6 +22,7 @@ class Json implements \JsonSerializable
      * Determines if request was succeed or failed
      *
      * @var bool
+     * @internal
      */
     private $isSuccess = false;
 
@@ -29,6 +30,7 @@ class Json implements \JsonSerializable
      * Contains data
      *
      * @var string
+     * @internal
      */
     private $data = '';
 
@@ -36,6 +38,7 @@ class Json implements \JsonSerializable
      * Response message
      *
      * @var string
+     * @internal
      */
     private $message = '';
 

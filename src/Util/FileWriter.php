@@ -47,6 +47,7 @@ class FileWriter
      * @param $filePath
      * @param $newContent
      * @return bool
+     * @internal
      */
     private static function compareContents($filePath, $newContent)
     {

@@ -22,6 +22,8 @@ namespace Vegas\DI;
 trait InjectionAwareTrait
 {
     /**
+     * Dependency injector
+     *
      * @var \Phalcon\DiInterface $dependencyInjector
      */
     protected $di;

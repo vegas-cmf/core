@@ -13,12 +13,26 @@ namespace Vegas\Mvc\Controller;
 
 use Phalcon\Mvc\Controller;
 
+/**
+ * Class ControllerAbstract
+ * @package Vegas\Mvc\Controller
+ */
 abstract class ControllerAbstract extends Controller
 {
+    /**
+     * Controller initialization block
+     */
     public function initialize()
     {
     }
 
+    /**
+     * Renders JSON response
+     * Disables view
+     *
+     * @param $data
+     * @return \Phalcon\Http\ResponseInterface
+     */
     protected function jsonResponse($data) 
     {
         $this->view->disable();
@@ -41,6 +55,8 @@ abstract class ControllerAbstract extends Controller
     }
 
     /**
+     * Throws exception with code 403
+     *
      * @param string $message
      * @throws \Vegas\Exception
      */
@@ -50,6 +66,8 @@ abstract class ControllerAbstract extends Controller
     }
 
     /**
+     * Throws exception with code 404
+     *
      * @param string $message
      * @throws \Vegas\Exception
      */
@@ -59,6 +77,8 @@ abstract class ControllerAbstract extends Controller
     }
 
     /**
+     * Throws exception with code 500
+     *
      * @param string $message
      * @throws \Vegas\Exception
      */

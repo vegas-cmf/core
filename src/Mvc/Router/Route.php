@@ -24,6 +24,7 @@ class Route
      * Simplify route name
      *
      * @var string
+     * @internal
      */
     private $name;
 
@@ -31,6 +32,7 @@ class Route
      * Route URL
      *
      * @var string
+     * @internal
      */
     private $route;
 
@@ -38,6 +40,7 @@ class Route
      * Contains module/controller/action which will be executed when route is matched
      *
      * @var array
+     * @internal
      */
     private $paths;
 
@@ -48,6 +51,7 @@ class Route
      *      actions     -   allows to specify resource actions with HTTP methods, useful for building REST API
      *
      * @var array
+     * @internal
      */
     private $params = array();
 

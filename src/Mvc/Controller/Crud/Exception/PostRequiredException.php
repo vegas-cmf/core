@@ -13,8 +13,17 @@ namespace Vegas\Mvc\Controller\Crud\Exception;
 
 use Vegas\Mvc\Controller\Exception as Exception;
 
+/**
+ * Class PostRequiredException
+ * @package Vegas\Mvc\Controller\Crud\Exception
+ */
 class PostRequiredException extends Exception
 {
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
     protected $message = "This is not a POST request!";
 }
  

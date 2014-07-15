@@ -21,6 +21,7 @@ class ModelNotSetException extends Exception
 {
     /**
      * Exception default message
+     *
      * @var string
      */
     protected $message = 'You need to set model for pagination.';

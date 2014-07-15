@@ -43,6 +43,7 @@ abstract class Task extends \Phalcon\CLI\Task
      * Task output buffer
      *
      * @var array
+     * @internal
      */
     private $outputBuffer = array();
 
@@ -50,6 +51,7 @@ abstract class Task extends \Phalcon\CLI\Task
      * Available task actions
      *
      * @var array
+     * @internal
      */
     private $actions = array();
 
@@ -57,6 +59,7 @@ abstract class Task extends \Phalcon\CLI\Task
      * Action which is going to be executed
      *
      * @var string
+     * @internal
      */
     private $actionName;
 
@@ -64,6 +67,7 @@ abstract class Task extends \Phalcon\CLI\Task
      * Active task name
      *
      * @var string
+     * @internal
      */
     private $taskName;
 
@@ -71,6 +75,7 @@ abstract class Task extends \Phalcon\CLI\Task
      * Array of execution arguments
      *
      * @var array
+     * @internal
      */
     private $args;
 
@@ -130,6 +135,7 @@ abstract class Task extends \Phalcon\CLI\Task
      *
      * @param $args
      * @return bool
+     * @internal
      */
     private function containHelpOption($args)
     {
@@ -141,6 +147,7 @@ abstract class Task extends \Phalcon\CLI\Task
      *
      * @param $str
      * @return $this
+     * @internal
      */
     private function appendLine($str)
     {

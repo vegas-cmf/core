@@ -25,6 +25,7 @@ class MappingManager
      * Registered mappers
      *
      * @var array
+     * @internal
      */
     private static $container = array();
 

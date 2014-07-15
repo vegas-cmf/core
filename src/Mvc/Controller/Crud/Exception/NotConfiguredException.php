@@ -13,8 +13,17 @@ namespace Vegas\Mvc\Controller\Crud\Exception;
 
 use Vegas\Mvc\Controller\Exception as Exception;
 
+/**
+ * Class NotConfiguredException
+ * @package Vegas\Mvc\Controller\Crud\Exception
+ */
 class NotConfiguredException extends Exception
 {
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
     protected $message = "CRUD is not configured.";
 }
  

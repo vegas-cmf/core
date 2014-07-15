@@ -45,6 +45,7 @@ class CacheTask extends \Vegas\Cli\Task
      * Removes files from cache dir
      *
      * @param $dir
+     * @internal
      */
     private function removeFilesFromDir($dir)
     {

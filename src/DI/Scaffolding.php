@@ -14,22 +14,88 @@ namespace Vegas\DI;
 use Vegas\DI\Scaffolding\Exception\DeleteFailureException;
 use Vegas\DI\Scaffolding\Exception\InvalidFormException;
 
+/**
+ * Class Scaffolding
+ *
+ * Usage
+ * <code>
+ * class MyController extends Controller\Crud {
+ *      protected $formName = 'My\Forms\My';    // default form used by CRUD
+ *      protected $modelName = 'My\Models\My';  // default model used by CRUD
+
+ *      public function initialize()
+ *      {
+ *          parent::initialize();
+ *          // we can also add this event in the Module.php to the dispatcher
+ *          $this->dispatcher->getEventsManager()->attach(
+ *              Controller\Crud\Events::AFTER_CREATE, function() {
+ *                  $this->response->redirect('user-admin/index');
+ *              }
+ *          );
+ *          // attach more events
+ *      }
+ *      // other actions
+ *  }
+ * </code>
+ *
+ * @package Vegas\DI
+ */
 class Scaffolding implements \Vegas\DI\ScaffoldingInterface
 {
+    /**
+     * Dependency injector
+     *
+     * @var
+     */
     protected $di;
+
+    /**
+     * Record object
+     *
+     * @var
+     */
     protected $record;
+
+    /**
+     * Form object
+     *
+     * @var
+     */
     protected $form;
+
+    /**
+     * Scaffolding adapter model
+     *
+     * @var Scaffolding\AdapterInterface
+     */
     protected $adapter;
-    
+
+    /**
+     * Model class name
+     *
+     * @var string
+     */
     protected $modelName;
+
+    /**
+     * Form class name
+     *
+     * @var string
+     */
     protected $formName;
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(\Vegas\DI\Scaffolding\AdapterInterface $adapter)
     {
         $this->adapter = $adapter;
         $this->adapter->setScaffolding($this);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRecord()
     {
         if (empty($this->record)) {
@@ -37,7 +103,10 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
         }
         return $this->record;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getForm($entity = null)
     {
         if (empty($this->form)) {
@@ -46,41 +115,67 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
         return $this->form;
     }
 
+    /**
+     * Sets form instance
+     *
+     * @param $form
+     */
     public function setForm($form)
     {
         $this->form = $form;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function setFormName($name)
     {
         $this->formName = $name;
         return $this;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function setModelName($name)
     {
         $this->modelName = $name;
         return $this;
     }
 
+    /**
+     * Retrieves record by its ID
+     *
+     * @param $id
+     * @return mixed
+     */
     public function doRead($id)
     {
         $this->record = $this->adapter->retrieveOne($id);
         return $this->record;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function doCreate(array $values)
     {
         $this->record = new $this->modelName();
         return $this->processForm($values);
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function doUpdate($id, array $values)
     {
         $this->record = $this->adapter->retrieveOne($id);
         return $this->processForm($values);
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function doDelete($id)
     {
         $this->record = $this->adapter->retrieveOne($id);
@@ -91,7 +186,15 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
             throw new DeleteFailureException($e->getMessage());
         }
     }
-    
+
+    /**
+     * Processes form with provided values
+     *
+     * @param $values
+     * @return mixed
+     * @throws Scaffolding\Exception\InvalidFormException
+     * @internal
+     */
     private function processForm($values)
     {
         $form = $this->getForm();
@@ -104,7 +207,10 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
         $this->form = $form;
         throw new InvalidFormException();
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getAdapter() {
         return $this->adapter;
     }

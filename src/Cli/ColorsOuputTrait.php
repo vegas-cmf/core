@@ -1,9 +1,13 @@
 <?php
 /**
+ * This file is part of Vegas package
+ *
  * @author Slawomir Zytko <slawomir.zytko@gmail.com>
  * @copyright Amsterdam Standard Sp. Z o.o.
- * Date: 5/13/14
- * Time: 8:41 AM
+ * @homepage http://vegas-cmf.github.io
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace Vegas\Cli;
@@ -16,16 +20,19 @@ trait ColorsOuputTrait
 {
     /**
      * @var array
+     * @internal
      */
     private $foreground_colors = array();
 
     /**
      * @var array
+     * @internal
      */
     private $background_colors = array();
 
     /**
-     *
+     * Constructors
+     * Defines available colors
      */
     public function __construct()
     {

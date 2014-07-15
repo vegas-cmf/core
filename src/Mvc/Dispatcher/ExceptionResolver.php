@@ -66,6 +66,7 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
      *
      * @param \Exception $exception
      * @return VegasException
+     * @internal
      */
     private function prepareLiveEnvException(\Exception $exception)
     {
@@ -92,6 +93,7 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
      *
      * @param \Exception $exception
      * @return VegasException
+     * @internal
      */
     private function prepareDevEnvException(\Exception $exception)
     {
@@ -112,6 +114,7 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
      *
      * @param VegasException $error
      * @return bool
+     * @internal
      */
     private function renderLayoutForError(VegasException $error)
     {
@@ -141,6 +144,7 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
      * Displays raw error without using any layout
      *
      * @param Exception $error
+     * @internal
      */
     private function displayRawError(VegasException $error)
     {

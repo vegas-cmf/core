@@ -62,6 +62,7 @@ class ModuleLoader
      *
      * @param $modulesList
      * @return string
+     * @internal
      */
     private static function createFileContent($modulesList)
     {

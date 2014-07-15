@@ -2,7 +2,7 @@
 /**
  * This file is part of Vegas package
  *
- * @author Arkadiusz Ostrycharz <arkadiusz.ostrycharz@gmail.com>
+ * @author Slawomir Zytko <slawomir.zytko@gmail.com>
  * @copyright Amsterdam Standard Sp. Z o.o.
  * @homepage http://vegas-cmf.github.io
  *
@@ -39,6 +39,7 @@ class Router implements InjectionAwareInterface
      *  The static routes will be added in the end.
      *
      * @var array
+     * @internal
      */
     private $routeTypes = array(
         self::BASE_ROUTE => 0,
@@ -52,11 +53,13 @@ class Router implements InjectionAwareInterface
      * List of defined route rules
      *
      * @var array
+     * @internal
      */
     private $routes = array();
 
     /**
      * @var \Phalcon\Mvc\RouterInterface
+     * @internal
      */
     private $adapter;
 
@@ -64,10 +67,13 @@ class Router implements InjectionAwareInterface
      * Helper array for storing resolved route objects
      *
      * @var array
+     * @internal
      */
     private $resolvedTypes = array();
 
     /**
+     * Constructor
+     * Sets router adapter
      *
      * @param DiInterface $di
      * @param \Phalcon\Mvc\RouterInterface $routerAdapter
@@ -125,6 +131,7 @@ class Router implements InjectionAwareInterface
      *
      * @param $path
      * @return array|mixed
+     * @internal
      */
     private function getRouteArrayFromModulePath($path)
     {
@@ -139,6 +146,7 @@ class Router implements InjectionAwareInterface
 
     /**
      * Groups routes by types
+     * @internal
      */
     private function groupRoutes()
     {
@@ -165,6 +173,7 @@ class Router implements InjectionAwareInterface
      * @param $type
      * @return bool
      * @throws Router\Exception\InvalidRouteTypeException
+     * @internal
      */
     private function validateRouteType($type)
     {
@@ -186,6 +195,7 @@ class Router implements InjectionAwareInterface
 
     /**
      * Setups router
+     * Adds rules to router
      */
     public function setup()
     {
@@ -208,6 +218,7 @@ class Router implements InjectionAwareInterface
      * Resolves hostname from $_SERVER['HTTP_HOST']
      *
      * @return string|null
+     * @internal
      */
     private function resolveDefaultHostName()
     {
@@ -233,6 +244,7 @@ class Router implements InjectionAwareInterface
      * @param $routeType
      * @return \Vegas\Mvc\Router\RouteInterface
      * @throws Router\Exception\InvalidRouteTypeException
+     * @internal
      */
     private function resolveRouteType($routeType)
     {

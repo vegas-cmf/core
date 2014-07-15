@@ -32,6 +32,7 @@ class AssetsTask extends \Vegas\Cli\Task
 
     /**
      * Copies all assets from vegas-cmf libraries
+     * @internal
      */
     private function copyAllAssets()
     {
@@ -62,6 +63,7 @@ class AssetsTask extends \Vegas\Cli\Task
      * @param $dest
      * @param int $permissions
      * @return bool
+     * @internal
      */
     private function copyRecursive($source, $dest, $permissions = 0755)
     {

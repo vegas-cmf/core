@@ -23,6 +23,7 @@ class Pagination
      * Pagination link html code
      *
      * @var string
+     * @internal
      */
     private $htmlHref = '<a href="%s?page=%d">%s</a>';
 
@@ -30,13 +31,15 @@ class Pagination
      * Pagination list element
      *
      * @var string
+     * @internal
      */
     private $htmlElement = '<li class="%s">%s</li>';
 
     /**
      * Pagination current URI
      *
-     * @var
+     * @var string
+     * @internal
      */
     private $currentUri;
 
@@ -44,6 +47,7 @@ class Pagination
      * Pagination settings
      *
      * @var array
+     * @internal
      */
     private $settings;
 
@@ -99,6 +103,7 @@ class Pagination
 
     /**
      * Checks if current page fit in total pages
+     * @internal
      */
     private function checkBoundary()
     {
@@ -115,6 +120,7 @@ class Pagination
      * Renders button - previous page
      *
      * @return string
+     * @internal
      */
     private function renderPreviousButton()
     {
@@ -130,6 +136,7 @@ class Pagination
      * Renders button - next page
      *
      * @return string
+     * @internal
      */
     private function renderNextButton()
     {
@@ -148,6 +155,7 @@ class Pagination
      * @param $title
      * @param string $class
      * @return string
+     * @internal
      */
     private function renderElement($page, $title, $class = '')
     {
@@ -159,6 +167,7 @@ class Pagination
      * Renders the pages list
      *
      * @return string
+     * @internal
      */
     private function renderPages()
     {
@@ -180,6 +189,7 @@ class Pagination
     /**
      * @param $pageNb
      * @return bool
+     * @internal
      */
     private function isPrintablePage($pageNb)
     {
@@ -201,6 +211,7 @@ class Pagination
     /**
      * @param $pageNb
      * @return bool
+     * @internal
      */
     private function isMiddleOffsetPage($pageNb)
     {

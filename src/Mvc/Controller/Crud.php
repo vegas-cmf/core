@@ -39,12 +39,38 @@ namespace Vegas\Mvc\Controller;
 
 use Vegas\Exception;
 
+/**
+ * Class Crud
+ * @package Vegas\Mvc\Controller
+ */
 class Crud extends ControllerAbstract
 {
+    /**
+     * Default success message
+     *
+     * @var string
+     */
     protected $successMessage = 'Action has been successful.';
+
+    /**
+     * Form class name
+     *
+     * @var string
+     */
     protected $formName;
+
+    /**
+     * Model class name
+     *
+     * @var string
+     */
     protected $modelName;
 
+    /**
+     * Initializes scaffolding
+     *
+     * @throws Crud\Exception\NotConfiguredException
+     */
     public function initialize()
     {
         parent::initialize();
@@ -56,13 +82,19 @@ class Crud extends ControllerAbstract
         $this->scaffolding->setModelName($this->modelName);
         $this->scaffolding->setFormName($this->formName);
     }
-    
+
+    /**
+     * @return bool
+     * @internal
+     */
     private function isConfigured()
     { 
        return ($this->di->has('scaffolding') && !empty($this->modelName) && !empty($this->formName));
     }
 
     /**
+     * Displays form for new record
+     *
      * @ACL(name="new", description="Create a new record")
      */
     public function newAction()
@@ -73,6 +105,8 @@ class Crud extends ControllerAbstract
     }
 
     /**
+     * Creates new record
+     *
      * @ACL(name="create", inherit='new')
      */
     public function createAction()
@@ -97,6 +131,8 @@ class Crud extends ControllerAbstract
     }
 
     /**
+     * Displays form for existing record
+     *
      * @ACL(name="edit", description="Record edit")
      * @param $id
      */
@@ -110,6 +146,8 @@ class Crud extends ControllerAbstract
     }
 
     /**
+     * Updates existing record indicated by its ID
+     *
      * @ACL(name="update", inherit='edit')
      * @param $id
      */
@@ -133,7 +171,12 @@ class Crud extends ControllerAbstract
         
         $this->dispatcher->forward(array('action' => 'edit'));
     }
-    
+
+    /**
+     * Checks if request was send using POST method
+     *
+     * @throws Crud\Exception\PostRequiredException
+     */
     protected function checkRequest()
     {
         if (!$this->request->isPost()) {
@@ -142,6 +185,8 @@ class Crud extends ControllerAbstract
     }
     
     /**
+     * Deletes existing record by its ID
+     *
      * @ACL(name="delete", description="Delete a record")
      * @param $id
      */

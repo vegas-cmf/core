@@ -11,10 +11,39 @@
  */
 namespace Vegas\DI\Service;
 
+/**
+ * Interface ComponentInterface
+ * @package Vegas\DI\Service
+ */
 interface ComponentInterface
 {
+    /**
+     * Constructor
+     *
+     * @param Component\RendererInterface $renderer
+     */
     public function __construct(Component\RendererInterface $renderer = null);
+
+    /**
+     * Sets renderer object and setups module and template name
+     *
+     * @param Component\RendererInterface $renderer
+     * @return $this|mixed
+     */
     public function setRenderer(Component\RendererInterface $renderer);
+
+    /**
+     * Returns renderer instance
+     *
+     * @return mixed
+     */
     public function getRenderer();
+
+    /**
+     * Renders component content using provided renderer or default renderer
+     *
+     * @param array $params
+     * @return mixed
+     */
     public function render($params = array());
 }

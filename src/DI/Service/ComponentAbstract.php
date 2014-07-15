@@ -13,23 +13,56 @@ namespace Vegas\DI\Service;
 
 use Phalcon\DI\InjectionAwareInterface;
 
+/**
+ * Class ComponentAbstract
+ * @package Vegas\DI\Service
+ */
 abstract class ComponentAbstract implements ComponentInterface, InjectionAwareInterface
 {
     use \Vegas\DI\InjectionAwareTrait;
-    
+
+    /**
+     * Renderer instance
+     *
+     * @var
+     */
     protected $renderer;
+
+    /**
+     * Name of module
+     *
+     * @var
+     */
     protected $moduleName;
+
+    /**
+     * Name of template to render
+     *
+     * @var
+     */
     protected $templateName;
-    
+
+    /**
+     * Setups component
+     *
+     * @param array $params
+     * @return mixed
+     */
     abstract protected function setUp($params = array());
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function __construct(Component\RendererInterface $renderer = null)
     {
         if ($renderer) {
             $this->setRenderer($renderer);
         }
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function getRenderer()
     {
         if (empty($this->renderer)) {
@@ -38,7 +71,10 @@ abstract class ComponentAbstract implements ComponentInterface, InjectionAwareIn
         
         return $this->renderer;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function setRenderer(Component\RendererInterface $renderer)
     {
         $nameArray = explode('\\',get_called_class());
@@ -52,7 +88,10 @@ abstract class ComponentAbstract implements ComponentInterface, InjectionAwareIn
         
         return $this;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function render($params = array())
     {
         $params = $this->setUp($params);

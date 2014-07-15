@@ -1,8 +1,15 @@
 <?php
 /**
- * @author Sławomir Żytko <slawek@amsterdam-standard.pl>
- * @copyright (c) 2014, Amsterdam Standard
+ * This file is part of Vegas package
+ *
+ * @author Slawomir Zytko <slawomir.zytko@gmail.com>
+ * @copyright Amsterdam Standard Sp. Z o.o.
+ * @homepage http://vegas-cmf.github.io
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
+
 
 namespace Vegas\Mvc\View\Engine;
 
@@ -16,6 +23,7 @@ trait RegisterFilters
      * Returns the path to view filter directory
      *
      * @return string
+     * @internal
      */
     private function getFiltersDirectoryPath()
     {

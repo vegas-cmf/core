@@ -71,6 +71,7 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
      *
      * @param $className
      * @return object
+     * @internal
      */
     private function getClassInstance($className)
     {

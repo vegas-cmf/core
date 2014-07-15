@@ -21,6 +21,8 @@ use Vegas\Db\Exception as DbException;
 class MappingClassNotFoundException extends DbException
 {
     /**
+     * Creates exception message
+     *
      * @param string $mappingClassName
      */
     public function __construct($mappingClassName)
@@ -30,6 +32,7 @@ class MappingClassNotFoundException extends DbException
 
     /**
      * Exception default message
+     *
      * @var string
      */
     protected $message = 'Mapping class \'%s\' was not found';

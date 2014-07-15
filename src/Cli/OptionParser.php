@@ -25,6 +25,7 @@ class OptionParser
      * Array of parsed arguments
      *
      * @var array
+     * @internal
      */
     private static $args;
 

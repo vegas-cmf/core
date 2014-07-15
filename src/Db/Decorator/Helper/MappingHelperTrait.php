@@ -18,6 +18,17 @@ namespace Vegas\Db\Decorator\Helper;
  */
 trait MappingHelperTrait
 {
+    /**
+     * Defines field mappings in format
+     *
+     * <code>
+     * array(
+     *      'field_1' => 'mapper_1',
+     *      'field_2' => array('mapper_1', 'mapper_2')
+     * )
+     * </code>
+     * @var array
+     */
     protected $mappings = array();
 
     /**

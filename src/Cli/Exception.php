@@ -22,6 +22,7 @@ class Exception extends VegasException
 {
     /**
      * Exception default message
+     *
      * @var string
      */
     protected $message = 'Cli exception';
