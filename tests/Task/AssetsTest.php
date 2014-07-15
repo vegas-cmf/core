@@ -34,6 +34,6 @@ class AssetsTest extends TestCase
         unlink(TESTS_ROOT_DIR.'/fixtures/public/assets/css/another.css');
         unlink(TESTS_ROOT_DIR.'/fixtures/public/assets/css/test.css');
 
-        $this->assertEquals("Copying assets..\nCannot copy ".TESTS_ROOT_DIR."/fixtures/vendor/vegas-cmf/example/assets/js/example.js. File already exists.\nDone.", $result);
+        $this->assertContains("example.js. File already exists", $result);
     }
 }

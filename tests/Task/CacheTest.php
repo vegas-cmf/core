@@ -31,6 +31,6 @@ class CacheTest extends TestCase
 
         ob_end_clean();
 
-        $this->assertEquals("Cleaning cache..\nDone.", $result);
+        $this->assertContains("Cleaning cache", $result);
     }
 }

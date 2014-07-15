@@ -9,7 +9,7 @@ return array(
         'configDir'     => dirname(__FILE__) . DIRECTORY_SEPARATOR,
         'libraryDir'     => dirname(APP_ROOT) . DIRECTORY_SEPARATOR . '/lib/',
         'pluginDir'      => APP_ROOT . '/app/plugins/',
-        'moduleDir'      => APP_ROOT . '/app/module/',
+        'moduleDir'      => APP_ROOT . '/app/modules/',
         'taskDir'      => APP_ROOT . '/app/tasks/',
         'baseUri'        => '/',
         'language'       => 'nl_NL',

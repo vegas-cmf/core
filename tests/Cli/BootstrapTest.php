@@ -40,19 +40,6 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         $cli = new Bootstrap($this->di->get('config'));
         $cli->setArguments(array(
             0 => 'cli/cli.php',
-            1 => 'foo'
-        ));
-
-        try {
-            $cli->setup()->run();
-            throw new \Exception('Bad exception.');
-        } catch (\Exception $ex) {
-            $this->assertInstanceOf('Vegas\Cli\Exception\TaskActionNotSpecifiedException', $ex);
-        }
-
-        $cli = new Bootstrap($this->di->get('config'));
-        $cli->setArguments(array(
-            0 => 'cli/cli.php',
             1 => 'foo',
             2 => 'bar'
         ));

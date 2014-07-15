@@ -24,7 +24,8 @@ class CrudTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        require_once TESTS_ROOT_DIR . '/fixtures/app/module/Test/forms/Fake.php';
+        $config = DI::getDefault()->get('config');
+        require_once $config->application->moduleDir . '/Test/forms/Fake.php';
     }
 
     public function testNotConfiguredCrud()

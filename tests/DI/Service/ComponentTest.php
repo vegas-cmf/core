@@ -28,7 +28,7 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
         $di->set('view', function() use ($di) {
             $view = new View($di->get('config')->application->view->toArray());
 
-            $path = TESTS_ROOT_DIR. '/fixtures/app/module/Test/views';
+            $path = $di->get('config')->application->moduleDir . '/Test/views';
 
             if (file_exists($path)) {
                 $view->setViewsDir($path);
