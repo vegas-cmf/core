@@ -33,7 +33,7 @@ abstract class Task extends \Phalcon\CLI\Task
     use ColorsOuputTrait;
 
     /**
-     * Task must implement this method to set available options
+     * Task's available options
      *
      * @return mixed
      */
@@ -68,6 +68,8 @@ abstract class Task extends \Phalcon\CLI\Task
     private $taskName;
 
     /**
+     * Array of execution arguments
+     *
      * @var array
      */
     private $args;
@@ -147,6 +149,8 @@ abstract class Task extends \Phalcon\CLI\Task
     }
 
     /**
+     * Returns array of execution arguments
+     *
      * @return array
      */
     protected function getArgs()
@@ -155,14 +159,16 @@ abstract class Task extends \Phalcon\CLI\Task
     }
 
     /**
-     * @param $name
+     * Return argument from indicated index
+     *
+     * @param $index
      * @return null
      */
-    protected function getArg($name)
+    protected function getArg($index)
     {
         $arg = null;
-        if (isset($this->args[$name])) {
-            $arg = $this->args[$name];
+        if (isset($this->args[$index])) {
+            $arg = $this->args[$index];
         }
 
         return $arg;

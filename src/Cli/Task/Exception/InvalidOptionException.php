@@ -21,6 +21,8 @@ use Vegas\Cli\Exception as CliException;
 class InvalidOptionException extends CliException
 {
     /**
+     * Constructor
+     *
      * @param string $option
      */
     public function __construct($option)
@@ -30,11 +32,14 @@ class InvalidOptionException extends CliException
     }
 
     /**
+     * Option that caused exception
      * @var string
      */
     protected $option;
 
     /**
+     * Returns option that caused exception
+     *
      * @return string
      */
     public function getOption()
@@ -43,6 +48,7 @@ class InvalidOptionException extends CliException
     }
 
     /**
+     * Exception default message
      * @var string
      */
     protected $message = 'Invalid option';

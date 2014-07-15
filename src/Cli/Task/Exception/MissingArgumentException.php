@@ -21,6 +21,8 @@ use Vegas\Cli\Exception as CliException;
 class MissingArgumentException extends CliException
 {
     /**
+     * Constructor
+     *
      * @param string $argument
      */
     public function __construct($argument)
@@ -29,6 +31,7 @@ class MissingArgumentException extends CliException
     }
 
     /**
+     * Exception default message
      * @var string
      */
     protected $message = 'Missing argument';

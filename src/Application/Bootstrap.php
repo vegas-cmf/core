@@ -23,26 +23,39 @@ use Vegas\Mvc\Module\SubModuleManager;
 
 /**
  * Class Bootstrap
+ *
+ * Bootstraps mvc application
+ *
  * @package Vegas\Application
  */
 class Bootstrap implements BootstrapInterface
 {
     /**
+     * Dependency injection
+     *
      * @var DiInterface
      */
     protected $di;
 
     /**
+     * MVC Application
+     *
      * @var \Vegas\Mvc\Application
      */
     protected $application;
 
     /**
+     * Application config
+     *
      * @var \Phalcon\Config
      */
     protected $config;
 
     /**
+     * Constructor
+     * Initializes MVC Application
+     * Initializes DI for Application
+     *
      * @param \Phalcon\Config $config
      */
     public function __construct(\Phalcon\Config $config)
@@ -53,6 +66,8 @@ class Bootstrap implements BootstrapInterface
     }
 
     /**
+     * Sets Dependency Injector
+     *
      * @param DiInterface $di
      */
     public function setDi(DiInterface $di)
@@ -179,7 +194,7 @@ class Bootstrap implements BootstrapInterface
     /**
      * Start handling MVC requests
      *
-     * @param null $uri
+     * @param string $uri
      * @return string
      */
     public function run($uri = null)

@@ -14,7 +14,16 @@ namespace Vegas\Mvc\View\Engine\Volt\Exception;
 
 use Vegas\Mvc\View\Engine\Exception;
 
+/**
+ * Class UnknownFilterException
+ * @package Vegas\Mvc\View\Engine\Volt\Exception
+ */
 class UnknownFilterException extends Exception
 {
-
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
+    protected $message = 'Unknown filter';
 } 

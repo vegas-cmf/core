@@ -18,5 +18,10 @@ namespace Vegas;
  */
 class Exception extends \Exception
 {
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
     protected $message = 'Vegas core exception';
 } 

@@ -48,6 +48,8 @@ class Pagination
     private $settings;
 
     /**
+     * Constructor
+     * Sets default settings
      * @param \Phalcon\DI $di
      */
     public function __construct(\Phalcon\DI $di)
@@ -86,9 +88,9 @@ class Pagination
             $this->checkBoundary();
 
             $html .= '<ul class="pagination">';
-            $html .= $this->renderBefore();
+            $html .= $this->renderPreviousButton();
             $html .= $this->renderPages();
-            $html .= $this->renderNext();
+            $html .= $this->renderNextButton();
             $html .= '</ul>';
         }
 
@@ -96,7 +98,7 @@ class Pagination
     }
 
     /**
-     *
+     * Checks if current page fit in total pages
      */
     private function checkBoundary()
     {
@@ -110,9 +112,11 @@ class Pagination
     }
 
     /**
+     * Renders button - previous page
+     *
      * @return string
      */
-    private function renderBefore()
+    private function renderPreviousButton()
     {
         $before = $this->page->before;
         $extraClass = $before ? '' : ' not-active';
@@ -123,9 +127,11 @@ class Pagination
     }
 
     /**
+     * Renders button - next page
+     *
      * @return string
      */
-    private function renderNext()
+    private function renderNextButton()
     {
         $next = $this->page->next;
         $extraClass = $next ? '' : ' not-active';
@@ -136,6 +142,8 @@ class Pagination
     }
 
     /**
+     * Renders html element
+     *
      * @param $page
      * @param $title
      * @param string $class
@@ -148,6 +156,8 @@ class Pagination
     }
 
     /**
+     * Renders the pages list
+     *
      * @return string
      */
     private function renderPages()

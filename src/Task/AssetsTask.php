@@ -21,7 +21,7 @@ use Vegas\Cli\Task\Option;
 class AssetsTask extends \Vegas\Cli\Task
 {
     /**
-     *
+     * Publishes assets provided by vegas-libraries installed via composer
      */
     public function publishAction()
     {
@@ -31,7 +31,7 @@ class AssetsTask extends \Vegas\Cli\Task
     }
 
     /**
-     *
+     * Copies all assets from vegas-cmf libraries
      */
     private function copyAllAssets()
     {
@@ -56,6 +56,8 @@ class AssetsTask extends \Vegas\Cli\Task
     }
 
     /**
+     * Copies assets recursively
+     *
      * @param $source
      * @param $dest
      * @param int $permissions
@@ -101,7 +103,7 @@ class AssetsTask extends \Vegas\Cli\Task
     }
 
     /**
-     * Task must implement this method to set available options
+     * Task's available options
      *
      * @return mixed
      */

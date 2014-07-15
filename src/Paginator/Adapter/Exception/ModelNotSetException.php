@@ -13,8 +13,16 @@ namespace Vegas\Paginator\Adapter\Exception;
 
 use Vegas\Paginator\Adapter\Exception;
 
+/**
+ * Class ModelNotSetException
+ * @package Vegas\Paginator\Adapter\Exception
+ */
 class ModelNotSetException extends Exception
 {
+    /**
+     * Exception default message
+     * @var string
+     */
     protected $message = 'You need to set model for pagination.';
 }
  

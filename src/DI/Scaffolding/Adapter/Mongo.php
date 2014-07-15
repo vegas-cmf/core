@@ -15,12 +15,29 @@ namespace Vegas\DI\Scaffolding\Adapter;
 use Phalcon\DI;
 use Vegas\DI\Scaffolding\Exception\RecordNotFoundException;
 
+/**
+ * Class Mongo
+ *
+ * Mongo adapter for scaffolding
+ *
+ * @package Vegas\DI\Scaffolding\Adapter
+ */
 class Mongo implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\AdapterInterface
 {
     use \Vegas\Db\Adapter\Mongo\AdapterTrait;
 
+    /**
+     * Scaffolding instance
+     *
+     * @var \Vegas\DI\Scaffolding
+     */
     protected $scaffolding;
 
+    /**
+     * Constructor
+     * Verifies services required by Mongo
+     * Setups
+     */
     public function __construct()
     {
         $di = DI::getDefault();
@@ -28,6 +45,9 @@ class Mongo implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
         $this->setupExtraServices($di);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function retrieveOne($id)
     {
         $record = call_user_func(array($this->scaffolding->getRecord(),'findById'),$id);
@@ -38,7 +58,10 @@ class Mongo implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
         
         return $record;
     }
-    
+
+    /**
+     * {@inheritdoc}
+     */
     public function setScaffolding(\Vegas\DI\Scaffolding $scaffolding) {
         $this->scaffolding = $scaffolding;
         

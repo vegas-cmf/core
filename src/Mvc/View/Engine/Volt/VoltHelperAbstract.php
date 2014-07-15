@@ -21,16 +21,23 @@ use Phalcon\Mvc\View\Engine\Volt\Compiler;
 abstract class VoltHelperAbstract
 {
     /**
+     * View compiler
+     *
      * @var Compiler
      */
     protected $compiler;
 
     /**
+     * Returns helper function
+     *
      * @return callable
      */
     abstract public function getHelper();
 
     /**
+     * Constructor
+     * Sets view compiler
+     *
      * @param Compiler $compiler
      */
     public function __construct(Compiler $compiler)

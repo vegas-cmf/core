@@ -22,16 +22,23 @@ use Phalcon\Mvc\View\Engine\Volt\Compiler;
 abstract class VoltFilterAbstract
 {
     /**
+     * View compiler
+     *
      * @var Compiler
      */
     protected $compiler;
 
     /**
+     * Returns filter function
+     *
      * @return callable
      */
     abstract public function getFilter();
 
     /**
+     * Constructor
+     * Sets view compiler
+     *
      * @param Compiler $compiler
      */
     public function __construct(Compiler $compiler)

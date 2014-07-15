@@ -17,5 +17,9 @@ namespace Vegas\Db\Exception;
  */
 class NoRequiredServiceException extends \Vegas\Db\Exception
 {
+    /**
+     * Exception default message
+     * @var string
+     */
     protected $message = 'Required service is not available';
 } 

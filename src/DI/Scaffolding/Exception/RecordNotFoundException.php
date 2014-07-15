@@ -13,8 +13,19 @@ namespace Vegas\DI\Scaffolding\Exception;
 
 use Vegas\DI\Scaffolding\Exception;
 
+/**
+ * Class RecordNotFoundException
+ * @package Vegas\DI\Scaffolding\Exception
+ */
 class RecordNotFoundException extends Exception
 {
-    protected $message = 'Record does not exist.';  
+    /**
+     * Exception default message
+     */
+    protected $message = 'Record does not exist.';
+
+    /**
+     * Exception default code
+     */
     protected $code = 404;
 }

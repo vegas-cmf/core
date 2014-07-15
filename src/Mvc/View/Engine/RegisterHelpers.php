@@ -13,6 +13,8 @@ namespace Vegas\Mvc\View\Engine;
 trait RegisterHelpers
 {
     /**
+     * Returns the ath to view helpers directory
+     *
      * @return string
      */
     private function getHelpersDirectoryPath()
@@ -23,7 +25,7 @@ trait RegisterHelpers
     }
 
     /**
-     *
+     * Registers view helpers
      */
     public function registerHelpers()
     {

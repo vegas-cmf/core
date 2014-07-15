@@ -160,6 +160,8 @@ class Router implements InjectionAwareInterface
     }
 
     /**
+     * Validates type of route
+     *
      * @param $type
      * @return bool
      * @throws Router\Exception\InvalidRouteTypeException
@@ -203,6 +205,8 @@ class Router implements InjectionAwareInterface
     }
 
     /**
+     * Resolves hostname from $_SERVER['HTTP_HOST']
+     *
      * @return string|null
      */
     private function resolveDefaultHostName()
@@ -224,6 +228,8 @@ class Router implements InjectionAwareInterface
     }
 
     /**
+     * Resolves route type
+     *
      * @param $routeType
      * @return \Vegas\Mvc\Router\RouteInterface
      * @throws Router\Exception\InvalidRouteTypeException

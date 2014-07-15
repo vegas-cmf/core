@@ -24,6 +24,8 @@ use Vegas\Cli\OptionParser;
 class TaskListener
 {
     /**
+     * Event fired before task is handling
+     *
      * @param $argv
      * @return callable
      */
@@ -42,6 +44,8 @@ class TaskListener
     }
 
     /**
+     * Event fired after task handle
+     *
      * @return callable
      */
     public static function afterHandleTask()

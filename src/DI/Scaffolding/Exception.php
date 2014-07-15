@@ -14,8 +14,15 @@ namespace Vegas\DI\Scaffolding;
 
 use Vegas\Exception as VegasException;
 
+/**
+ * Class Exception
+ * @package Vegas\DI\Scaffolding
+ */
 class Exception extends VegasException
 {
-    
+    /**
+     * Exception default message
+     */
+    protected $message = 'Scaffolding error';
 }
  

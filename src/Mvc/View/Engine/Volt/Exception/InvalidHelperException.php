@@ -14,7 +14,16 @@ namespace Vegas\Mvc\View\Engine\Volt\Exception;
 
 use Vegas\Mvc\View\Engine\Exception;
 
+/**
+ * Class InvalidHelperException
+ * @package Vegas\Mvc\View\Engine\Volt\Exception
+ */
 class InvalidHelperException extends Exception
 {
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
     protected $_message = 'Invalid helper. Helper must be an instance of VoltHelperAbstract';
 } 

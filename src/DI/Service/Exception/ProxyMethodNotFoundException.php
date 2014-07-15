@@ -14,8 +14,16 @@ namespace Vegas\DI\Service\Exception;
 
 use Vegas\DI\Service\Exception as VegasException;
 
+/**
+ * Class ProxyMethodNotFoundException
+ * @package Vegas\DI\Service\Exception
+ */
 class ProxyMethodNotFoundException extends VegasException
 {
-    
+    /**
+     * Exception default message
+     * @var string
+     */
+    protected $message = 'Proxy method has not been found';
 }
  

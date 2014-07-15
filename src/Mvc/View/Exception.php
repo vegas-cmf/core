@@ -14,7 +14,17 @@ namespace Vegas\Mvc\View;
 
 use Vegas\Mvc\Exception as MvcException;
 
+/**
+ * Class Exception
+ * @package Vegas\Mvc\View
+ */
 class Exception extends MvcException
 {
 
+    /**
+     * Exception default message
+     *
+     * @var string
+     */
+    protected $message = 'View error';
 } 

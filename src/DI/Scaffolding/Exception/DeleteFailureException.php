@@ -14,8 +14,15 @@ namespace Vegas\DI\Scaffolding\Exception;
 
 use Vegas\DI\Scaffolding\Exception;
 
+/**
+ * Class DeleteFailureException
+ * @package Vegas\DI\Scaffolding\Exception
+ */
 class DeleteFailureException extends Exception
 {
+    /**
+     * Exception default message
+     */
     protected $message = 'Unable to delete record.';   
 }
  

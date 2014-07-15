@@ -28,6 +28,8 @@ class Standard extends \Phalcon\Mvc\Router implements DI\InjectionAwareInterface
 {
 
     /**
+     * Standard router constructor
+     *
      * @param DiInterface $dependencyInjector
      * @param bool $keepDefaultRoutes
      */

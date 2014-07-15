@@ -3,6 +3,9 @@ namespace Vegas;
 
 /**
  * Class Constants
+ *
+ * Application base constants
+ *
  * @package Vegas
  */
 class Constants

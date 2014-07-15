@@ -28,5 +28,9 @@ class MappingClassNotFoundException extends DbException
         $this->message = sprintf($this->message, $mappingClassName);
     }
 
+    /**
+     * Exception default message
+     * @var string
+     */
     protected $message = 'Mapping class \'%s\' was not found';
 } 

@@ -23,6 +23,8 @@ class ShortenText extends VoltHelperAbstract
 {
 
     /**
+     * Cuts text
+     *
      * @return callable
      */
     public function getHelper()
