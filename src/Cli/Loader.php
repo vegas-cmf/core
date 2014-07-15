@@ -67,7 +67,7 @@ class Loader
      * Resolves name of task class
      * The task classes placed in the following location will be resolved
      *      * php cli.php app:example ...       ->  app/tasks/ExampleTask.php
-     *      * php cli.php app:foo:example ...   ->  app/module/Foo/tasks/ExampleTask.php
+     *      * php cli.php app:foo:example ...   ->  app/modules/Foo/tasks/ExampleTask.php
      *      * php cli.php vegas:cli:example ... -> (vendor path)/vegas-cmf/core/Cli/Task/ExampleTask.php
      *
      * @param $arguments

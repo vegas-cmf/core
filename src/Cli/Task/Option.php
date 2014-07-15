@@ -149,6 +149,7 @@ class Option
 
     /**
      * @param $args
+     * @param null $default
      * @return mixed
      */
     public function getValue($args, $default = null)

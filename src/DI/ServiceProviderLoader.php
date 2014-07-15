@@ -34,7 +34,7 @@ class ServiceProviderLoader
         $servicesList = array();
 
         //browses directory for searching service provider classes
-        $directoryIterator = new \DirectoryIterator($config->application->servicesDir);
+        $directoryIterator = new \DirectoryIterator($config->application->serviceDir);
         foreach ($directoryIterator as $fileInfo) {
             if ($fileInfo->isDot()) continue;
             $servicesList[$fileInfo->getBasename('.php')] = $fileInfo->getPathname();
@@ -123,7 +123,7 @@ class ServiceProviderLoader
         //setup default path when is not defined
         foreach ($services as $className => $path) {
             if (!$path) {
-                $services[$className] = $config->application->servicesDir . sprintf('%s.php', $className);
+                $services[$className] = $config->application->serviceDir . sprintf('%s.php', $className);
             }
         }
         $loader->registerClasses($services, true);

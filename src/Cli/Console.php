@@ -22,7 +22,7 @@ class Console extends \Phalcon\CLI\Console
      *	$this->registerModules(array(
      *		'frontend' => array(
      *			'className' => 'Multiple\Frontend\Module',
-     *			'path' => '../apps/frontend/Module.php'
+     *			'path' => 'app/frontend/Module.php'
      *		),
      *		'backend' => array(
      *			'className' => 'Multiple\Backend\Module',

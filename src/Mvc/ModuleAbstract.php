@@ -13,23 +13,41 @@ use Vegas\Mvc\Module\SubModuleManager;
  */
 abstract class ModuleAbstract implements ModuleDefinitionInterface
 {
+    /**
+     * Current module namespace
+     *
+     * @var
+     */
     protected $namespace;
+
+    /**
+     * Current directory name
+     *
+     * @var
+     */
     protected $dir;
-    
+
+    /**
+     * Registers module autoloaders
+     */
     public function registerAutoloaders()
     {
-        $this->registerSubModulesAutoloader();
+        $this->registerControllerScopesAutoloader();
     }
 
     /**
-     * Registers controllers in registered sub-modules
+     * Registers controllers scopes
      */
-    public function registerSubModulesAutoloader()
+    public function registerControllerScopesAutoloader()
     {
         $namespaces = array();
-        foreach (SubModuleManager::getSubModules() as $subModule) {
-            $namespaces[$this->namespace . '\Controllers\\' . ucfirst($subModule)] =
-                $this->dir . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $subModule;
+        $directoryIterator = new \DirectoryIterator($this->dir . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR);
+        foreach ($directoryIterator as $directory) {
+            if ($directory->isDot()) {
+                continue;
+            }
+            $namespaces[$this->namespace . '\Controllers\\' . ucfirst($directory->getFileName())] =
+                $this->dir . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $directory->getFileName();
         }
 
         $loader = new Loader();
