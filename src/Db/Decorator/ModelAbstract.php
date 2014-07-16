@@ -54,7 +54,7 @@ abstract class ModelAbstract extends \Phalcon\Mvc\Model
     {
         return parent::find(array(
             "conditions" => "id = ?1",
-            "bind"       => array(1 => $id)
+            "bind" => array(1 => $id)
         ));
     }
 }
