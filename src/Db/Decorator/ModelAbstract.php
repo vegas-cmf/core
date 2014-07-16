@@ -52,6 +52,9 @@ abstract class ModelAbstract extends \Phalcon\Mvc\Model
      */
     public function findById($id)
     {
-        return parent::find(array('id' => $id));
+        return parent::find(array(
+            "conditions" => "id = ?1",
+            "bind"       => array(1 => $id)
+        ));
     }
 }
