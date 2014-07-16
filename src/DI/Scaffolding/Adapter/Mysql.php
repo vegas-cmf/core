@@ -16,13 +16,13 @@ use Phalcon\DI;
 use Vegas\DI\Scaffolding\Exception\RecordNotFoundException;
 
 /**
- * Class Mongo
+ * Class Mysql
  *
- * Mongo adapter for scaffolding
+ * Mysql adapter for scaffolding
  *
  * @package Vegas\DI\Scaffolding\Adapter
  */
-class Mongo implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\AdapterInterface
+class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\AdapterInterface
 {
     use \Vegas\Db\Adapter\Mongo\AdapterTrait;
 
@@ -35,13 +35,9 @@ class Mongo implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
 
     /**
      * Constructor
-     * Verifies services required by Mongo
      */
     public function __construct()
     {
-        $di = DI::getDefault();
-        $this->verifyRequiredServices($di);
-        $this->setupExtraServices($di);
     }
 
     /**
