@@ -33,7 +33,7 @@ class FileWriter
     public static function write($filePath, $newContent, $compareContents = false)
     {
         if ($compareContents) {
-            if (!self::compareContents($filePath, $newContent)) {
+            if (self::compareContents($filePath, $newContent)) {
                 return 0;
             }
         }
@@ -53,7 +53,7 @@ class FileWriter
     {
         if (file_exists($filePath)) {
             $currentContent = file_get_contents($filePath);
-            return (bool)strcmp($currentContent, $newContent);
+            return strcmp($currentContent, $newContent) === 0;
         }
 
         return false;
