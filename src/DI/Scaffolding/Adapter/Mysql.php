@@ -24,8 +24,6 @@ use Vegas\DI\Scaffolding\Exception\RecordNotFoundException;
  */
 class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\AdapterInterface
 {
-    use \Vegas\Db\Adapter\Mongo\AdapterTrait;
-
     /**
      * Scaffolding instance
      *
@@ -38,6 +36,8 @@ class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
      */
     public function __construct()
     {
+        $di = DI::getDefault();
+        $this->verifyRequiredServices($di);
     }
 
     /**
@@ -63,4 +63,13 @@ class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
         return $this;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function verifyRequiredServices(\Phalcon\DiInterface $di)
+    {
+        if (!$di->has('db')) {
+            throw new NoRequiredServiceException();
+        }
+    }
 }

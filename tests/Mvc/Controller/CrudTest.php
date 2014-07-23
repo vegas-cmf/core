@@ -50,12 +50,6 @@ class CrudTest extends TestCase
         $this->assertEquals($form->get('fake_field')->render(), $content);
     }
 
-    public function testNewResponse()
-    {
-        $form = new Fake();
-        $this->assertEquals($form->get('fake_field')->render(), $this->di->get('response')->getContent());
-    }
-
     public function testNotPostCreate()
     {
         $content = $this->bootstrap->run('/test/crud/create');
@@ -99,14 +93,6 @@ class CrudTest extends TestCase
         $content = $this->bootstrap->run('/test/crud/edit/'.$this->model->getId());
 
         $this->assertEquals($form->get('fake_field')->render(), $content);
-    }
-
-    public function testEditResponse()
-    {
-        $this->prepareFakeObject();
-
-        $form = new Fake($this->model);
-        $this->assertEquals($form->get('fake_field')->render(), $this->di->get('response')->getContent());
     }
 
     public function testNotPostUpdate()
