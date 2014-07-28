@@ -106,22 +106,6 @@ class Route
     }
 
     /**
-     * Returns route paths with encoded auth array
-     *
-     * @return array
-     */
-    public function getPathsWithEncodedAuth()
-    {
-        $paths = $this->paths;
-
-        if (!empty($paths['auth'])) {
-            $paths['auth'] = json_decode($paths['auth']);
-        }
-
-        return $paths;
-    }
-
-    /**
      * Returns additional route params
      *
      * @return array
