@@ -108,7 +108,7 @@ class Route
             $paths['auth'] = json_decode($paths['auth']);
         }
 
-        return $this->paths;
+        return $paths;
     }
 
     /**
