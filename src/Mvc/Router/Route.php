@@ -67,6 +67,12 @@ class Route
         $this->route = $routeArray['route'];
         $this->paths = $routeArray['paths'];
         $this->params = isset($routeArray['params']) ? $routeArray['params'] : array();
+
+        // encode auth array if exists - phalcon application cannot handle arrays as param here
+        // throwing warning "Illegal offset type in ..."
+        if (!empty($this->paths['auth']) && is_array($this->paths['auth'])) {
+            $this->paths['auth'] = json_encode($this->paths['auth']);
+        }
     }
 
     /**
@@ -96,6 +102,12 @@ class Route
      */
     public function getPaths()
     {
+        $paths = $this->paths;
+
+        if (!empty($paths['auth'])) {
+            $paths['auth'] = json_decode($paths['auth']);
+        }
+
         return $this->paths;
     }
 
