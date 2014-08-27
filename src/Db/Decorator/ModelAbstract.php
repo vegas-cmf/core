@@ -57,4 +57,14 @@ abstract class ModelAbstract extends \Phalcon\Mvc\Model
             "bind" => array(1 => $id)
         ));
     }
+
+    /**
+     * Returns ID
+     *
+     * @return \Phalcon\Mvc\Model\Resultset
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 }
