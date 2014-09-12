@@ -73,12 +73,13 @@ class CrudTest extends TestCase
 
     public function testPostCreateResponse()
     {
-        $id = $this->di->get('response')->getContent();
+        $contentArray = explode('::', $this->di->get('response')->getContent());
 
-        $model = FakeModel::findById($id);
+        $model = FakeModel::findById($contentArray[0]);
 
         $this->assertInstanceOf('\Test\Models\Fake', $model);
         $this->assertEquals(base64_encode(date('Y-m-d')), $model->fake_field);
+        $this->assertEquals('afterCreate method call', $contentArray[1]);
 
         $model->delete();
     }
