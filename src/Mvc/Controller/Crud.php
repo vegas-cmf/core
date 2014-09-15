@@ -220,76 +220,123 @@ class Crud extends ControllerAbstract
         $this->afterDelete();
     }
 
+    /**
+     * Method invoked on the beginning of the newAction.
+     */
     protected function beforeNew()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::BEFORE_NEW, $this);
     }
 
+    /**
+     * Method invoked on the end of the newAction.
+     */
     protected function afterNew()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_NEW, $this);
     }
 
+    /**
+     * Method invoked on the beginning of the createAction after checking request validity.
+     */
     protected function beforeCreate()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::BEFORE_CREATE, $this);
     }
 
+    /**
+     * Method invoked on the end of the successful createAction before dispatcher forward.
+     */
     protected function afterCreate()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_CREATE, $this);
     }
 
+    /**
+     * Method invoked on the end of the createAction failure before dispatcher forward.
+     */
     protected function afterCreateException()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_CREATE_EXCEPTION, $this);
     }
 
+    /**
+     * Method invoked on the beginning of the editAction.
+     */
     protected function beforeEdit()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::BEFORE_EDIT, $this);
     }
 
+    /**
+     * Method invoked after reading and setting $this->view->record variable but before creating $this->view->form.
+     */
     protected function afterRead()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_READ, $this);
     }
 
+    /**
+     * Method invoked on the end of the editAction.
+     */
     protected function afterEdit()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_EDIT, $this);
     }
 
+    /**
+     * Method invoked on the beginning of the updateAction after checking request validity.
+     */
     protected function beforeUpdate()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::BEFORE_UPDATE, $this);
     }
 
+    /**
+     * Method invoked on the end of the successful updateAction before dispatcher forward.
+     */
     protected function afterUpdate()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_UPDATE, $this);
     }
 
+    /**
+     * Method invoked on the end of the updateAction failure before dispatcher forward.
+     */
     protected function afterUpdateException()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_UPDATE_EXCEPTION, $this);
     }
 
+    /**
+     * Method invoked on the beginning of the deleteAction.
+     */
     protected function beforeDelete()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::BEFORE_DELETE, $this);
     }
 
+    /**
+     * Method invoked on the end of the deleteAction.
+     */
     protected function afterDelete()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_DELETE, $this);
     }
 
+    /**
+     * Method invoked just before doUpdate/doCreate method in createAction and updateAction after calling
+     * boforeCreate/beforeUpdate.
+     */
     protected function beforeSave()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::BEFORE_SAVE, $this);
     }
 
+    /**
+     * Method invoked just after doUpdate/doCreate method in createAction and updateAction before success or failure
+     * information.
+     */
     protected function afterSave()
     {
         $this->dispatcher->getEventsManager()->fire(Crud\Events::AFTER_SAVE, $this);
