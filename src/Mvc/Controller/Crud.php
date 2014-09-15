@@ -21,7 +21,14 @@
  * 
  *          // attach more events
  *      }
- *   
+ *
+ *      // instead using eventManager you can use method like
+ *      protected function afterCreate()
+ *      {
+ *          parent::afterCreate();
+ *          $this->response->redirect('user-admin/index');
+ *      }
+ *
  *      // other actions
  * }
  * </code>
