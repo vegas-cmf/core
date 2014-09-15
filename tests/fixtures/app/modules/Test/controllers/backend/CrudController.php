@@ -34,4 +34,10 @@ class CrudController extends Crud
             echo $this->scaffolding->getRecord()->getId();
         };
     }
+
+    protected function afterCreate()
+    {
+        parent::afterCreate();
+        echo '::afterCreate method call';
+    }
 } 
