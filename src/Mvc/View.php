@@ -30,41 +30,72 @@ class View extends PhalconView
      * Constructor
      * Prepares view settings and engine
      *
+     * @override
      * @param null $options
      * @param null $viewDir
      */
     public function __construct($options = null, $viewDir = null) {
         parent::__construct($options);
 
-        if (isset($options['layoutsDir']) && $viewDir) {
-            $this->setLayoutsDir($this->prepareRelativeLayoutsPath($options, $viewDir));
+        if (isset($options['layoutsDir'])) {
+            $this->setLayoutsDir($options['layoutsDir']);
         }
 
-        if (!empty($options['layout'])) {
+        if (isset($options['partialsDir'])) {
+            $this->setPartialsDir($options['partialsDir']);
+        } else {
+//            $this->setPartialsDir($options['layoutsDir'] . 'partials/');
+        }
+
+        if (isset($options['layout']) && !empty($options['layout'])) {
             $this->setLayout($options['layout']);
         }
 
         $this->registerEngines(array(
             '.volt' => function ($this, $di) use ($options) {
-                $volt = new \Vegas\Mvc\View\Engine\Volt($this, $di);
-                if (isset($options['cacheDir'])) {
-                    $volt->setOptions(array(
-                        'compiledPath' => $options['cacheDir'],
-                        'compiledSeparator' => '_'
-                    ));
-                }
-                $volt->registerFilters();
-                $volt->registerHelpers();
+                    $volt = new \Vegas\Mvc\View\Engine\Volt($this, $di);
+                    if (isset($options['cacheDir'])) {
+                        $volt->setOptions(array(
+                            'compiledPath' => $options['cacheDir'],
+                            'compiledSeparator' => '_'
+                        ));
+                    }
+                    $volt->registerFilters();
+                    $volt->registerHelpers();
+                    $volt->setExtension('.volt');
 
-                return $volt;
-            },
+                    return $volt;
+                },
             '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
         ));
     }
 
     /**
+     * Checks whether view exists on registered extensions and render it
+     *
+     * @override
+     * @param array $engines
+     * @param string $viewPath
+     * @param boolean $silence
+     * @param boolean $mustClean
+     * @param \Phalcon\Cache\BackendInterface $cache
+     */
+    protected function _engineRender($engines, $viewPath, $silence, $mustClean, $cache)
+    {
+        //checks if layout template is rendered
+        //get rid of trailing slash
+        if (dirname($viewPath) == rtrim($this->getLayoutsDir(), DIRECTORY_SEPARATOR)) {
+            //when layouts is rendered change viewsDir to layoutsDir path
+            $this->setViewsDir($this->getLayoutsDir());
+            $viewPath = basename($viewPath);
+        }
+        parent::_engineRender($engines, $viewPath, $silence, $mustClean, $cache);
+    }
+
+    /**
      * Renders view for controller action
      *
+     * @oerride
      * @param string $controllerName
      * @param string $actionName
      * @param null $params
@@ -74,7 +105,6 @@ class View extends PhalconView
         if (empty($this->controllerViewPath)) {
             $this->controllerViewPath = $this->prepareControllerViewPath($controllerName);
         }
-
         parent::render($this->controllerViewPath, $actionName, $params);
     }
 
@@ -87,37 +117,10 @@ class View extends PhalconView
      */
     private function prepareControllerViewPath($controllerName)
     {
-        return str_replace('\\','/',strtolower($controllerName));
-    }
-
-    /**
-     * Prepares relative layout path
-     *
-     * @param array $options
-     * @param null $viewDir
-     * @return string
-     * @internal
-     */
-    private function prepareRelativeLayoutsPath(array $options, $viewDir = null)
-    {
-        $path = str_replace(APP_ROOT, '', realpath($options['layoutsDir']));
-
-        $nbOfDirs = count(explode('/', $path));
-
-        $baseDepth = '';
-        for ($i=0; $i<$nbOfDirs; $i++) {
-            $baseDepth .= ($i ? '/' : '').'..';
+        if (strpos($controllerName, '\\')) {
+            $controllerName = str_replace('\\','/',strtolower($controllerName));
         }
 
-        if ($viewDir) {
-            $modPath = str_replace(APP_ROOT, '', realpath(dirname($viewDir)));
-            $nbOfDirs = count(explode('/', $modPath)) - $nbOfDirs;
-
-            for ($i=0; $i<$nbOfDirs; $i++) {
-                $path = '/..'.$path;
-            }
-        }
-
-        return $baseDepth.$path;
+        return $controllerName;
     }
 }

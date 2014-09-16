@@ -9,13 +9,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
- 
+
 namespace Vegas\Mvc\View\Engine;
 
 use Vegas\Mvc\View\Engine\Volt\Exception\InvalidFilterException;
 use Vegas\Mvc\View\Engine\Volt\Exception\UnknownFilterException;
 use Vegas\Mvc\View\Engine\Volt\VoltFilterAbstract;
 use Vegas\Mvc\View\Engine\Volt\VoltHelperAbstract;
+
 
 /**
  * Class Volt
@@ -25,6 +26,23 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
 {
     use RegisterFilters;
     use RegisterHelpers;
+
+    /**
+     * Extension of template file
+     *
+     * @var string
+     */
+    private $extension = '.volt';
+
+    /**
+     * Sets template file extension
+     *
+     * @param $extension
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+    }
 
     /**
      * Registers a new filter in the compiler
@@ -78,4 +96,59 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
         $reflectionClass = new \ReflectionClass($className);
         return $reflectionClass->newInstance($this->getCompiler());
     }
-} 
+
+    /**
+     * Renders a partial inside another view
+     *
+     * Uses partialsDir from config
+     * Methods check if partial is in local directory, if so then prepares full path to local file,
+     * otherwise uses global partialsDir path
+     *
+     * Before use setup partialsDir in application config (app/config/config.php):
+     * <code>
+     *      //remember about trailing slashes
+     *      'application' => array(
+     *      ...
+     *          'view' => array(
+     *              'layout' => 'main',
+     *              'layoutsDir' => APP_ROOT . '/app/layouts/',
+     *              'partialsDir' => APP_ROOT . '/app/layouts/partials/',
+     *              ...
+     *          )
+     *      )
+     *      ...
+     * </code>
+     * Usage:
+     *
+     *  -   Global partial
+     *      <code>
+     *          {{ partial('header/navigation') }} # goes to APP_ROOT/app/layouts/partials/header/navigation.volt
+     *      </code>
+     * -    Local partial in module Test, controller Index (app/modules/Test/views/index/)
+     *      <code>
+     *          {{ partial('./content/heading') }} # goes to APP_ROOT/app/modules/Test/views/index/partials/content/heading.volt
+     *      </code>
+     *
+     * NOTE
+     *  name of 'partial' directory inside of module must be the same as name of global 'partial' directory:
+     *  APP_ROOT/app/layouts/partials   =>  ../Test/views/index/partials
+     *
+     * @param string $partialPath
+     * @param null $params
+     * @return string|void
+     */
+    public function partial($partialPath, $params = null)
+    {
+        if (strpos($partialPath, './') === 0) {
+            $viewPartialsDir = sprintf('%s%s%s%s',
+                dirname($this->view->getActiveRenderPath()),
+                DIRECTORY_SEPARATOR,
+                basename($this->view->getPartialsDir()),
+                DIRECTORY_SEPARATOR
+            );
+        } else {
+            $viewPartialsDir = $this->view->getPartialsDir();
+        }
+        $this->render($viewPartialsDir . $partialPath . $this->extension, $params);
+    }
+}

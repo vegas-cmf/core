@@ -15,8 +15,10 @@ namespace Test\Services;
 use Phalcon\DI\InjectionAwareInterface;
 use Vegas\DI\InjectionAwareTrait;
 
-class Fake implements InjectionAwareInterface
+class Fake extends \Vegas\DI\Service\ComponentAbstract
 {
-    use InjectionAwareTrait;
-
+    public function setUp($params = array())
+    {
+        return array('test' => $params);
+    }
 } 

@@ -51,37 +51,16 @@ class ComponentTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Phalcon\DI', $component->getDI());
 
-        $rendered = '';
-        ob_start();
-        $component->render(array('foo' => 'bar', 'baz' => 123));
-
-        $rendered = ob_get_contents();
-        ob_clean();
-
-        $this->assertEquals('bar123', $rendered);
+        $this->assertEquals('bar123', $component->render(array('foo' => 'bar', 'baz' => 123)));
 
         $renderer = new Renderer($this->di->get('view'));
         $component->setRenderer($renderer);
 
-        $rendered = '';
-        ob_start();
-        $component->render(array('foo' => 'bar', 'baz' => 123));
-
-        $rendered = ob_get_contents();
-        ob_clean();
-
-        $this->assertEquals('bar123', $rendered);
+        $this->assertEquals('bar123', $component->render(array('foo' => 'bar', 'baz' => 123)));
 
         $component = new Fake($renderer);
         $component->setDI($this->di);
 
-        $rendered = '';
-        ob_start();
-        $component->render(array('foo' => 'bar', 'baz' => 123));
-
-        $rendered = ob_get_contents();
-        ob_clean();
-
-        $this->assertEquals('bar123', $rendered);
+        $this->assertEquals('bar123', $component->render(array('foo' => 'bar', 'baz' => 123)));
     }
 } 
