@@ -13,11 +13,12 @@
 namespace Test\Controllers\Backend;
 
 use Vegas\Mvc\Controller\ControllerAbstract;
+use Vegas\Mvc\View;
 
 class FakeController extends ControllerAbstract
 {
     public function testAction()
     {
-
+        $this->view->disableLevel(View::LEVEL_LAYOUT);
     }
 } 

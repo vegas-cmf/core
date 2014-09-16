@@ -18,8 +18,9 @@ return array(
         ),
         'view'  => array(
             'cacheDir'  =>  APP_ROOT . '/cache/',
-            'layout'    =>  'main.volt',
-            'layoutsDir'    =>  APP_ROOT . '/app/layouts/'
+            'layout'    =>  'main',
+            'layoutsDir'    =>  APP_ROOT . '/app/layouts/',
+            'partialsDir'    =>  APP_ROOT . '/app/layouts/partials/',
         ),
         'hostname' => 'vegas.dev'
     ),

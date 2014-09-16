@@ -76,6 +76,16 @@ class Bootstrap implements BootstrapInterface
     }
 
     /**
+     * Returns Dependency Injector
+     *
+     * @return FactoryDefault|DiInterface
+     */
+    public function getDI()
+    {
+        return $this->di;
+    }
+
+    /**
      * Initializes application environment
      */
     protected function initEnvironment()

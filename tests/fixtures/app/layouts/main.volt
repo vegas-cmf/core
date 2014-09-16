@@ -1,1 +1,1 @@
-main layout
+1{{ partial('test/sample') }}{{ content() }}

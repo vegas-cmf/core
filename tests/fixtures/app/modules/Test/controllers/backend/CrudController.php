@@ -13,6 +13,7 @@
 namespace Test\Controllers\Backend;
 
 use Vegas\Mvc\Controller\Crud;
+use Vegas\Mvc\View;
 
 class CrudController extends Crud
 {
@@ -22,6 +23,8 @@ class CrudController extends Crud
     public function initialize()
     {
         parent::initialize();
+
+        $this->view->disableLevel(View::LEVEL_LAYOUT);
 
         $this->dispatcher->getEventsManager()->attach(Crud\Events::AFTER_CREATE, $this->printAfterSuccess());
         $this->dispatcher->getEventsManager()->attach(Crud\Events::AFTER_UPDATE, $this->printAfterSuccess());

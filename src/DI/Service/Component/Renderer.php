@@ -10,6 +10,7 @@
  * file that was distributed with this source code.
  */
 namespace Vegas\DI\Service\Component;
+use Vegas\Mvc\View;
 
 /**
  * Class Renderer
@@ -71,7 +72,14 @@ class Renderer implements RendererInterface
      */
     public function render($params = array())
     {
-        return $this->view->partial($this->getServiceViewPath(), $params);
+        $currentViewsDir = $this->view->getViewsDir();
+        $this->view->setViewsDir($this->getServiceViewPath());
+        $this->view->disableLevel(View::LEVEL_LAYOUT);
+        $content = $this->view->getRender('services', $this->templateName, $params);
+
+        //rollback viewsDir
+        $this->view->setViewsDir($currentViewsDir);
+        return $content;
     }
 
     /**
@@ -80,6 +88,7 @@ class Renderer implements RendererInterface
      */
     private function getServiceViewPath()
     {
-        return '../../'.$this->moduleName.'/views/services/'.$this->templateName;
+        $viewsDir = APP_ROOT . '/app/modules/' . $this->moduleName . '/views/';
+        return $viewsDir;
     }
 }
