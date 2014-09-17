@@ -81,5 +81,16 @@ class VoltTest extends TestCase
         $volt->partial('test/sample');
         $this->assertEquals('2', ob_get_contents());
         ob_end_clean();
+
+        ob_start();
+        $volt->partial(APP_ROOT . '/app/layouts/partials/test/sample');
+        $this->assertEquals('2', ob_get_contents());
+        ob_end_clean();
+
+        $content(array('test', ''));
+        ob_start();
+        $volt->partial('../../../layouts/partials/test/sample');
+        $this->assertEquals('2', ob_get_contents());
+        ob_end_clean();
     }
 }
