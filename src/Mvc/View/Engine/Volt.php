@@ -187,11 +187,13 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
     {
         $partialsDirPath = $this->view->getPartialsDir();
         //allows absolute path
-        if (strpos($partialPath, $partialsDirPath) !== false) {
-            $partialPath = str_replace($partialsDirPath, '', $partialPath);
+        if (file_exists($partialPath . $this->extension)) {
+            $partialsDirPath = dirname($partialPath) . DIRECTORY_SEPARATOR;
+            $partialPath = basename($partialPath);
+            return $this->renderPartial($partialsDirPath, $partialPath, $params);
         }
 
-        $this->renderPartial($partialsDirPath, $partialPath, $params);
+        return $this->renderPartial($partialsDirPath, $partialPath, $params);
     }
 
     /**

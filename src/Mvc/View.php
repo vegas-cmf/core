@@ -82,6 +82,8 @@ class View extends PhalconView
      */
     protected function _engineRender($engines, $viewPath, $silence, $mustClean, $cache)
     {
+        $currentViewsDir = $this->getViewsDir();
+
         //checks if layout template is rendered
         //get rid of trailing slash
         if (dirname($viewPath) == rtrim($this->getLayoutsDir(), DIRECTORY_SEPARATOR)) {
@@ -89,7 +91,15 @@ class View extends PhalconView
             $this->setViewsDir($this->getLayoutsDir());
             $viewPath = basename($viewPath);
         }
-        parent::_engineRender($engines, $viewPath, $silence, $mustClean, $cache);
+//        var_dump($viewPath);
+//var_dump($this->getViewsDir());
+//        try {
+//            var_dump($viewPath, $this->getViewsDir(), $this->getPartialsDir());
+            parent::_engineRender($engines, $viewPath, $silence, $mustClean, $cache);
+//        }catch(\Exception $e) {print_r($e->getMessage());}
+
+        //reverts viewsDir
+        $this->setViewsDir($currentViewsDir);
     }
 
     /**
@@ -122,5 +132,22 @@ class View extends PhalconView
         }
 
         return $controllerName;
+    }
+
+    public function partial($partialPath, $params = null)
+    {
+//        var_dump($partialPath);
+//        $this->setPartialsDir('');
+//        $this->setViewsDir('');
+//        if (file_exists(dirname($partialPath))) {
+//        }
+        if (file_exists(dirname($partialPath))) {
+//            var_dump(dirname($viewPath));
+//            $this->setViewsDir('');//dirname($partialPath) . DIRECTORY_SEPARATOR);
+            $this->setPartialsDir(dirname($partialPath) . DIRECTORY_SEPARATOR);
+            $partialPath = basename($partialPath);
+//                var_dump('viewPath:' . $viewPath, 'viewsDir:'.$this->getViewsDir());
+        }
+        parent::partial($partialPath);
     }
 }
