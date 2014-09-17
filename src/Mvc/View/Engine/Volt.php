@@ -119,14 +119,25 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
      *      ...
      * </code>
      * Usage:
+     *  -   Relative partial
+     *      <code>
+     *          {# somewhere in module view #}
+     *          {{ partial('../../../layouts/partials/header/navigation') }    # goes to APP_ROOT/app/layouts/partials/header/navigation.volt
+     *      </code>
      *
      *  -   Global partial
      *      <code>
      *          {{ partial('header/navigation') }} # goes to APP_ROOT/app/layouts/partials/header/navigation.volt
      *      </code>
+     *
      * -    Local partial in module Test, controller Index (app/modules/Test/views/index/)
      *      <code>
      *          {{ partial('./content/heading') }} # goes to APP_ROOT/app/modules/Test/views/index/partials/content/heading.volt
+     *      </code>
+     *
+     * -    Absolute path
+     *      <code>
+     *          {{ partial(constant("APP_ROOT") ~ "/app/layouts/partials/header/navigation.volt") }}
      *      </code>
      *
      * NOTE
@@ -139,16 +150,78 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
      */
     public function partial($partialPath, $params = null)
     {
-        if (strpos($partialPath, './') === 0) {
-            $viewPartialsDir = sprintf('%s%s%s%s',
+        if (strpos($partialPath, '../') === 0 || strpos($partialPath, '/../') === 0) {
+            $this->renderRelativePartial($partialPath, $params);
+        } else if (strpos($partialPath, './') === 0) {
+            $this->renderLocalPartial($partialPath, $params);
+        } else {
+            $this->renderGlobalPartial($partialPath, $params);
+        }
+    }
+
+    /**
+     * Renders partial from local directory
+     *
+     * @param $partialPath
+     * @param null $params
+     */
+    private function renderLocalPartial($partialPath, $params = null)
+    {
+        $partialsDirPath = sprintf('%s%s%s%s',
+            dirname($this->view->getActiveRenderPath()),
+            DIRECTORY_SEPARATOR,
+            basename($this->view->getPartialsDir()),
+            DIRECTORY_SEPARATOR
+        );
+
+        $this->renderPartial($partialsDirPath, $partialPath, $params);
+    }
+
+    /**
+     * Renders partial from global directory
+     *
+     * @param $partialPath
+     * @param null $params
+     */
+    private function renderGlobalPartial($partialPath, $params = null)
+    {
+        $partialsDirPath = $this->view->getPartialsDir();
+        //allows absolute path
+        if (strpos($partialPath, $partialsDirPath) !== false) {
+            $partialPath = str_replace($partialsDirPath, '', $partialPath);
+        }
+
+        $this->renderPartial($partialsDirPath, $partialPath, $params);
+    }
+
+    /**
+     * Renders partial from relative path
+     *
+     * @param $partialPath
+     * @param null $params
+     */
+    private function renderRelativePartial($partialPath, $params = null)
+    {
+        $partialsDirPath = realpath(sprintf('%s%s%s',
                 dirname($this->view->getActiveRenderPath()),
                 DIRECTORY_SEPARATOR,
-                basename($this->view->getPartialsDir()),
-                DIRECTORY_SEPARATOR
-            );
-        } else {
-            $viewPartialsDir = $this->view->getPartialsDir();
-        }
+                dirname($partialPath)
+            )) . DIRECTORY_SEPARATOR;
+
+        $partialPath = $partialsDirPath . basename($partialPath);
+
+        $this->renderGlobalPartial($partialPath, $params);
+    }
+
+    /**
+     * Renders partials using prepared path
+     *
+     * @param $viewPartialsDir
+     * @param $partialPath
+     * @param null $params
+     */
+    private function renderPartial($viewPartialsDir, $partialPath, $params = null)
+    {
         $this->render($viewPartialsDir . $partialPath . $this->extension, $params);
     }
 }
