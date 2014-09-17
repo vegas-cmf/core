@@ -43,6 +43,8 @@ class View extends PhalconView
 
         if (isset($options['partialsDir'])) {
             $this->setPartialsDir($options['partialsDir']);
+        } else {
+            $this->setPartialsDir($options['layoutsDir'] . 'partials/');
         }
 
         if (isset($options['layout']) && !empty($options['layout'])) {
