@@ -38,6 +38,11 @@ class FakeController extends ControllerAbstract
         $this->view->disableLevel(View::LEVEL_LAYOUT);
     }
 
+    public function testPartialFunctionAction()
+    {
+        $this->view->partial('./test');
+    }
+
     public function jsonAction()
     {
         return $this->jsonResponse(array('foo' => 'bar'));

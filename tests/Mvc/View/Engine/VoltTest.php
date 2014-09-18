@@ -77,10 +77,10 @@ class VoltTest extends TestCase
         $engines = $view->getRegisteredEngines();
         $volt = $engines['.volt']($view, $this->bootstrap->getDI());
 
-//        ob_start();
-//        $view->partial('test/sample');
-//        $this->assertEquals('2', ob_get_contents());
-//        ob_end_clean();
+        ob_start();
+        $view->partial('test/sample');
+        $this->assertEquals('2', ob_get_contents());
+        ob_end_clean();
 
         ob_start();
         $view->partial(APP_ROOT . '/app/layouts/partials/test/sample');
@@ -92,5 +92,20 @@ class VoltTest extends TestCase
         $view->partial('../../../layouts/partials/test/sample');
         $this->assertEquals('2', ob_get_contents());
         ob_end_clean();
+
+        $ro = new \ReflectionObject($view);
+        $property = $ro->getProperty('_activeRenderPath');
+        $property->setAccessible(true);
+
+//        var_dump($property->getValue($view));die;
+//        $property->setValue($view, $view->getViewsDir() . 'frontend/fake/');
+//        $view->setViewsDir();
+
+        $response = $content(array('testPartialFunction', ''));
+        $this->assertEquals('34', $response);
+//        ob_start();
+//        $view->partial('./test');
+//        $this->assertEquals('2', ob_get_contents());
+//        ob_end_clean();
     }
 }
