@@ -24,6 +24,15 @@ abstract class ControllerAbstract extends Controller
      */
     public function initialize()
     {
+        /**
+         * Attaches event fired before view render
+         * It allows to use $this->view->partial inside of action method before action view is being rendered
+         */
+        $this->eventsManager->attach('view:beforeRenderView', function($event, $view, $engineViewPath) {
+            if ($view instanceof \Vegas\Mvc\View) {
+                $view->setControllerViewPath($this->router->getControllerName());
+            }
+        });
     }
 
     /**

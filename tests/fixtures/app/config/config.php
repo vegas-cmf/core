@@ -21,6 +21,7 @@ return array(
             'layout'    =>  'main',
             'layoutsDir'    =>  APP_ROOT . '/app/layouts/',
             'partialsDir'    =>  APP_ROOT . '/app/layouts/partials/',
+            'compileAlways' =>  true
         ),
         'hostname' => 'vegas.dev'
     ),
