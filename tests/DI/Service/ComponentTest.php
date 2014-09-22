@@ -17,13 +17,16 @@ use Vegas\DI\Service\Component\Renderer;
 use Vegas\Mvc\Application;
 use Vegas\Mvc\Module\ModuleLoader;
 use Vegas\Mvc\View;
+use Vegas\Tests\App\TestCase;
 
-class ComponentTest extends \PHPUnit_Framework_TestCase
+class ComponentTest extends TestCase
 {
     protected $di;
 
     public function setUp()
     {
+        parent::setUp();
+
         $di = DI::getDefault();
         $di->set('view', function() use ($di) {
             $view = new View($di->get('config')->application->view->toArray());

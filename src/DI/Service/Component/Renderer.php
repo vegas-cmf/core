@@ -10,6 +10,8 @@
  * file that was distributed with this source code.
  */
 namespace Vegas\DI\Service\Component;
+use Vegas\DI\Service\Exception\ModuleNotFoundException;
+use Vegas\DI\Service\Exception\ModulesNotSetException;
 use Vegas\Mvc\View;
 
 /**
@@ -26,7 +28,7 @@ class Renderer implements RendererInterface
     protected $view;
 
     /**
-     * Name of module
+     * Module name
      *
      * @var string
      */
@@ -88,7 +90,19 @@ class Renderer implements RendererInterface
      */
     private function getServiceViewPath()
     {
-        $viewsDir = APP_ROOT . '/app/modules/' . $this->moduleName . '/views/';
+        if (!$this->view->getDI()->has('modules')) {
+            throw new ModulesNotSetException();
+        }
+
+        $modules = $this->view->getDI()->get('modules');
+
+        if (!isset($modules[$this->moduleName]['path'])) {
+            throw new ModuleNotFoundException();
+        }
+
+        $modulePath = str_replace(DIRECTORY_SEPARATOR.'Module.php', '', $modules[$this->moduleName]['path']);
+        $viewsDir = $modulePath . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR;
+
         return $viewsDir;
     }
 }
