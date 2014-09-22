@@ -19,6 +19,6 @@ $di->set('mongo', function() use ($config) {
 
 $di->set('db', function() use ($config) {
     return new \Phalcon\Db\Adapter\Pdo\Mysql($config->db->toArray());
-});
+}, true);
 
 Phalcon\DI::setDefault($di);

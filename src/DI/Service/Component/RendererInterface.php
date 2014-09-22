@@ -26,7 +26,7 @@ interface RendererInterface
     public function __construct(\Phalcon\Mvc\View $view = null);
 
     /**
-     * Sets name of template
+     * Sets module name
      *
      * @param $name
      * @return $this
@@ -34,7 +34,7 @@ interface RendererInterface
     public function setModuleName($name);
 
     /**
-     * Sets name of module
+     * Sets name of component template
      *
      * @param $name
      * @return $this
