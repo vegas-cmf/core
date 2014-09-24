@@ -2,7 +2,7 @@
 /**
  * This file is part of Vegas package
  *
- * @author Arkadiusz Ostrycharz <arkadiusz.ostrycharz@gmail.com> Sławomir Żytko <slawek@amsterdam-standard.pl>
+ * @author Arkadiusz Ostrycharz <aostrycharz@amsterdam-standard.pl> Sławomir Żytko <slawek@amsterdam-standard.pl>
  * @copyright Amsterdam Standard Sp. Z o.o.
  * @homepage http://vegas-cmf.github.io
  *
