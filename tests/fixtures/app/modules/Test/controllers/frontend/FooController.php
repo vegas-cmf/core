@@ -17,11 +17,11 @@ use Vegas\Mvc\Controller\ControllerAbstract;
 use Vegas\Mvc\View;
 
 /**
- * Class FakeController
+ * Class FooController
  * @package Test\Controllers\Frontend
  * @Auth(name='authUser')
  */
-class FakeController extends ControllerAbstract
+class FooController extends ControllerAbstract
 {
     public function testAction()
     {
@@ -38,7 +38,7 @@ class FakeController extends ControllerAbstract
         $this->view->disableLevel(View::LEVEL_LAYOUT);
     }
 
-    public function testGlobalAction()
+    public function testLocalAction()
     {
         $this->view->disableLevel(View::LEVEL_LAYOUT);
     }
