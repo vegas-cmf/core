@@ -91,7 +91,7 @@ class ModuleLoader
                 continue;
             }
 
-            $baseName = self::camelcaseBase($libDir->getBasename());
+            $baseName = \Phalcon\Text::camelize($libDir->getBasename());
             if (!isset($modulesList[$baseName])) {
                 $modulesList[$baseName] = array(
                     'className' =>  $baseName . '\\' . pathinfo(self::MODULE_SETTINGS_FILE, PATHINFO_FILENAME),
@@ -101,24 +101,6 @@ class ModuleLoader
         }
 
         return $modulesList;
-    }
-
-    /**
-     * Change vendor module dirname to camelcase.
-     *
-     * @param $base
-     * @return string
-     */
-    private static function camelcaseBase($base)
-    {
-        $camelCased = '';
-
-        $baseArray = explode('-', $base);
-        foreach ($baseArray As $namePart) {
-            $camelCased .= ucfirst($namePart);
-        }
-
-        return $camelCased;
     }
 
     /**
