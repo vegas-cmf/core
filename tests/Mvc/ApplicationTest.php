@@ -27,6 +27,8 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $this->assertSameSize($modules, $app->getModules());
 
         $this->assertTrue(class_exists('Test\\Models\\Fake'));
+        $this->assertTrue(class_exists('Test\\Models\\Sub\\Foo'));
+        $this->assertTrue(class_exists('Test\\Models\\Sub\\Sub\\Foo'));
         $this->assertTrue(class_exists('Test\\Components\\Fake'));
         $this->assertTrue(class_exists('Test\\Services\\Fake'));
     }

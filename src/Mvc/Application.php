@@ -55,7 +55,7 @@ class Application extends \Phalcon\Mvc\Application
         
         foreach ($modules As $name => $module)
         {
-            $loader->registerNamespaces(
+            $loader->registerPrefixes(
                 array(
                     $name.'\Forms'   => dirname($module['path']).'/forms/',
                     $name.'\Models'   => dirname($module['path']).'/models/',
