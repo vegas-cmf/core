@@ -1,0 +1,1 @@
+short{{ partial('./test') }}

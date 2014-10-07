@@ -202,5 +202,72 @@ class ViewTest extends TestCase
         $this->assertEquals('OUTSIDER', ob_get_contents());
         ob_end_clean();
     }
+
+    public function testShortNamespacePathsResolving()
+    {
+        $configView = $this->di->get('config')->application->view->toArray();
+        if (!file_exists($configView['cacheDir'])) {
+            mkdir($configView['cacheDir'], 0777);
+        } else {
+            chmod($configView['cacheDir'], 0777);
+        }
+
+        $content = function($params) {
+            $this->setUp();
+            $route = $this->bootstrap->getDI()->get('router')->getRouteByName('testshort');
+            $url = rtrim(str_replace(array(':action', ':params'), $params, $route->getPattern()), DIRECTORY_SEPARATOR);
+            $this->bootstrap->run($url);
+            return $this->bootstrap->getDI()->get('response')->getContent();
+        };
+
+        //compares output rendered by dispatcher
+        //views are loaded in the following order:
+        //app/layouts/main.volt     =>  1
+        //app/layouts/partials/test/sample.volt     => 2
+        //app/modules/Test/views/fake/test.volt    =>  3
+        //app/modules/Test/views/fake/partials/test.volt    =>  4
+        //output of dispatcher => 1234
+        $response = $content(array('test', ''));
+        $this->assertEquals('12shortPartialShort', $response);
+
+        //tests rendering only layout with one partial
+        //should return 12 regarding to upwards comments
+        $response = $content(array('testLayout', ''));
+        $this->assertEquals('12', $response);
+
+        //test rendering only view with one partial
+        //should return 34 regarding to upwards comments
+        $response = $content(array('testView', ''));
+        $this->assertEquals('shortPartialShort', $response);
+
+        //extract volt engine
+        $view = $this->bootstrap->getDI()->get('view');
+
+        ob_start();
+        $view->partial('test/sample');
+        $this->assertEquals('2', ob_get_contents());
+        ob_end_clean();
+
+        ob_start();
+        $view->partial(APP_ROOT . '/app/layouts/partials/test/sample');
+        $this->assertEquals('2', ob_get_contents());
+        ob_end_clean();
+
+        ob_start();
+        $view->partial('./test');
+        $this->assertEquals('PartialShort', ob_get_contents());
+        ob_end_clean();
+
+        ob_start();
+        $view->partial('../../../../layouts/partials/test/sample');
+        $this->assertEquals('2', ob_get_contents());
+        ob_end_clean();
+
+        //tests view located outside of `app` directory
+        ob_start();
+        $view->partial(APP_ROOT . '/test');
+        $this->assertEquals('OUTSIDER', ob_get_contents());
+        ob_end_clean();
+    }
 }
  

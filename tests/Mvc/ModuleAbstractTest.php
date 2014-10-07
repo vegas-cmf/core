@@ -34,4 +34,15 @@ class ModuleAbstractTest extends TestCase
         $this->assertTrue(class_exists('Test\Controllers\Backend\FakeController'));
         $this->assertTrue(class_exists('Test\Forms\Fake'));
     }
+
+    public function testNoNamespaceModuleHandling()
+    {
+        $_SERVER['HTTP_HOST'] = 'vegas.dev';
+        $_SERVER['REQUEST_URI'] = '/test/short/namespace/test';
+
+        $this->assertEquals('12shortPartialShort', $this->bootstrap->run('/test/short/namespace/test'));
+
+        $this->assertTrue(class_exists('Test\Controllers\FakeController'));
+        $this->assertTrue(class_exists('Test\Forms\Fake'));
+    }
 } 

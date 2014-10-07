@@ -56,8 +56,14 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
             if ($directory->isDot()) {
                 continue;
             }
-            $namespaces[$this->namespace . '\Controllers\\' . ucfirst($directory->getFileName())] =
-                $this->dir . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $directory->getFileName();
+
+            if (strstr($directory->getFileName(),'.php')) {
+                $namespaces[$this->namespace . '\Controllers'] =
+                    $this->dir . DIRECTORY_SEPARATOR . 'controllers';
+            } else {
+                $namespaces[$this->namespace . '\Controllers\\' . ucfirst($directory->getFileName())] =
+                    $this->dir . DIRECTORY_SEPARATOR . 'controllers' . DIRECTORY_SEPARATOR . $directory->getFileName();
+            }
         }
 
         $loader = new Loader();

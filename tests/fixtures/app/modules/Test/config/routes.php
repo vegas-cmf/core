@@ -41,5 +41,20 @@ return array(
             'action' => 1,
             'params' => 2
         )
-    )
+    ),
+
+    'testshort' => array(
+        'route' => '/test/short/namespace/:action/:params',
+        'paths' => array(
+            'module'    =>  'Test',
+            'controller' => 'Fake',
+            'action' => 1,
+            'params' => 2
+        ),
+
+        'params' => array(
+            'auth' => 'authUser'
+        )
+    ),
+
 );
