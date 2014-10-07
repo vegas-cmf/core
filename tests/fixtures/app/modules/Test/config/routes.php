@@ -31,5 +31,19 @@ return array(
             'action' => 1,
             'params' => 2
         )
-    )
+    ),
+
+    'testnonamespace' => array(
+        'route' => '/test/nonamespace/test',
+        'paths' => array(
+            'module'    =>  'Test',
+            'controller' => 'Fake',
+            'action' => 'test'
+        ),
+
+        'params' => array(
+            'auth' => 'authUser'
+        )
+    ),
+
 );
