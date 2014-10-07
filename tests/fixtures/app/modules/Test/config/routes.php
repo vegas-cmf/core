@@ -33,12 +33,13 @@ return array(
         )
     ),
 
-    'testnonamespace' => array(
-        'route' => '/test/nonamespace/test',
+    'testshort' => array(
+        'route' => '/test/short/namespace/:action/:params',
         'paths' => array(
             'module'    =>  'Test',
             'controller' => 'Fake',
-            'action' => 'test'
+            'action' => 1,
+            'params' => 2
         ),
 
         'params' => array(

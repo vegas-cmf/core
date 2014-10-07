@@ -19,6 +19,16 @@ class FakeController extends ControllerAbstract
 {
     public function testAction()
     {
+
+    }
+
+    public function testLayoutAction()
+    {
+        $this->view->disableLevel(View::LEVEL_ACTION_VIEW);
+    }
+
+    public function testViewAction()
+    {
         $this->view->disableLevel(View::LEVEL_LAYOUT);
     }
 } 
