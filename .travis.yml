@@ -11,7 +11,6 @@ services:
 before_script:
   - git clone -q --depth=1 https://github.com/phalcon/cphalcon.git -b master
   - (cd cphalcon/ext; export CFLAGS="-g3 -O1 -fno-delete-null-pointer-checks -Wall"; phpize && ./configure --enable-phalcon && make -j4 && sudo make install && phpenv config-add ../unit-tests/ci/phalcon.ini)
-  - sudo service php5-fpm restart
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install --dev
 
