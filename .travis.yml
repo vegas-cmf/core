@@ -12,7 +12,7 @@ before_install:
   - sudo apt-get install php5-dev libpcre3-dev gcc make php5-mysql
   - git clone --depth=1 git://github.com/phalcon/cphalcon.git
   - cd cphalcon/build
-  - sudo ./install
+  - sudo ./travis-install
   - cd ../..
   - phpenv config-add tests/travis/php.ini
   - sudo service php5-fpm restart
