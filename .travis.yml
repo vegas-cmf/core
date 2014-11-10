@@ -15,6 +15,7 @@ before_install:
   - sudo ./install
   - cd ../..
   - phpenv config-add travis.php.ini
+  - sudo service php5-fpm restart
 
 install:
   - curl -s http://getcomposer.org/installer | php
