@@ -5,6 +5,12 @@ php:
   - 5.5
   - 5.4
 
+before_install:
+  - sudo apt-get install php5-dev libpcre3-dev gcc make php5-mysql
+  - git clone --depth=1 git://github.com/phalcon/cphalcon.git
+  - sudo cphalcon/build/install
+  - phpenv config-add travis.php.ini
+
 install:
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install --dev --no-interaction
