@@ -41,10 +41,12 @@ class View extends PhalconView
             $this->setLayoutsDir($options['layoutsDir']);
         }
 
-        if (isset($options['partialsDir'])) {
+        if (isset($options['partialsDir']) && $options['partialsDir']) {
             $this->setPartialsDir($options['partialsDir']);
-        } else {
-            $this->setPartialsDir($options['layoutsDir'] . 'partials/');
+        }
+
+        if (!$this->getPartialsDir() && $viewDir) {
+            $this->setPartialsDir($viewDir);
         }
 
         if (isset($options['layout']) && !empty($options['layout'])) {
@@ -134,7 +136,7 @@ class View extends PhalconView
         $eventsManager = $this->_eventsManager;
 
         foreach ($engines as $extension => $engine) {
-            $viewEnginePath = $basePath . $this->resolveViewsDir($viewPath) . $extension;
+            $viewEnginePath = $basePath . $this->resolveFullViewPath($viewPath) . $extension;
             if (file_exists($viewEnginePath)) {
                 if (is_object($eventsManager)) {
                     $this->_activeRenderPath = $viewEnginePath;
@@ -169,9 +171,9 @@ class View extends PhalconView
      * @param $viewPath
      * @return string
      */
-    private function resolveViewsDir($viewPath)
+    private function resolveFullViewPath($viewPath)
     {
-        if (strpos($viewPath, $this->getPartialsDir()) === 0) {
+        if (strlen($this->getPartialsDir()) > 0 && strpos($viewPath, $this->getPartialsDir()) === 0) {
             return $this->resolvePartialPath($viewPath);
         }
         if (strpos($viewPath, $this->getLayoutsDir()) === 0) {
@@ -190,13 +192,19 @@ class View extends PhalconView
     private function resolveViewPath($viewPath)
     {
         $path = $this->getViewsDir();
-        return $path . $viewPath;
+        $path = realpath($path . dirname($viewPath)) . DIRECTORY_SEPARATOR . basename($viewPath);
+
+        return $path;
     }
 
     /**
      * Resolves path to partial
-     *     *
-     * Before use setup partialsDir in application config (app/config/config.php):
+     *
+     * application->view->partialsDir option is optional
+     * When partialsDir is not set in configuration, then by default partialsDir is the same like current viewsDir
+     * Otherwise, when partialsDir is set to for example directory app/layouts/partials then partial function loads
+     * global partials from this directory
+     *
      * <code>
      *      //remember about trailing slashes
      *      'application' => array(
@@ -204,7 +212,7 @@ class View extends PhalconView
      *          'view' => array(
      *              'layout' => 'main',
      *              'layoutsDir' => APP_ROOT . '/app/layouts/',
-     *              'partialsDir' => APP_ROOT . '/app/layouts/partials/',
+     *              'partialsDir' => APP_ROOT . '/app/layouts/partials/', //[optional]
      *              ...
      *          )
      *      )
@@ -214,17 +222,27 @@ class View extends PhalconView
      *  -   Relative partial
      *      <code>
      *          {# somewhere in module view #}
-     *          {{ partial('../../../../../layouts/partials/header/navigation') }    # goes to APP_ROOT/app/layouts/partials/header/navigation.volt
+     *          {{ partial('../../../layouts/partials/header/navigation') }
+     *          # goes to APP_ROOT/app/layouts/partials/header/navigation.volt
+     *      </code>
+     *      <code>
+     *          {# somewhere in module view eg. Test/views/index/index.volt #}
+     *          {{ partial('./frontend/foo/partials/other.volt') }
+     *          # goes to APP_ROOT/app/modules/Test/views/frontend/foo/partials/other.volt
      *      </code>
      *
      *  -   Global partial
      *      <code>
-     *          {{ partial('header/navigation') }} # goes to APP_ROOT/app/layouts/partials/header/navigation.volt
+     *          {{ partial('header/navigation') }}
+     *          # when partialsDir is set to APP_ROOT/app/layouts/partials
+     *          # it goes to APP_ROOT/app/layouts/partials/header/navigation.volt
+     *          # otherwise it is looking for view inside current viewsDir, so: APP_ROOT/app/modules/Test/views/header/navigation.volt
      *      </code>
      *
      * -    Local partial in module Test, controller Index (app/modules/Test/views/index/)
      *      <code>
-     *          {{ partial('./content/heading') }} # goes to APP_ROOT/app/modules/Test/views/index/partials/content/heading.volt
+     *          {{ partial('./frontend/index/partials/content/heading') }}
+     *          # goes to APP_ROOT/app/modules/Test/views/frontend/index/partials/content/heading.volt
      *      </code>
      *
      * -    Absolute path
@@ -232,16 +250,13 @@ class View extends PhalconView
      *          {{ partial(constant("APP_ROOT") ~ "/app/layouts/partials/header/navigation.volt") }}
      *      </code>
      *
-     * NOTE
-     *  name of 'partial' directory inside of module must be the same as name of global 'partial' directory:
-     *  APP_ROOT/app/layouts/partials   =>  ../Test/views/index/partials
-     *
      * @param $viewPath
      * @return string
      */
     private function resolvePartialPath($viewPath)
     {
         $tempViewPath = str_replace($this->getPartialsDir(), '', $viewPath);
+
         if (strpos($tempViewPath, '../') === 0 || strpos($tempViewPath, '/../') === 0) {
             return $this->resolveRelativePath($tempViewPath);
         } else if (strpos($tempViewPath, './') === 0) {
@@ -272,14 +287,13 @@ class View extends PhalconView
      */
     private function resolveLocalPath($partialPath)
     {
-        $partialsDirPath = sprintf('%s%s%s%s%s',
+        $partialDir = str_replace('./', '', dirname($partialPath));
+        $partialsDir = realpath(sprintf('%s%s',
             $this->getViewsDir(),
-            $this->getControllerViewPath(),
-            DIRECTORY_SEPARATOR,
-            basename($this->getPartialsDir()),
-            DIRECTORY_SEPARATOR
-        );
-        return $partialsDirPath . $partialPath;
+            $partialDir
+        )) . DIRECTORY_SEPARATOR;
+
+        return $partialsDir . basename($partialPath);
     }
 
     /**
@@ -302,10 +316,8 @@ class View extends PhalconView
      */
     private function resolveRelativePath($partialPath)
     {
-        $partialsDirPath = realpath(sprintf('%s%s%s%s',
+        $partialsDirPath = realpath(sprintf('%s%s',
                 $this->getViewsDir(),
-                $this->controllerViewPath,
-                DIRECTORY_SEPARATOR,
                 dirname($partialPath)
             )) . DIRECTORY_SEPARATOR;
 

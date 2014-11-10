@@ -10,6 +10,16 @@ return array(
         )
     ),
 
+    'testfoo' => array(
+        'route' => '/testfoo/front/:action/:params',
+        'paths' => array(
+            'module'    =>  'Test',
+            'controller' => 'Frontend\Foo',
+            'action' => 1,
+            'params' => 2
+        )
+    ),
+
     'testfake' => array(
         'route' => '/test/fake/test',
         'paths' => array(
