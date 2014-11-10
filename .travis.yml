@@ -14,11 +14,11 @@ before_install:
   - cd cphalcon/build
   - sudo ./install
   - cd ../..
-  - echo "extension=phalcon.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - sudo echo "extension=phalcon.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - sudo service php5-fpm restart
 
 install:
-  - curl -s http://getcomposer.org/installer | php
+  - sudo curl -s http://getcomposer.org/installer | php
   - sudo php composer.phar install --dev --no-interaction
 
 script:
