@@ -12,9 +12,10 @@ before_install:
   - sudo apt-get install php5-dev libpcre3-dev gcc make php5-mysql
   - git clone --depth=1 git://github.com/phalcon/cphalcon.git
   - cd cphalcon/build
+  - pwd
   - sudo ./travis-install
   - cd ../..
-  - echo "extension_dir=~/cphalcon/build/64bits/modules" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "extension_dir=/home/travis/cphalcon/build/64bits/modules" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - echo "extension=phalcon.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - sudo service php5-fpm restart
 
