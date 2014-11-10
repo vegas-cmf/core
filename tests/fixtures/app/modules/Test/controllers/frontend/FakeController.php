@@ -43,6 +43,11 @@ class FakeController extends ControllerAbstract
         return $this->jsonResponse(array('foo' => 'bar'));
     }
 
+    public function emptyjsonAction()
+    {
+        return $this->jsonResponse();
+    }
+
     public function errorAction($code)
     {
         $throwName = 'throw'.$code;

@@ -50,9 +50,9 @@ class ExceptionResolverTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('400 Bad request.', $response->getHeaders()->get('Status'));
     }
 
-    public function testDevEnv()
+    public function testTestEnv()
     {
-        $resolver = $this->getFreshResolver(Constants::DEV_ENV);
+        $resolver = $this->getFreshResolver(Constants::TEST_ENV);
 
         $ex403 = new \Exception('Message 403', 403);
         $response = $resolver->resolve($ex403);

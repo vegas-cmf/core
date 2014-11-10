@@ -14,7 +14,6 @@ namespace Vegas\Mvc;
 use Phalcon\Loader;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\ModuleDefinitionInterface;
-use Vegas\Mvc\Dispatcher\Events\BeforeException;
 use Vegas\Mvc\Module\SubModuleManager;
 
 /**
@@ -72,35 +71,15 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     }
 
     /**
-     * Registers dispatcher, view, application plugins
+     * Registers view and application plugins
      *
      * @param \Phalcon\DiInterface $di
      */
     public function registerServices($di)
     {
-        $this->registerDispatcher($di);
+        $this->registerDispatcherNamespace($di);
         $this->registerViewComponent($di);
         $this->registerPlugins($di);
-    }
-
-    /**
-     * Registers default dispatcher
-     *
-     * @param $di
-     */
-    protected function registerDispatcher($di)
-    {
-        $di->set('dispatcher', function() use ($di) {
-            $dispatcher = new Dispatcher();
-            $dispatcher->setDefaultNamespace($this->namespace."\Controllers");
-
-            $eventsManager = $di->getShared('eventsManager');
-            $eventsManager->attach('dispatch:beforeException', BeforeException::getEvent());
-
-            $dispatcher->setEventsManager($eventsManager);
-            
-            return $dispatcher;
-        });
     }
 
     /**
@@ -140,6 +119,21 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
             
             $view->setEventsManager($di->getShared('eventsManager'));
             return $view;
+        });
+    }
+
+    /**
+     * Add default namespace to dispatcher.
+     *
+     * @param $di
+     */
+    protected function registerDispatcherNamespace($di)
+    {
+        $dispatcher = $di->get('dispatcher');
+
+        $di->set('dispatcher', function() use ($dispatcher) {
+            $dispatcher->setDefaultNamespace($this->namespace."\Controllers");
+            return $dispatcher;
         });
     }
 }
