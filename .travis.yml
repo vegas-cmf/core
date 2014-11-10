@@ -14,7 +14,8 @@ before_install:
   - cd cphalcon/build
   - sudo ./travis-install
   - cd ../..
-  - phpenv config-add tests/travis/php.ini
+  - echo "extension_dir=~/cphalcon/build/64bits/modules" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
+  - echo "extension=phalcon.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini
   - sudo service php5-fpm restart
 
 install:
