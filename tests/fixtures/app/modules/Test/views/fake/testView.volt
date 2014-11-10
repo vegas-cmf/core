@@ -1,1 +1,1 @@
-short{{ partial('./test') }}
+short{{ partial('./fake/partials/test') }}

@@ -254,12 +254,12 @@ class ViewTest extends TestCase
         ob_end_clean();
 
         ob_start();
-        $view->partial('./test');
+        $view->partial('./fake/partials/test');
         $this->assertEquals('PartialShort', ob_get_contents());
         ob_end_clean();
 
         ob_start();
-        $view->partial('../../../../layouts/partials/test/sample');
+        $view->partial('../../../layouts/partials/test/sample');
         $this->assertEquals('2', ob_get_contents());
         ob_end_clean();
 

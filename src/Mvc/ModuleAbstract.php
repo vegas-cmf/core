@@ -71,7 +71,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     }
 
     /**
-     * Registers view and application plugins
+     * Registers dispatcher namespace, view and application plugins
      *
      * @param \Phalcon\DiInterface $di
      */
@@ -132,7 +132,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
         $dispatcher = $di->get('dispatcher');
 
         $di->set('dispatcher', function() use ($dispatcher) {
-            $dispatcher->setDefaultNamespace($this->namespace."\Controllers");
+            $dispatcher->setDefaultNamespace($this->namespace.'\Controllers');
             return $dispatcher;
         });
     }
