@@ -40,12 +40,13 @@ abstract class ControllerAbstract extends Controller
      * Disables view
      *
      * @param $data
-     * @return \Phalcon\Http\ResponseInterface
+     * @return null|\Phalcon\Http\ResponseInterface
      */
-    protected function jsonResponse($data) 
+    protected function jsonResponse($data = array())
     {
         $this->view->disable();
         $this->response->setContentType('application/json', 'UTF-8');
+
         return $this->response->setJsonContent($data);
     }
 

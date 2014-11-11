@@ -15,10 +15,17 @@ use Vegas\Tests\App\TestCase;
 
 class ControllerAbstractTest extends TestCase
 {
-    public function setUp()
+    public function testNoActionError()
     {
-        parent::setUp();
-        error_reporting(2);
+        $this->bootstrap->run('/test/front/no-action-like-this');
+    }
+
+    public function testNoActionErrorResponse()
+    {
+        $this->assertEquals(
+            '404 Action \'no-action-like-this\' was not found on handler \'Frontend\Fake\'',
+            $this->di->get('response')->getHeaders()->get('Status')
+        );
     }
 
     public function test403Error()
@@ -54,5 +61,10 @@ class ControllerAbstractTest extends TestCase
     public function testJson()
     {
         $this->assertEquals('{"foo":"bar"}', $this->bootstrap->run('/test/front/json'));
+    }
+
+    public function testEmptyJson()
+    {
+        $this->assertEquals('[]', $this->bootstrap->run('/test/front/emptyjson'));
     }
 }

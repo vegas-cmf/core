@@ -15,9 +15,11 @@ namespace Vegas\Application;
 use Phalcon\DI\FactoryDefault;
 use Phalcon\DI;
 use Phalcon\DiInterface;
+use Phalcon\Mvc\Dispatcher;
 use Vegas\BootstrapInterface;
 use Vegas\Constants;
 use Vegas\DI\ServiceProviderLoader;
+use Vegas\Mvc\Dispatcher\Events\BeforeException;
 use Vegas\Mvc\Module\ModuleLoader;
 use Vegas\Mvc\Module\SubModuleManager;
 
@@ -181,6 +183,25 @@ class Bootstrap implements BootstrapInterface
     }
 
     /**
+     * Registers default dispatcher
+     *
+     * @param $di
+     */
+    protected function initDispatcher()
+    {
+        $this->di->set('dispatcher', function() {
+            $dispatcher = new Dispatcher();
+
+            $eventsManager = $this->di->getShared('eventsManager');
+            $eventsManager->attach('dispatch:beforeException', BeforeException::getEvent());
+
+            $dispatcher->setEventsManager($eventsManager);
+
+            return $dispatcher;
+        });
+    }
+
+    /**
      * Setups application
      *
      * @return $this
@@ -194,6 +215,7 @@ class Bootstrap implements BootstrapInterface
         $this->initModules();
         $this->initRoutes();
         $this->initServices();
+        $this->initDispatcher();
 
         $this->application->setDI($this->di);
         DI::setDefault($this->di);

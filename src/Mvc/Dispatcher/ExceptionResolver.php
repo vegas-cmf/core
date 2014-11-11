@@ -50,11 +50,11 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
             throw new CannotHandleErrorException($ex->getMessage());
         }
 
-        if (!$response->isSent()) {
-            if (!$rendered) {
-                $this->displayRawError($error);
-            }
+        if (!$rendered) {
+            $this->displayRawError($error);
+        }
 
+        if (!$response->isSent()) {
             return $response->send();
         }
 
@@ -127,8 +127,10 @@ class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
             return false;
         }
 
+        $errorTemplatePath = realpath($config->application->view->layoutsDir).DIRECTORY_SEPARATOR.'error';
+
         foreach ($engines As $ext => $engine) {
-            if (file_exists($config->application->view->layoutsDir.'error'.$ext)) {
+            if (file_exists($errorTemplatePath.$ext)) {
                 $view->setLayout('error');
                 $view->disableLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
                 $view->error = $error;

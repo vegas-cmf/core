@@ -105,8 +105,12 @@ class Router implements InjectionAwareInterface
      */
     public function addRoute(array $routeArray)
     {
-        $routeName = reset(array_keys($routeArray));
-        $route = reset(array_values($routeArray));
+        $routeKeys = array_keys($routeArray);
+        $routeValues = array_values($routeArray);
+
+        $routeName = reset($routeKeys);
+        $route = reset($routeValues);
+
         $this->routes[$routeName] = $route;
 
         return $this;

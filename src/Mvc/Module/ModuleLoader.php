@@ -74,13 +74,9 @@ class ModuleLoader
         $fileContent = file_get_contents(APP_ROOT.DIRECTORY_SEPARATOR.'composer.json');
         $json = json_decode($fileContent, true);
 
-        $vendorDir = APP_ROOT.(isset($json['config']['vendor-dir']) ?
+        $vendorDir = realpath(APP_ROOT.(isset($json['config']['vendor-dir']) ?
                 DIRECTORY_SEPARATOR.$json['config']['vendor-dir'] :
-                DIRECTORY_SEPARATOR.'vendor');
-
-        if (substr($vendorDir,-1,1) === DIRECTORY_SEPARATOR) {
-            $vendorDir = substr($vendorDir, 0, -1);
-        }
+                DIRECTORY_SEPARATOR.'vendor'));
 
         $vendorDir .= DIRECTORY_SEPARATOR.'vegas-cmf';
         $directoryIterator = new \DirectoryIterator($vendorDir);
