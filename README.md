@@ -2,7 +2,7 @@ Vegas CMF Core
 ==============
 
 [![Build Status](https://travis-ci.org/vegas-cmf/core.png?branch=master)](https://travis-ci.org/vegas-cmf/core)
-[![Coverage Status](https://coveralls.io/repos/vegas-cmf/core/badge.png?branch=v1.0.5)](https://coveralls.io/r/vegas-cmf/core?branch=v1.0.5)
+[![Coverage Status](https://coveralls.io/repos/vegas-cmf/core/badge.png?branch=master)](https://coveralls.io/r/vegas-cmf/core?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/vegas-cmf/core/v/stable.png)](https://packagist.org/packages/vegas-cmf/core)
 [![Total Downloads](https://poser.pugx.org/vegas-cmf/core/downloads.png)](https://packagist.org/packages/vegas-cmf/core)
 
