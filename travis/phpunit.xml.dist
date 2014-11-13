@@ -19,20 +19,20 @@
 
         strict="false"
         verbose="true"
-        bootstrap="./tests/bootstrap.php">
+        bootstrap="../tests/bootstrap.php">
     <testsuites>
         <testsuite name="Vegas CMF Core Test Suite">
-            <directory>tests</directory>
+            <directory>../tests</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
-            <directory suffix=".php">src</directory>
+            <directory suffix=".php">../src</directory>
         </whitelist>
     </filter>
 
     <logging>
-        <log type="coverage-clover" target="build/logs/clover.xml"/>
+        <log type="coverage-clover" target="../build/logs/clover.xml"/>
     </logging>
 </phpunit>
