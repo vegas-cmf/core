@@ -11,7 +11,7 @@ before_install:
   - mysql -e "CREATE DATABASE IF NOT EXISTS vegas_test;" -uroot
 
 before_script:
-  - phpenv config-add tests/travis/php.ini
+  - phpenv config-add travis/php.ini
   - git clone -q --depth=1 https://github.com/phalcon/cphalcon.git -b master
   - (cd cphalcon/ext; export CFLAGS="-g3 -O1 -fno-delete-null-pointer-checks -Wall"; phpize && ./configure --enable-phalcon && make -j4 && sudo make install && phpenv config-add ../unit-tests/ci/phalcon.ini)
   - curl -s http://getcomposer.org/installer | php
@@ -20,7 +20,7 @@ before_script:
 script:
   - mkdir -p tests/fixtures/cache
   - mkdir -p build/logs
-  - php vendor/bin/phpunit -c travis.phpunit.xml.dist
+  - php vendor/bin/phpunit -c travis/phpunit.xml.dist
 
 after_script:
   - php vendor/bin/coveralls -v
