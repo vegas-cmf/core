@@ -11,25 +11,13 @@
  */
 namespace Vegas\Tests\Task;
 
-use Vegas\Task\AssetsTask;
 use Vegas\Tests\Cli\TestCase;
 
 class AssetsTest extends TestCase
 {
     public function testPublishAction()
     {
-        $this->bootstrap->setArguments(array(
-            0 => 'cli/cli.php',
-            1 => 'vegas:assets',
-            2 => 'publish'
-        ));
-
-        ob_start();
-
-        $this->bootstrap->setup()->run();
-        $result = ob_get_contents();
-
-        ob_clean();
+        $result = $this->runCliAction('cli/cli.php vegas:assets publish');
 
         unlink(TESTS_ROOT_DIR.'/fixtures/public/assets/css/another.css');
         unlink(TESTS_ROOT_DIR.'/fixtures/public/assets/css/test.css');
