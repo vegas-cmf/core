@@ -18,7 +18,18 @@ class AssetsTest extends TestCase
 {
     public function testPublishAction()
     {
-        $result = $this->runCliAction('cli/cli.php vegas:assets publish');
+        $this->bootstrap->setArguments(array(
+            0 => 'cli/cli.php',
+            1 => 'vegas:assets',
+            2 => 'publish'
+        ));
+
+        ob_start();
+
+        $this->bootstrap->setup()->run();
+        $result = ob_get_contents();
+
+        ob_clean();
 
         unlink(TESTS_ROOT_DIR.'/fixtures/public/assets/css/another.css');
         unlink(TESTS_ROOT_DIR.'/fixtures/public/assets/css/test.css');
