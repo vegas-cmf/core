@@ -18,18 +18,7 @@ class CacheTest extends TestCase
 {
     public function testValidCoreTask()
     {
-        $this->bootstrap->setArguments(array(
-            0 => 'cli/cli.php',
-            1 => 'vegas:cache',
-            2 => 'clean'
-        ));
-
-        ob_start();
-
-        $this->bootstrap->setup()->run();
-        $result = ob_get_contents();
-
-        ob_end_clean();
+        $result = $this->runCliAction('cli/cli.php vegas:cache clean');
 
         $this->assertContains("Cleaning cache", $result);
     }

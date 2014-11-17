@@ -28,4 +28,23 @@ class TestCase extends \PHPUnit_Framework_TestCase
 
         $this->bootstrap = $bootstrap;
     }
+
+    /**
+     * Shorthand for more descriptive CLI command testing
+     * @param string $command full command string to be called
+     * @return string
+     */
+    protected function runCliAction($command)
+    {
+        $this->bootstrap->setArguments(explode(' ', $command));
+
+        ob_start();
+
+        $this->bootstrap->setup()->run();
+        $result = ob_get_contents();
+
+        ob_end_clean();
+
+        return $result;
+    }
 }
