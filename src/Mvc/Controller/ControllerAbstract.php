@@ -39,7 +39,7 @@ abstract class ControllerAbstract extends Controller
      * Renders JSON response
      * Disables view
      *
-     * @param $data
+     * @param \Vegas\Http\Response\Json|array $data
      * @return null|\Phalcon\Http\ResponseInterface
      */
     protected function jsonResponse($data = array())
