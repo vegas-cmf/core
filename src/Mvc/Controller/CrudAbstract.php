@@ -151,7 +151,7 @@ abstract class CrudAbstract extends ControllerAbstract
             $this->afterCreateException();
         }
 
-        $this->view->pick(['new']);
+        return $this->dispatcher->forward(['action' => 'new']);
     }
 
     /**
@@ -199,7 +199,7 @@ abstract class CrudAbstract extends ControllerAbstract
             $this->afterUpdateException();
         }
 
-        $this->view->pick(['edit']);
+        return $this->dispatcher->forward(['action' => 'edit']);
     }
 
     /**
