@@ -12,10 +12,10 @@
  
 namespace Test\Controllers\Backend;
 
-use Vegas\Mvc\Controller\Crud;
+use Vegas\Mvc\Controller\CrudAbstract;
 use Vegas\Mvc\View;
 
-class CrudController extends Crud
+class CrudController extends CrudAbstract
 {
     protected $formName = 'Test\Forms\Fake';
     protected $modelName = 'Test\Models\Fake';
@@ -23,24 +23,25 @@ class CrudController extends Crud
     public function initialize()
     {
         parent::initialize();
-
         $this->view->disableLevel(View::LEVEL_LAYOUT);
-
-        $this->dispatcher->getEventsManager()->attach(Crud\Events::AFTER_CREATE, $this->printAfterSuccess());
-        $this->dispatcher->getEventsManager()->attach(Crud\Events::AFTER_UPDATE, $this->printAfterSuccess());
-    }
-
-    private function printAfterSuccess()
-    {
-        // for testing purposes only
-        return function() {
-            echo $this->scaffolding->getRecord()->getId();
-        };
     }
 
     protected function afterCreate()
     {
         parent::afterCreate();
-        echo '::afterCreate method call';
+
+        $record = $this->scaffolding->getRecord();
+        $record->after_create_content = 'afterCreate added content';
+        $record->save();
     }
-} 
+
+    protected function redirectAfterSave()
+    {
+        return $this->jsonResponse($this->scaffolding->getRecord()->getId());
+    }
+
+    protected function redirectAfterDelete()
+    {
+        return $this->jsonResponse();
+    }
+}

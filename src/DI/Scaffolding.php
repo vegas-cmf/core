@@ -169,7 +169,7 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
      */
     public function doUpdate($id, array $values)
     {
-        $this->record = $this->adapter->retrieveOne($id);
+        $this->record = $this->doRead($id);
         return $this->processForm($values);
     }
 
@@ -178,8 +178,8 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
      */
     public function doDelete($id)
     {
-        $this->record = $this->adapter->retrieveOne($id);
-        
+        $this->record = $this->doRead($id);
+
         try {
             return $this->record->delete();
         } catch (\Exception $e) {
@@ -199,11 +199,11 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
     {
         $form = $this->getForm();
         $form->bind($values, $this->record);
-        
+
         if ($form->isValid()) {
             return $this->record->save();
-        } 
-        
+        }
+
         $this->form = $form;
         throw new InvalidFormException();
     }

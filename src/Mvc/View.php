@@ -337,6 +337,7 @@ class View extends PhalconView
         if (empty($this->controllerViewPath)) {
             $this->setControllerViewPath($controllerName);
         }
+
         parent::render($this->controllerViewPath, $actionName, $params);
     }
 
@@ -361,5 +362,27 @@ class View extends PhalconView
     {
         $this->controllerViewPath = str_replace('\\','/',strtolower($controllerName));
         $this->controllerFullViewPath = $this->getViewsDir() . $this->controllerViewPath;
+    }
+
+    /**
+     * Check if view for current pair of controller/action exists.
+     *
+     * @return bool
+     */
+    public function existsForCurrentAction()
+    {
+        $actionName = $this->getDI()->get('router')->getActionName();
+
+        if (empty($this->controllerViewPath)) {
+            $this->setControllerViewPath($this->getDI()->get('router')->getControllerName());
+        }
+
+        foreach ($this->getRegisteredEngines() As $ext => $engine) {
+            if (file_exists($this->controllerFullViewPath.DIRECTORY_SEPARATOR.$actionName.$ext)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

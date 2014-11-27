@@ -10,24 +10,26 @@
  * file that was distributed with this source code.
  */
  
-namespace Foo\Controllers\Backend;
+namespace Test\Controllers\Backend;
 
 use Vegas\Mvc\Controller\CrudAbstract;
+use Vegas\Mvc\View;
 
-class CrudController extends CrudAbstract
+class BrokenCrudController extends CrudAbstract
 {
-    protected $formName = 'Test\Forms\Fake';
-    protected $modelName = 'Test\Models\Fake';
+    public function initialize()
+    {
+        parent::initialize();
+        $this->view->disableLevel(View::LEVEL_LAYOUT);
+    }
 
     protected function redirectAfterSave()
     {
-        return function() {
-            echo $this->scaffolding->getRecord()->getId();
-        };
+        return $this->scaffolding->getRecord()->getId();
     }
 
     protected function redirectAfterDelete()
     {
         return $this->redirectAfterSave();
     }
-} 
+}

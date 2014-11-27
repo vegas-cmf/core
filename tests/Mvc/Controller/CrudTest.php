@@ -30,14 +30,11 @@ class CrudTest extends TestCase
 
     public function testNotConfiguredCrud()
     {
-        $crud = new Crud();
+        $_SERVER['REQUEST_METHOD'] = 'GET';
 
-        try {
-            $crud->initialize();
-            throw new \Exception('Not this exception.');
-        } catch (\Exception $ex) {
-            $this->assertInstanceOf('\Vegas\Mvc\Controller\Crud\Exception\NotConfiguredException', $ex);
-        }
+        $content = $this->bootstrap->run('/test/brokencrud/new');
+        $this->assertContains('500', $content);
+        $this->assertContains('CRUD is not configured.', $content);
     }
 
     public function testNew()
@@ -73,13 +70,13 @@ class CrudTest extends TestCase
 
     public function testPostCreateResponse()
     {
-        $contentArray = explode('::', $this->di->get('response')->getContent());
+        $contentArray = json_decode($this->di->get('response')->getContent(), true);
 
-        $model = FakeModel::findById($contentArray[0]);
+        $model = FakeModel::findById($contentArray['$id']);
 
         $this->assertInstanceOf('\Test\Models\Fake', $model);
         $this->assertEquals(base64_encode(date('Y-m-d')), $model->fake_field);
-        $this->assertEquals('afterCreate method call', $contentArray[1]);
+        $this->assertEquals('afterCreate added content', $model->after_create_content);
 
         $model->delete();
     }
@@ -119,14 +116,14 @@ class CrudTest extends TestCase
         $_POST['fake_field'] = base64_encode('foobar');
 
         $content = $this->bootstrap->run('/test/crud/update/'.$this->model->getId());
-        $this->assertNotEmpty($content);
+        $this->assertEquals(json_encode($this->model->getId()), $content);
     }
 
     public function testPostUpdateResponse()
     {
-        $id = $this->di->get('response')->getContent();
+        $contentArray = json_decode($this->di->get('response')->getContent(), true);
 
-        $model = FakeModel::findById($id);
+        $model = FakeModel::findById($contentArray['$id']);
 
         $this->assertInstanceOf('\Test\Models\Fake', $model);
         $this->assertEquals(base64_encode('foobar'), $model->fake_field);
@@ -142,9 +139,7 @@ class CrudTest extends TestCase
 
         $this->bootstrap->run('/test/crud/delete/'.$this->model->getId());
 
-        $this->model = FakeModel::findFirst(array(array(
-            'fake_field' => base64_encode('foobar')
-        )));
+        $this->model = FakeModel::findById($this->model->getId());
 
         $this->assertFalse($this->model);
     }

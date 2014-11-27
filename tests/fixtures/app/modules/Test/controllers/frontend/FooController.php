@@ -13,7 +13,7 @@
 namespace Test\Controllers\Frontend;
 
 
-use Vegas\Mvc\Controller\ControllerAbstract;
+use Vegas\Mvc\ControllerAbstract;
 use Vegas\Mvc\View;
 
 /**
