@@ -15,7 +15,7 @@
                     <div class="widget widget-content">                            
                         <div class="form-edit">
                             <form action="{{ url.get(['for': router.getMatchedRoute().getName(), 'action': 'update', 'params': record._id]) }}" method="POST" role="form">
-                                {{ partial('./_form', ['form': form]) }}
+                                {{ partial('./views/_form', ['form': form]) }}
                             </form>
                         </div>
                     </div>

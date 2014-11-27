@@ -1,15 +1,15 @@
 <?php
 /**
  * This file is part of Vegas package.
- * 
+ *
  * Default usage:
  * <code>
- * class MyController extends Controller\Crud {  
+ * class MyController extends Controller\Crud {
  *      protected $formName = 'My\Forms\My';    // default form used by CRUD
  *      protected $modelName = 'My\Models\My';  // default model used by CRUD
  * }
  * </code>
- * 
+ *
  * @author Arkadiusz Ostrycharz <aostrycharz@amsterdam-standard.pl>
  * @copyright Amsterdam Standard Sp. Z o.o.
  * @homepage http://vegas-cmf.github.io
@@ -30,6 +30,21 @@ use Vegas\Mvc\View;
  */
 abstract class CrudAbstract extends ControllerAbstract
 {
+    /**
+     * Controller initialization block
+     */
+    public function initialize()
+    {
+        parent::initialize();
+
+        if ($this->view instanceof \Vegas\Mvc\View && !$this->view->existsForCurrentAction()) {
+            $templatePath = implode(DIRECTORY_SEPARATOR, [dirname(__FILE__), 'Crud','']);
+
+            $this->view->setViewsDir($templatePath);
+            $this->view->setControllerViewPath('views');
+        }
+    }
+
     use HooksTrait;
 
     /**
@@ -74,7 +89,7 @@ abstract class CrudAbstract extends ControllerAbstract
      */
     private function isConfigured()
     {
-       return ($this->di->has('scaffolding') && !empty($this->modelName) && !empty($this->formName));
+        return ($this->di->has('scaffolding') && !empty($this->modelName) && !empty($this->formName));
     }
 
     /**
@@ -113,21 +128,6 @@ abstract class CrudAbstract extends ControllerAbstract
         $this->beforeNew();
         $this->view->form = $this->scaffolding->getForm();
         $this->afterNew();
-
-        if (!$this->view->existsForCurrentAction()) {
-            $templatePath = realpath(implode(DIRECTORY_SEPARATOR, [dirname(__FILE__), 'Crud', 'views','']));
-
-            $view = $this->view;
-            //$view->setViewsDir($templatePath);
-
-            $content = $view->getRender(
-                '',
-                $this->router->getActionName(),
-                $view->getParams()
-            );
-
-            echo $content;
-        }
     }
 
     /**

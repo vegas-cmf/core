@@ -22,7 +22,7 @@ trait HooksTrait
     protected function redirectToAction($action)
     {
         return $this->response->redirect([
-            'for' => $this->router->getMatchedRoute(),
+            'for' => $this->router->getMatchedRoute()->getName(),
             'action' => $action
         ]);
     }
