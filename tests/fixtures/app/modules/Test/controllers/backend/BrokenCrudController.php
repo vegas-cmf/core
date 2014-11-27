@@ -22,14 +22,4 @@ class BrokenCrudController extends CrudAbstract
         parent::initialize();
         $this->view->disableLevel(View::LEVEL_LAYOUT);
     }
-
-    protected function redirectAfterSave()
-    {
-        return $this->scaffolding->getRecord()->getId();
-    }
-
-    protected function redirectAfterDelete()
-    {
-        return $this->redirectAfterSave();
-    }
 }

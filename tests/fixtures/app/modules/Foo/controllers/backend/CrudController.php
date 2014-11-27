@@ -18,16 +18,4 @@ class CrudController extends CrudAbstract
 {
     protected $formName = 'Test\Forms\Fake';
     protected $modelName = 'Test\Models\Fake';
-
-    protected function redirectAfterSave()
-    {
-        return function() {
-            echo $this->scaffolding->getRecord()->getId();
-        };
-    }
-
-    protected function redirectAfterDelete()
-    {
-        return $this->redirectAfterSave();
-    }
 } 

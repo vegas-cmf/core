@@ -28,19 +28,19 @@ class CrudController extends CrudAbstract
 
     protected function afterCreate()
     {
-        parent::afterCreate();
-
         $record = $this->scaffolding->getRecord();
         $record->after_create_content = 'afterCreate added content';
         $record->save();
+
+        return parent::afterCreate();
     }
 
-    protected function redirectAfterSave()
+    protected function afterSave()
     {
         return $this->jsonResponse($this->scaffolding->getRecord()->getId());
     }
 
-    protected function redirectAfterDelete()
+    protected function afterDelete()
     {
         return $this->jsonResponse();
     }

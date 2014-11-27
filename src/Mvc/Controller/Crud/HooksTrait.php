@@ -14,6 +14,19 @@ namespace Vegas\Mvc\Controller\Crud;
 trait HooksTrait
 {
     /**
+     * Redirect to specific action in the same controller.
+     *
+     * @param $action
+     * @return mixed
+     */
+    protected function redirectToAction($action)
+    {
+        return $this->response->redirect([
+            'for' => $this->router->getMatchedRoute(),
+            'action' => $action
+        ]);
+    }
+    /**
      * Method invoked on the beginning of the newAction.
      */
     protected function beforeNew()
@@ -41,7 +54,7 @@ trait HooksTrait
     protected function afterCreate()
     {
         $this->dispatcher->getEventsManager()->fire(Events::AFTER_CREATE, $this);
-        $this->afterSave();
+        return $this->afterSave();
     }
     /**
      * Method invoked on the end of the createAction failure before picking view.
@@ -49,6 +62,7 @@ trait HooksTrait
     protected function afterCreateException()
     {
         $this->dispatcher->getEventsManager()->fire(Events::AFTER_CREATE_EXCEPTION, $this);
+        return $this->redirectToAction('index');
     }
     /**
      * Method invoked on the beginning of the editAction, after setting $this->view->record.
@@ -94,7 +108,7 @@ trait HooksTrait
     protected function afterUpdate()
     {
         $this->dispatcher->getEventsManager()->fire(Events::AFTER_UPDATE, $this);
-        $this->afterSave();
+        return $this->afterSave();
     }
     /**
      * Method invoked on the end of the updateAction failure before picking view.
@@ -102,6 +116,7 @@ trait HooksTrait
     protected function afterUpdateException()
     {
         $this->dispatcher->getEventsManager()->fire(Events::AFTER_UPDATE_EXCEPTION, $this);
+        return $this->redirectToAction('index');
     }
     /**
      * Method invoked on the beginning of the deleteAction.
@@ -116,6 +131,7 @@ trait HooksTrait
     protected function afterDelete()
     {
         $this->dispatcher->getEventsManager()->fire(Events::AFTER_DELETE, $this);
+        return $this->redirectToAction('index');
     }
     /**
      * Method invoked on the end of the deleteAction failure before picking view.
@@ -123,6 +139,7 @@ trait HooksTrait
     protected function afterDeleteException()
     {
         $this->dispatcher->getEventsManager()->fire(Events::AFTER_DELETE_EXCEPTION, $this);
+        return $this->redirectToAction('index');
     }
     /**
      * Method invoked just before doUpdate/doCreate method in createAction and updateAction after calling
@@ -138,5 +155,6 @@ trait HooksTrait
     protected function afterSave()
     {
         $this->dispatcher->getEventsManager()->fire(Events::AFTER_SAVE, $this);
+        return $this->redirectToAction('index');
     }
 }

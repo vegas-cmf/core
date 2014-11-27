@@ -78,36 +78,6 @@ abstract class CrudAbstract extends ControllerAbstract
     }
 
     /**
-     * If user view did not exists, render default one from Crud/views dir.
-     *
-     * @return mixed
-     */
-    private function checkForView()
-    {
-        var_dump($this->view->existsForControllerAndAction($this->view->exists($this->view->getControllerName(), $this->view->getActionName())));
-        var_dump('kwiatek');
-        die;
-        /*$view = $this->view;
-
-        $templatePath = implode(DIRECTORY_SEPARATOR, [dirname(__FILE__), 'Crud', 'views', '']);
-        $view->setViewsDir($templatePath);
-
-        die(var_dump('test', $view->getRender('', $this->view->getActionName())));*/
-
-/*
-        var_dump($this->view->getViewsDir());
-
-        var_dump($this->view->getRender('', $this->router->getActionName(),$this->view->getParams(), function($view) {
-            $view->setRenderLevel(View::LEVEL_ACTION_VIEW);
-        }));*/
-
-        /*if (!$this->view->exists($this->router->getControllerName(), $this->router->getActionName())) {
-            $this->view->setViewsDir(__DIR__.DIRECTORY_SEPARATOR.'Crud'.DIRECTORY_SEPARATOR.'views');
-            die(var_dump($this->view->getRender('', $this->router->getActionName(),$this->view->getParams())));
-        }*/
-    }
-
-    /**
      * Display records list.
      *
      * @ACL(name="new", description="Create a new record")
@@ -136,7 +106,7 @@ abstract class CrudAbstract extends ControllerAbstract
      *
      * @ACL(name="new", description="Create a new record")
      */
-    final public function newAction()
+    public function newAction()
     {
         $this->initializeScaffolding();
 
@@ -148,7 +118,7 @@ abstract class CrudAbstract extends ControllerAbstract
             $templatePath = realpath(implode(DIRECTORY_SEPARATOR, [dirname(__FILE__), 'Crud', 'views','']));
 
             $view = $this->view;
-            $view->setViewsDir($templatePath);
+            //$view->setViewsDir($templatePath);
 
             $content = $view->getRender(
                 '',
@@ -166,7 +136,7 @@ abstract class CrudAbstract extends ControllerAbstract
      * @ACL(name="create", inherit='new')
      * @return mixed
      */
-    final public function createAction()
+    public function createAction()
     {
         $this->initializeScaffolding();
         $this->checkRequest();
@@ -174,16 +144,12 @@ abstract class CrudAbstract extends ControllerAbstract
         try {
             $this->beforeCreate();
             $this->scaffolding->doCreate($this->request->getPost());
-            $this->afterCreate();
-
             $this->flash->success($this->successMessage);
-            return $this->redirectAfterSave();
+            return $this->afterCreate();
         } catch (Exception $e) {
-            $this->afterCreateException();
             $this->flash->error($e->getMessage());
+            return $this->afterCreateException();
         }
-
-        return $this->dispatcher->forward(['action' => 'new']);
     }
 
     /**
@@ -192,7 +158,7 @@ abstract class CrudAbstract extends ControllerAbstract
      * @ACL(name="edit", description="Record edit")
      * @param $id
      */
-    final public function editAction($id)
+    public function editAction($id)
     {
         $this->initializeScaffolding();
 
@@ -212,7 +178,7 @@ abstract class CrudAbstract extends ControllerAbstract
      * @param $id
      * @return mixed
      */
-    final public function updateAction($id)
+    public function updateAction($id)
     {
         $this->initializeScaffolding();
         $this->checkRequest();
@@ -224,16 +190,12 @@ abstract class CrudAbstract extends ControllerAbstract
 
             $this->beforeUpdate();
             $this->scaffolding->doUpdate($id, $this->request->getPost());
-            $this->afterUpdate();
-
             $this->flash->success($this->successMessage);
-            return $this->redirectAfterSave();
+            return $this->afterUpdate();
         } catch (Exception $e) {
-            $this->afterUpdateException();
             $this->flash->error($e->getMessage());
+            return $this->afterUpdateException();
         }
-
-        return $this->dispatcher->forward(['action' => 'edit']);
     }
 
     /**
@@ -255,7 +217,7 @@ abstract class CrudAbstract extends ControllerAbstract
      * @param $id
      * @return mixed
      */
-    final public function deleteAction($id)
+    public function deleteAction($id)
     {
         $this->initializeScaffolding();
 
@@ -266,27 +228,11 @@ abstract class CrudAbstract extends ControllerAbstract
 
             $this->beforeDelete();
             $this->scaffolding->doDelete($id);
-            $this->afterDelete();
-
             $this->flash->success($this->successMessage);
+            return $this->afterDelete();
         } catch (Exception $e) {
             $this->flash->error($e->getMessage());
+            return $this->afterDeleteException();
         }
-
-        return $this->redirectAfterDelete();
     }
-
-    /**
-     * Method called after successful update or create.
-     *
-     * @return mixed
-     */
-    abstract protected function redirectAfterSave();
-
-    /**
-     * Method called after delete.
-     *
-     * @return mixed
-     */
-    abstract protected function redirectAfterDelete();
 }
