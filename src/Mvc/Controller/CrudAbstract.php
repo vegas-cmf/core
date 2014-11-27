@@ -40,8 +40,11 @@ abstract class CrudAbstract extends ControllerAbstract
         if ($this->view instanceof \Vegas\Mvc\View && !$this->view->existsForCurrentAction()) {
             $templatePath = implode(DIRECTORY_SEPARATOR, [dirname(__FILE__), 'Crud','']);
 
-            $this->view->setViewsDir($templatePath);
-            $this->view->setControllerViewPath('views');
+            $view = $this->getDI()->get('view');
+            $view->setViewsDir($templatePath);
+            $view->setControllerViewPath('views');
+
+            $this->view = $view;
         }
     }
 
