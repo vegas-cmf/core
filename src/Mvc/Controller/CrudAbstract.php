@@ -148,8 +148,10 @@ abstract class CrudAbstract extends ControllerAbstract
             return $this->afterCreate();
         } catch (Exception $e) {
             $this->flash->error($e->getMessage());
-            return $this->afterCreateException();
+            $this->afterCreateException();
         }
+
+        $this->view->pick(['new']);
     }
 
     /**
@@ -194,8 +196,10 @@ abstract class CrudAbstract extends ControllerAbstract
             return $this->afterUpdate();
         } catch (Exception $e) {
             $this->flash->error($e->getMessage());
-            return $this->afterUpdateException();
+            $this->afterUpdateException();
         }
+
+        $this->view->pick(['edit']);
     }
 
     /**

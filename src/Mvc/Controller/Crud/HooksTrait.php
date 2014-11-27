@@ -62,7 +62,6 @@ trait HooksTrait
     protected function afterCreateException()
     {
         $this->dispatcher->getEventsManager()->fire(Events::AFTER_CREATE_EXCEPTION, $this);
-        return $this->redirectToAction('index');
     }
     /**
      * Method invoked on the beginning of the editAction, after setting $this->view->record.
@@ -116,7 +115,6 @@ trait HooksTrait
     protected function afterUpdateException()
     {
         $this->dispatcher->getEventsManager()->fire(Events::AFTER_UPDATE_EXCEPTION, $this);
-        return $this->redirectToAction('index');
     }
     /**
      * Method invoked on the beginning of the deleteAction.
