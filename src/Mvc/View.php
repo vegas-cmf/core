@@ -94,7 +94,7 @@ class View extends PhalconView
     protected function _engineRender($engines, $viewPath, $silence, $mustClean, $cache)
     {
         $basePath = $this->_basePath;
-        $notExists = false;
+        $notExists = true;
 
         if (is_object($cache)) {
             $renderLevel = intval($this->_renderLevel);
