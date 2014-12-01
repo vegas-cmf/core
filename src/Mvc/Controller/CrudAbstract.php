@@ -37,15 +37,17 @@ abstract class CrudAbstract extends ControllerAbstract
     {
         parent::initialize();
 
-        if ($this->view instanceof \Vegas\Mvc\View && !$this->view->existsForCurrentAction()) {
-            $templatePath = implode(DIRECTORY_SEPARATOR, [dirname(__FILE__), 'Crud','']);
+        $this->eventsManager->attach('view:notFoundView', function ($event, $view) {
+            if ($view->getCurrentRenderLevel() == View::LEVEL_ACTION_VIEW) {
+                $templatePath = implode(DIRECTORY_SEPARATOR, [dirname(__FILE__), 'Crud','']);
 
-            $view = $this->getDI()->get('view');
-            $view->setViewsDir($templatePath);
-            $view->setControllerViewPath('views');
+                $view->setViewsDir($templatePath);
+                $view->setControllerViewPath('views');
+                $view->setRenderLevel(View::LEVEL_ACTION_VIEW);
 
-            $this->view = $view;
-        }
+                $view->render('', $this->dispatcher->getActionName());
+            }
+        });
     }
 
     use HooksTrait;
@@ -70,6 +72,13 @@ abstract class CrudAbstract extends ControllerAbstract
      * @var string
      */
     protected $modelName;
+
+    /**
+     * Array of fields names that will be used in index and show actions
+     *
+     * @var array
+     */
+    protected $fields = [];
 
     /**
      * Initializes scaffolding
@@ -103,6 +112,10 @@ abstract class CrudAbstract extends ControllerAbstract
     public function indexAction()
     {
         $this->initializeScaffolding();
+
+        $paginator = $this->scaffolding->doPaginate($this->request->get('page', 'int', 1));
+        $this->view->page = $paginator->getPaginate();
+        $this->view->fields = $this->fields;
     }
 
     /**
@@ -116,6 +129,7 @@ abstract class CrudAbstract extends ControllerAbstract
 
         $this->beforeRead();
         $this->view->record = $this->scaffolding->doRead($id);
+        $this->view->fields = $this->fields;
         $this->afterRead();
     }
 

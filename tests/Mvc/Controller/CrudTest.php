@@ -46,7 +46,7 @@ class CrudTest extends TestCase
 
         $this->assertEquals($form->get('fake_field')->render(), $content);
     }
-
+/*
     public function testNotPostCreate()
     {
         $content = $this->bootstrap->run('/test/crud/create');
@@ -143,7 +143,7 @@ class CrudTest extends TestCase
 
         $this->assertFalse($this->model);
     }
-
+*/
     private function prepareFakeObject()
     {
         $this->model = FakeModel::findFirst(array(array(

@@ -10,7 +10,7 @@
                 <tbody>
                 {% for key, field in fields %}
                     <th>{{ field }}</th>
-                    <td>{{ item.{key} }}</td>
+                    <td>{{ item.readMapped(key) }}</td>
                 {% endfor %}
                 </tbody>
             </table>

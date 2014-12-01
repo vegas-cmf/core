@@ -13,19 +13,21 @@
         <div class="col-md-12">
             <table class="table table-hover">
                 <thead>
-                    <tr>
-                        {% for field in fields %}
-                            <th>{{ field }}</th>
-                        {% endfor %}
-                        <th class="options">&nbsp;</th>
-                    </tr>
+                <tr>
+                    {% for field in fields %}
+                        <th>{{ field['label'] }}</th>
+                    {% endfor %}
+                    <th class="options">&nbsp;</th>
+                </tr>
                 </thead>
                 <tbody>
                 {% if(page.items) %}
                     {% for item in page.items %}
                         <tr>
                             {% for key, field in fields %}
-                                <td>{{ item.{key} }}</td>
+                                <td>
+                                    {{ field.readMapped(key) }}
+                                </td>
                             {% endfor %}
                             <td align="right">
                                 <a class="btn btn-sm btn-default" href="{{ url.get(['for': router.getMatchedRoute().getName(), 'action': 'edit', 'params':item._id]) }}">{{ i18n._("Update")}}</a>

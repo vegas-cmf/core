@@ -20,6 +20,6 @@ class BrokenCrudController extends CrudAbstract
     public function initialize()
     {
         parent::initialize();
-        $this->view->disableLevel(View::LEVEL_LAYOUT);
+        $this->view->disable();
     }
 }
