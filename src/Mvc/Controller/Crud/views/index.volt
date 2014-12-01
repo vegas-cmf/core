@@ -15,7 +15,7 @@
                 <thead>
                 <tr>
                     {% for field in fields %}
-                        <th>{{ field['label'] }}</th>
+                        <th>{{ field }}</th>
                     {% endfor %}
                     <th class="options">&nbsp;</th>
                 </tr>
