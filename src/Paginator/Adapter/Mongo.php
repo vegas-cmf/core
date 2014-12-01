@@ -78,10 +78,8 @@ class Mongo implements AdapterInterface
         foreach ($config as $key => $value) {
             $this->$key = $value;
         }
-        
+
         $this->validate();
-        
-        $this->model = new $this->modelName();
     }
 
     /**
@@ -93,12 +91,20 @@ class Mongo implements AdapterInterface
      */
     private function validate()
     {
-        if (empty($this->modelName)) {
+        if (empty($this->modelName) && empty($this->model)) {
             throw new Exception\ModelNotSetException();
         }
-        
+
+        if (empty($this->model)) {
+            $this->model = new $this->modelName();
+        }
+
+        if (empty($this->modelName)) {
+            $this->modelName = get_class($this->model);
+        }
+
         if (empty($this->db)) {
-            throw new Exception\DbNotSetException();
+            $this->db = $this->model->getConnection();
         }
     }
 
@@ -108,13 +114,13 @@ class Mongo implements AdapterInterface
     public function getPaginate()
     {
         $page = new \Vegas\Paginator\Page();
-        
+
         $page->current = $this->page;
         $page->next = $this->getNextPage();
         $page->before = $this->getPreviousPage();
         $page->total_pages = $this->getTotalPages();
         $page->items = $this->getResults();
-        
+
         return $page;
     }
 
@@ -128,7 +134,7 @@ class Mongo implements AdapterInterface
         if ($this->page > 1) {
             return ($this->page-1);
         }
-        
+
         return null;
     }
 
@@ -142,7 +148,7 @@ class Mongo implements AdapterInterface
         if ($this->page < $this->getTotalPages()) {
             return ($this->page+1);
         }
-        
+
         return null;
     }
 
@@ -156,7 +162,7 @@ class Mongo implements AdapterInterface
         if (empty($this->totalPages)) {
             $this->totalPages = (int)ceil($this->getCursor()->count()/$this->limit);
         }
-        
+
         return $this->totalPages;
     }
 
@@ -169,7 +175,7 @@ class Mongo implements AdapterInterface
     public function setCurrentPage($page)
     {
         $this->page = $page;
-        
+
         return $this;
     }
 
@@ -181,23 +187,23 @@ class Mongo implements AdapterInterface
     public function getResults()
     {
         $skip = ($this->page-1)*$this->limit;
-        
+
         $cursor = $this->getCursor();
         $cursor->skip($skip)->limit($this->limit);
-        
+
         if (!empty($this->sort)) {
             $cursor->sort($this->sort);
         }
-        
+
         $results = array();
-        
+
         foreach ($cursor As $row) {
             $object = new $this->modelName();
             $object->writeAttributes($row);
-            
+
             $results[] = $object;
         }
-        
+
         return $results;
     }
 
@@ -209,7 +215,7 @@ class Mongo implements AdapterInterface
     {
         $source = $this->model->getSource();
         $cursor = $this->db->$source->find($this->query);
-        
+
         return $cursor;
     }
 }
