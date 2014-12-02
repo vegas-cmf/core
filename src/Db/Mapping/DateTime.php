@@ -37,8 +37,8 @@ class DateTime implements MappingInterface
     public function resolve(& $value)
     {
         if (is_integer($value) && strlen($value) > 0) {
-            $value = new \DateTime($value);
-            $value->format(\DateTime::ISO8601);
+            $dateTime = new \DateTime($value);
+            $value = $dateTime->format(\DateTime::ISO8601);
         }
 
         return $value;
