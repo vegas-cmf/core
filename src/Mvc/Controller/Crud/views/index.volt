@@ -26,7 +26,7 @@
                         <tr>
                             {% for key, field in fields %}
                                 <td>
-                                    {{ field.readMapped(key) }}
+                                    {{ item.readMapped(key) }}
                                 </td>
                             {% endfor %}
                             <td align="right">
