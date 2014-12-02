@@ -9,8 +9,10 @@
             <table class="table table-hover">
                 <tbody>
                 {% for key, field in fields %}
-                    <th>{{ field }}</th>
-                    <td>{{ record.readMapped(key) }}</td>
+                    <tr>
+                        <th>{{ field }}</th>
+                        <td>{{ record.readMapped(key) }}</td>
+                    </tr>
                 {% endfor %}
                 </tbody>
             </table>
