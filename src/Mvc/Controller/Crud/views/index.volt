@@ -30,6 +30,7 @@
                                 </td>
                             {% endfor %}
                             <td align="right">
+                                <a class="btn btn-sm btn-default" href="{{ url.get(['for': router.getMatchedRoute().getName(), 'action': 'show', 'params':item._id]) }}">{{ i18n._("Show")}}</a>
                                 <a class="btn btn-sm btn-default" href="{{ url.get(['for': router.getMatchedRoute().getName(), 'action': 'edit', 'params':item._id]) }}">{{ i18n._("Update")}}</a>
                                 <a class="btn btn-sm confirm-delete" href="{{ url.get(['for': router.getMatchedRoute().getName(), 'action':'delete', 'params':item._id]) }}">{{ i18n._("Delete")}}</a>
                             </td>

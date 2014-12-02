@@ -74,11 +74,18 @@ abstract class CrudAbstract extends ControllerAbstract
     protected $modelName;
 
     /**
-     * Array of fields names that will be used in index and show actions
+     * Array of fields names that will be used in index action
      *
      * @var array
      */
-    protected $fields = [];
+    protected $indexFields = [];
+
+    /**
+     * Array of fields names that will be used in show action
+     *
+     * @var array
+     */
+    protected $showFields = [];
 
     /**
      * Initializes scaffolding
@@ -115,7 +122,7 @@ abstract class CrudAbstract extends ControllerAbstract
 
         $paginator = $this->scaffolding->doPaginate($this->request->get('page', 'int', 1));
         $this->view->page = $paginator->getPaginate();
-        $this->view->fields = $this->fields;
+        $this->view->fields = $this->indexFields;
     }
 
     /**
@@ -129,7 +136,7 @@ abstract class CrudAbstract extends ControllerAbstract
 
         $this->beforeRead();
         $this->view->record = $this->scaffolding->doRead($id);
-        $this->view->fields = $this->fields;
+        $this->view->fields = $this->showFields;
         $this->afterRead();
     }
 
