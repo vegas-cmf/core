@@ -9,7 +9,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
- 
+
 namespace Vegas\Db\Mapping;
 
 use Vegas\Db\MappingInterface;
@@ -37,8 +37,9 @@ class DateTime implements MappingInterface
     public function resolve(& $value)
     {
         if (is_integer($value) && strlen($value) > 0) {
-            $dateTime = new \DateTime($value);
-            $value = $dateTime->format(\DateTime::ISO8601);
+            $dateTime = new \DateTime();
+            $dateTime->setTimestamp($value);
+            $value = $dateTime->format('Y-m-d H:i:s');
         }
 
         return $value;
