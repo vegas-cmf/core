@@ -13,9 +13,9 @@
 namespace Vegas\Tests\Mvc\Module;
 
 use Phalcon\DI;
-use Vegas\Mvc\Module\ModuleLoader;
+use Vegas\Mvc\Module\Loader As ModuleLoader;
 
-class ModuleLoaderTest extends \PHPUnit_Framework_TestCase
+class LoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testDump()
     {

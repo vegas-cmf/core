@@ -16,10 +16,10 @@ use Phalcon\DiInterface;
 use Vegas\Util\FileWriter;
 
 /**
- * Class ModuleLoader
- * @package Vegas\Mvc
+ * Class Loader
+ * @package Vegas\Mvc\Module
  */
-class ModuleLoader
+class Loader
 {
     /**
      * Default name of file containing module settings
@@ -82,7 +82,7 @@ class ModuleLoader
         $directoryIterator = new \DirectoryIterator($vendorDir);
         foreach ($directoryIterator as $libDir) {
             if ($libDir->isDot()) continue;
-            $moduleSettingsFile = $vendorDir. DIRECTORY_SEPARATOR . $libDir . DIRECTORY_SEPARATOR . 'src' . DIRECTORY_SEPARATOR .self::MODULE_SETTINGS_FILE;
+            $moduleSettingsFile = $vendorDir. DIRECTORY_SEPARATOR . $libDir . DIRECTORY_SEPARATOR . 'module' . DIRECTORY_SEPARATOR .self::MODULE_SETTINGS_FILE;
             if (!file_exists($moduleSettingsFile)) {
                 continue;
             }

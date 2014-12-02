@@ -13,13 +13,11 @@
 namespace Vegas\Cli;
 
 use Phalcon\DI\FactoryDefault\CLI;
-use Vegas\BootstrapAbstract;
 use Vegas\BootstrapInterface;
 use Vegas\Cli\Exception as CliException;
 use Vegas\Constants;
 use Vegas\DI\ServiceProviderLoader;
-use Vegas\Mvc\Module\ModuleLoader;
-use Vegas\Mvc\Module\SubModuleManager;
+use Vegas\Mvc\Module\Loader As ModuleLoader;
 
 /**
  * Class Bootstrap

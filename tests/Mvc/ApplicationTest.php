@@ -14,7 +14,7 @@ namespace Vegas\Tests\Mvc;
 
 use Phalcon\DI;
 use Vegas\Mvc\Application;
-use Vegas\Mvc\Module\ModuleLoader;
+use Vegas\Mvc\Module\Loader As ModuleLoader;
 
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {

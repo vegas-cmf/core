@@ -14,7 +14,7 @@ namespace Vegas\Tests\Mvc;
 
 use Phalcon\DI;
 use Vegas\Http\Method;
-use Vegas\Mvc\Module\ModuleLoader;
+use Vegas\Mvc\Module\Loader As ModuleLoader;
 use Vegas\Mvc\Router;
 
 class RouterTest extends \PHPUnit_Framework_TestCase

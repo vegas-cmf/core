@@ -15,7 +15,7 @@ use Phalcon\DI;
 use Test\Components\Fake;
 use Vegas\DI\Service\Component\Renderer;
 use Vegas\Mvc\Application;
-use Vegas\Mvc\Module\ModuleLoader;
+use Vegas\Mvc\Module\Loader As ModuleLoader;
 use Vegas\Mvc\View;
 use Vegas\Tests\App\TestCase;
 
