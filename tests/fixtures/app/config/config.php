@@ -13,17 +13,13 @@ return array(
         'taskDir'      => APP_ROOT . '/app/tasks/',
         'baseUri'        => '/',
         'language'       => 'nl_NL',
-        'subModules'    =>  array(
-            'frontend', 'backend', 'custom'
-        ),
         'view'  => array(
             'cacheDir'  =>  APP_ROOT . '/cache/',
             'layout'    =>  'main',
             'layoutsDir'    =>  APP_ROOT . '/app/layouts/',
             'partialsDir'    =>  APP_ROOT . '/app/layouts/partials/',
             'compileAlways' =>  true
-        ),
-        'hostname' => 'vegas.dev'
+        )
     ),
 
     'plugins' => array(),
@@ -37,6 +33,7 @@ return array(
         "dbname" => "vegas_test",
         "port" => 3306,
         "username" => "root",
+        'password'=> 'root',
         "options" => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
         )

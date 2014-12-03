@@ -10,17 +10,16 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Vegas\Mvc\View\Engine;
 
 /**
- * Class RegisterHelpers
+ * Class RegisterHelpersTrait
  * @package Vegas\Mvc\View\Engine
  */
-trait RegisterHelpers
+trait RegisterHelpersTrait
 {
     /**
-     * Returns the ath to view helpers directory
+     * Returns the path to view helpers directory
      *
      * @return string
      * @internal
@@ -42,5 +41,13 @@ trait RegisterHelpers
             $this->registerHelper(lcfirst($helperName));
         }
     }
+
+    /**
+     * Register helper indicated by its name
+     *
+     * @param $helperName
+     * @return mixed
+     */
+    abstract public function registerHelper($helperName);
 }
  

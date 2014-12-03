@@ -10,14 +10,13 @@
  * file that was distributed with this source code.
  */
 
-
 namespace Vegas\Mvc\View\Engine;
 
 /**
- * Class RegisterFilters
+ * Class RegisterFiltersTrait
  * @package Vegas\Mvc\View\Engine
  */
-trait RegisterFilters
+trait RegisterFiltersTrait
 {
     /**
      * Returns the path to view filter directory
@@ -42,5 +41,13 @@ trait RegisterFilters
             $this->registerFilter(lcfirst($filterName));
         }
     }
+
+    /**
+     * Registers filter indicated by its name
+     *
+     * @param $filterName
+     * @return mixed
+     */
+    abstract public function registerFilter($filterName);
 }
  

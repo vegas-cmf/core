@@ -24,8 +24,8 @@ use Vegas\Mvc\View\Engine\Volt\VoltHelperAbstract;
  */
 class Volt extends \Phalcon\Mvc\View\Engine\Volt
 {
-    use RegisterFilters;
-    use RegisterHelpers;
+    use RegisterFiltersTrait;
+    use RegisterHelpersTrait;
 
     /**
      * Extension of template file
