@@ -46,12 +46,24 @@ class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
     public function retrieveOne($id)
     {
         $record = call_user_func(array($this->scaffolding->getRecord(),'findById'),$id);
-        
+
         if (!$record) {
             throw new RecordNotFoundException();
         }
-        
+
         return $record;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getPaginator($page = 1, $limit = 10)
+    {
+        return new \Phalcon\Paginator\Adapter\Model(array(
+            'data' => call_user_func(array($this->scaffolding->getRecord(),'find')),
+            'limit' => $limit,
+            'page' => $page
+        ));
     }
 
     /**
@@ -59,7 +71,7 @@ class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
      */
     public function setScaffolding(\Vegas\DI\Scaffolding $scaffolding) {
         $this->scaffolding = $scaffolding;
-        
+
         return $this;
     }
 

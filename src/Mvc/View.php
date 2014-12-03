@@ -55,20 +55,20 @@ class View extends PhalconView
 
         $this->registerEngines(array(
             '.volt' => function ($this, $di) use ($options) {
-                $volt = new \Vegas\Mvc\View\Engine\Volt($this, $di);
-                if (isset($options['cacheDir'])) {
-                    $volt->setOptions(array(
-                        'compiledPath' => $options['cacheDir'],
-                        'compiledSeparator' => '_',
-                        'compileAlways' => isset($options['compileAlways']) ? $options['compileAlways'] : false
-                    ));
-                }
-                $volt->registerFilters();
-                $volt->registerHelpers();
-                $volt->setExtension('.volt');
+                    $volt = new \Vegas\Mvc\View\Engine\Volt($this, $di);
+                    if (isset($options['cacheDir'])) {
+                        $volt->setOptions(array(
+                            'compiledPath' => $options['cacheDir'],
+                            'compiledSeparator' => '_',
+                            'compileAlways' => isset($options['compileAlways']) ? $options['compileAlways'] : false
+                        ));
+                    }
+                    $volt->registerFilters();
+                    $volt->registerHelpers();
+                    $volt->setExtension('.volt');
 
-                return $volt;
-            },
+                    return $volt;
+                },
             '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
         ));
     }
@@ -94,7 +94,7 @@ class View extends PhalconView
     protected function _engineRender($engines, $viewPath, $silence, $mustClean, $cache)
     {
         $basePath = $this->_basePath;
-        $notExists = false;
+        $notExists = true;
 
         if (is_object($cache)) {
             $renderLevel = intval($this->_renderLevel);
@@ -137,6 +137,7 @@ class View extends PhalconView
 
         foreach ($engines as $extension => $engine) {
             $viewEnginePath = $basePath . $this->resolveFullViewPath($viewPath) . $extension;
+
             if (file_exists($viewEnginePath)) {
                 if (is_object($eventsManager)) {
                     $this->_activeRenderPath = $viewEnginePath;
@@ -191,9 +192,7 @@ class View extends PhalconView
      */
     private function resolveViewPath($viewPath)
     {
-        $path = $this->getViewsDir();
-        $path = realpath($path . dirname($viewPath)) . DIRECTORY_SEPARATOR . basename($viewPath);
-
+        $path = realpath($this->_viewsDir . dirname($viewPath)) . DIRECTORY_SEPARATOR . basename($viewPath);
         return $path;
     }
 
@@ -289,9 +288,9 @@ class View extends PhalconView
     {
         $partialDir = str_replace('./', '', dirname($partialPath));
         $partialsDir = realpath(sprintf('%s%s',
-            $this->getViewsDir(),
-            $partialDir
-        )) . DIRECTORY_SEPARATOR;
+                $this->_viewsDir,
+                $partialDir
+            )) . DIRECTORY_SEPARATOR;
 
         return $partialsDir . basename($partialPath);
     }
@@ -317,7 +316,7 @@ class View extends PhalconView
     private function resolveRelativePath($partialPath)
     {
         $partialsDirPath = realpath(sprintf('%s%s',
-                $this->getViewsDir(),
+                $this->_viewsDir,
                 dirname($partialPath)
             )) . DIRECTORY_SEPARATOR;
 
@@ -360,6 +359,6 @@ class View extends PhalconView
     public function setControllerViewPath($controllerName)
     {
         $this->controllerViewPath = str_replace('\\','/',strtolower($controllerName));
-        $this->controllerFullViewPath = $this->getViewsDir() . $this->controllerViewPath;
+        $this->controllerFullViewPath = $this->_viewsDir . $this->controllerViewPath;
     }
 }

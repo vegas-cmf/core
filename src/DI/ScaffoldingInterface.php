@@ -65,6 +65,23 @@ interface ScaffoldingInterface
     public function setModelName($name);
 
     /**
+     * Retrieve record by its ID
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function doRead($id);
+
+    /**
+     * Retrieve list of records as paginator object
+     *
+     * @param int $page
+     * @param int $limit
+     * @return \Phalcon\Paginator\AdapterInterface
+     */
+    public function doPaginate($page = 1, $limit = 10);
+
+    /**
      * Creates new record
      *
      * @param array $values
