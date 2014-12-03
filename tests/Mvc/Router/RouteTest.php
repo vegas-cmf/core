@@ -28,7 +28,11 @@ class RouteTest extends \PHPUnit_Framework_TestCase
                 'auth' => array('auth', 'authAdmin')
             ),
             'type' => 'static',
-            'params' => array()
+            'params' => array(
+                'param_1' => 'value_1',
+                'param_2' => 'value_2',
+                'param_3' => 'value_3'
+            )
         ];
 
         $route = new Route('test', $routeArray);
@@ -38,6 +42,10 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('controller', $route->getPaths());
         $this->assertArrayHasKey('action', $route->getPaths());
         $this->assertArrayHasKey('auth', $route->getPaths());
-
+        $this->assertEquals('value_1', $route->getParam('param_1'));
+        $this->assertEquals('value_2', $route->getParam('param_2'));
+        $this->assertEquals('value_3', $route->getParam('param_3'));
+        $this->assertSame(json_encode(['auth', 'authAdmin']), $route->getPaths()['auth']);
+        $this->assertEquals('/url', $route->getRoute());
     }
 } 

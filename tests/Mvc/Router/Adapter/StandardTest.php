@@ -18,9 +18,39 @@ use Phalcon\DI;
 class StandardTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testAdapterInstance()
+    public function testShouldAdapterInstanceImplementRouterInterface()
     {
         $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
         $this->assertInstanceOf('\Phalcon\Mvc\RouterInterface', $router);
+    }
+
+    public function testShouldRemoveExtraSlashes()
+    {
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router->add('/test', [
+            'module' => 'module',
+            'controller' => 'controller',
+            'action' => 'action'
+        ])->setName('test');
+
+        $router->handle('/test/');
+        $matchedRoute = $router->getMatchedRoute();
+        $this->assertNotNull($matchedRoute);
+        $this->assertEquals($matchedRoute->getName(), 'test');
+        $this->assertEquals($matchedRoute->getPattern(), '/test');
+    }
+
+    public function testShouldNotMatchRouteWithExtraSlash()
+    {
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router->removeExtraSlashes(false);
+        $router->add('/test', [
+            'module' => 'module',
+            'controller' => 'controller',
+            'action' => 'action'
+        ])->setName('test');
+
+        $router->handle('/test/');
+        $this->assertNull($router->getMatchedRoute());
     }
 } 
