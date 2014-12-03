@@ -12,8 +12,7 @@
  
 namespace Foo\Controllers\Frontend;
 
-
-use Vegas\Mvc\Controller\ControllerAbstract;
+use Vegas\Mvc\ControllerAbstract;
 
 /**
  * Class FakeController

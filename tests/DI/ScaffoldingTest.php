@@ -95,7 +95,7 @@ class ScaffoldingTest extends \PHPUnit_Framework_TestCase
     public function testDoUpdate()
     {
         $values = array('fake_field' => 'testtest');
-        
+
         $this->scaffolding->doUpdate($this->record->getId(), $values);
         $updatedRecordId = $this->scaffolding->getRecord()->getId();
         

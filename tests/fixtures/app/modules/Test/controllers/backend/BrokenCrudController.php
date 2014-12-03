@@ -10,15 +10,16 @@
  * file that was distributed with this source code.
  */
  
-namespace Test\Controllers\Custom;
+namespace Test\Controllers\Backend;
 
+use Vegas\Mvc\Controller\CrudAbstract;
+use Vegas\Mvc\View;
 
-use Vegas\Mvc\ControllerAbstract;
-
-class FakeController extends ControllerAbstract
+class BrokenCrudController extends CrudAbstract
 {
-    public function testAction()
+    public function initialize()
     {
-
+        parent::initialize();
+        $this->view->disable();
     }
-} 
+}

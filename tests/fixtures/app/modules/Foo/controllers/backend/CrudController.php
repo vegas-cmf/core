@@ -12,26 +12,10 @@
  
 namespace Foo\Controllers\Backend;
 
-use Vegas\Mvc\Controller\Crud;
+use Vegas\Mvc\Controller\CrudAbstract;
 
-class CrudController extends Crud
+class CrudController extends CrudAbstract
 {
     protected $formName = 'Test\Forms\Fake';
     protected $modelName = 'Test\Models\Fake';
-
-    public function initialize()
-    {
-        parent::initialize();
-
-        $this->dispatcher->getEventsManager()->attach(Crud\Events::AFTER_CREATE, $this->printAfterSuccess());
-        $this->dispatcher->getEventsManager()->attach(Crud\Events::AFTER_UPDATE, $this->printAfterSuccess());
-    }
-
-    private function printAfterSuccess()
-    {
-        // for testing purposes only
-        return function() {
-            echo $this->scaffolding->getRecord()->getId();
-        };
-    }
 } 

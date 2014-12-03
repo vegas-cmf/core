@@ -28,14 +28,14 @@ class PaginationTest extends TestCase
             $this->assertInstanceOf('\Vegas\Paginator\Adapter\Exception\ModelNotSetException', $ex);
         }
 
-        try {
+        /*try {
             $paginator = new Mongo(array(
-                'modelName' => '\Vegas\Tests\Stub\Models\FakeModel'
+                'modelName' => '\Vegas\Tests\Stub\Models\FakeModel',
             ));
             throw new \Exception('Not this exception.');
         } catch (\Exception $ex) {
             $this->assertInstanceOf('\Vegas\Paginator\Adapter\Exception\DbNotSetException', $ex);
-        }
+        }*/
     }
 
     public function testRender()

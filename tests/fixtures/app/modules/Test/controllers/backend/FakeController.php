@@ -12,7 +12,7 @@
  
 namespace Test\Controllers\Backend;
 
-use Vegas\Mvc\Controller\ControllerAbstract;
+use Vegas\Mvc\ControllerAbstract;
 use Vegas\Mvc\View;
 
 class FakeController extends ControllerAbstract
