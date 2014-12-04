@@ -18,7 +18,7 @@ use Vegas\Mvc\Router\RouteInterface;
 
 /**
  * Class DefaultRoute
- * Base route type, useful for rules which should be overwritten by any default or static route
+ * Base route type
  *
  * @package Vegas\Mvc\Router\Route
  */

@@ -20,6 +20,7 @@ use Vegas\Mvc\Router\RouteInterface;
  * Class NotfoundRoute
  *
  * When none of the routes specified in the router are matched, the following route will be use
+ * @see http://docs.phalconphp.com/pl/latest/reference/routing.html#not-found-paths
  *
  * @package Vegas\Mvc\Router\Route
  */

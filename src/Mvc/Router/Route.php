@@ -11,6 +11,8 @@
  */
  
 namespace Vegas\Mvc\Router;
+use Vegas\Mvc\Router\Exception\InvalidRouteNameException;
+use Vegas\Mvc\Router\Exception\InvalidRoutePathsException;
 
 /**
  * Class Route
@@ -60,12 +62,24 @@ class Route
      *
      * @param $name     Name of route
      * @param $routeArray
+     * @throws Exception\InvalidRouteNameException
+     * @throws Exception\InvalidRoutePathsException
      */
     public function __construct($name, $routeArray)
     {
+        if (!$name) {
+            throw new InvalidRouteNameException();
+        }
         $this->name = $name;
-        $this->route = $routeArray['route'];
+
+        //route is optional
+        $this->route = isset($routeArray['route']) ? $routeArray['route'] : '';
+
+        if (!isset($routeArray['paths']) || empty($routeArray['paths'])) {
+            throw new InvalidRoutePathsException();
+        }
         $this->paths = $routeArray['paths'];
+        //params are optional
         $this->params = isset($routeArray['params']) ? $routeArray['params'] : array();
 
         // encode auth array if exists - phalcon application cannot handle arrays as param here

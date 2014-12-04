@@ -19,6 +19,7 @@ use Vegas\Mvc\Router\RouteInterface;
 /**
  * Class DefaultRoute
  * Default route type.
+ * @see http://docs.phalconphp.com/pl/latest/reference/routing.html#setting-default-paths
  *
  * @package Vegas\Mvc\Router\Route
  */
@@ -30,9 +31,11 @@ class DefaultRoute implements RouteInterface
      */
     public function add(\Phalcon\Mvc\RouterInterface $router, Route $route)
     {
-        $router
-            ->add($route->getRoute(), $route->getPaths())
-            ->setName($route->getName())
-            ->setHostName($route->getParam('hostname'));
+        $router->setDefaults(array_merge(
+            $route->getPaths(),
+            [
+                'params' => $route->getParams()
+            ]
+        ));
     }
 } 

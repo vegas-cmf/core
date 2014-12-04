@@ -161,7 +161,7 @@ class Router implements InjectionAwareInterface
 
         foreach ($this->routes as $routePattern => $route) {
             if (!isset($route['type'])) {
-                $route['type'] = Router::DEFAULT_ROUTE;
+                $route['type'] = Router::BASE_ROUTE;
             }
 
             $this->validateRouteType($route['type']);
