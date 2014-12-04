@@ -27,8 +27,10 @@ class LoaderTest extends \PHPUnit_Framework_TestCase
         $modulesArray = require TESTS_ROOT_DIR . '/fixtures/app/config/modules.php';
 
         $this->assertInternalType('array', $modulesArray);
-
         $this->assertInternalType('string', ModuleLoader::MODULE_SETTINGS_FILE);
+
+        $this->assertArrayHasKey('Foo', $modulesArray);
+        $this->assertArrayHasKey('FakeVendorModule', $modulesArray);
     }
 
 } 

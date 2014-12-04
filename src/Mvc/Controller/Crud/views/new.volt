@@ -4,7 +4,7 @@
             <div class="spacer spacer30"></div>
         </div>
         <div class="widget widget-page-header">
-            <h3>{{ i18n._('Add record') }}</h3>
+            <h3>Add record</h3>
         </div>
         <div class="widget widget-default-spacer">
             <div class="spacer spacer22"></div>
@@ -35,8 +35,8 @@
                                 {% endfor %}
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-flat success">{{ i18n._('Save') }}</button>
-                                    <a href="{{ url.get(['for': router.getMatchedRoute().getName(), 'action':'index']) }}" class="btn pull-right">{{ i18n._('Cancel') }}</a>
+                                    <button type="submit" class="btn btn-flat success">Save</button>
+                                    <a href="{{ url.get(['for': router.getMatchedRoute().getName(), 'action':'index']) }}" class="btn pull-right">Cancel</a>
                                 </div>
                             </form>
                         </div>

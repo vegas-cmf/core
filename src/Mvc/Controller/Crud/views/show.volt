@@ -1,7 +1,7 @@
 <div class="table-wrapper products-table section">
     <div class="row header">
         <div class="col-md-12">
-            <h3>{{ i18n._('Record details') }}</h3>
+            <h3>Record details</h3>
         </div>
     </div>
     <div class="row">

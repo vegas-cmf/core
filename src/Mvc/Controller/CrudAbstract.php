@@ -38,6 +38,10 @@ abstract class CrudAbstract extends ControllerAbstract
         parent::initialize();
 
         $this->eventsManager->attach('view:notFoundView', function ($event, $view) {
+            if (!in_array($this->dispatcher->getActionName(), ['new', 'edit', 'show', 'index'])) {
+                return false;
+            }
+
             if ($view->getCurrentRenderLevel() == View::LEVEL_ACTION_VIEW) {
                 $templatePath = implode(DIRECTORY_SEPARATOR, [dirname(__FILE__), 'Crud','']);
 

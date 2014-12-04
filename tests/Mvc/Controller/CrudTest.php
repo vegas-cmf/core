@@ -42,14 +42,17 @@ class CrudTest extends TestCase
         $_SERVER['REQUEST_METHOD'] = 'GET';
 
         $form = new Fake();
+
         $content = $this->bootstrap->run('/test/crud/new');
 
-        $this->assertEquals($form->get('fake_field')->render(), $content);
+        $this->assertContains($form->get('fake_field')->render(['class' => ' form-control']), $content);
+        $this->assertContains('<form action="/test/crud/create/" method="POST" role="form">', $content);
     }
-/*
+
     public function testNotPostCreate()
     {
         $content = $this->bootstrap->run('/test/crud/create');
+
         $this->assertContains('500', $content);
         $this->assertContains('This is not a POST request!', $content);
     }
@@ -81,6 +84,15 @@ class CrudTest extends TestCase
         $model->delete();
     }
 
+    public function testPostCreateException()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST['fake_field'] = '';
+
+        $content = $this->bootstrap->run('/test/crud/create');
+        $this->assertContains('Field fake_field is required', $content);
+    }
+
     public function testEdit()
     {
         $this->prepareFakeObject();
@@ -90,7 +102,8 @@ class CrudTest extends TestCase
         $form = new Fake($this->model);
         $content = $this->bootstrap->run('/test/crud/edit/'.$this->model->getId());
 
-        $this->assertEquals($form->get('fake_field')->render(), $content);
+        $this->assertContains($form->get('fake_field')->render(['class' => ' form-control']), $content);
+        $this->assertContains('<form action="/test/crud/update/'.$this->model->getId().'" method="POST" role="form">', $content);
     }
 
     public function testNotPostUpdate()
@@ -98,6 +111,7 @@ class CrudTest extends TestCase
         $this->prepareFakeObject();
 
         $content = $this->bootstrap->run('/test/crud/update/'.$this->model->getId());
+
         $this->assertContains('500', $content);
         $this->assertContains('This is not a POST request!', $content);
     }
@@ -131,6 +145,41 @@ class CrudTest extends TestCase
         $model->delete();
     }
 
+    public function testPostUpdateException()
+    {
+        $this->prepareFakeObject();
+
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_POST['fake_field'] = '';
+
+        $content = $this->bootstrap->run('/test/crud/update/'.$this->model->getId());
+        $this->assertContains('Field fake_field is required', $content);
+    }
+
+    public function testIndex()
+    {
+        $this->prepareFakeObject();
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $content = $this->bootstrap->run('/test/crud/index/');
+
+        $this->assertContains('<th>Fake field index</th>', $content);
+        $this->assertContains($this->model->fake_field, $content);
+    }
+
+    public function testShow()
+    {
+        $this->prepareFakeObject();
+
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $content = $this->bootstrap->run('/test/crud/show/'.$this->model->getId());
+
+        $this->assertContains('<th>Fake field</th>', $content);
+        $this->assertContains($this->model->fake_field, $content);
+    }
+
     public function testDelete()
     {
         $this->model = FakeModel::findFirst();
@@ -143,7 +192,17 @@ class CrudTest extends TestCase
 
         $this->assertFalse($this->model);
     }
-*/
+
+    public function testDeleteException()
+    {
+        $_SERVER['REQUEST_METHOD'] = 'GET';
+
+        $content = $this->bootstrap->run('/test/crud/delete/RanDoMn0t1D4sUR3');
+
+        $this->assertContains('500', $content);
+        $this->assertContains('Invalid object ID', $content);
+    }
+
     private function prepareFakeObject()
     {
         $this->model = FakeModel::findFirst(array(array(

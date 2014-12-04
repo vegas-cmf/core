@@ -1,0 +1,12 @@
+{
+    "name": "vegas-cmf-fixtures/fake",
+    "description": "Fake composer.json for testing purposes.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Amsterdam Standard Vegas Team",
+            "email": "vegas@amsterdam-standard.pl"
+        }
+    ],
+    "vendor-dir": "vendor"
+}
