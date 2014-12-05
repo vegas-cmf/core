@@ -20,6 +20,15 @@ class CrudController extends CrudAbstract
     protected $formName = 'Test\Forms\Fake';
     protected $modelName = 'Test\Models\Fake';
 
+    protected $showFields = [
+        'fake_field' => 'Fake field',
+        'created_at' => 'Created at'
+    ];
+    protected $indexFields = [
+        'fake_field' => 'Fake field index',
+        'created_at' => 'Created at index'
+    ];
+
     public function initialize()
     {
         parent::initialize();
