@@ -16,74 +16,62 @@ use Phalcon\DI;
 use Vegas\Mvc\Router\Route\BaseRoute;
 use Vegas\Mvc\Router\Route;
 
-class BaseRouteTest extends \PHPUnit_Framework_TestCase
+class StaticRouteTest extends \PHPUnit_Framework_TestCase
 {
 
-    public function testShouldAddBaseRouteToRouter()
+    public function testShouldAddStaticRouteToRouter()
     {
         $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
 
-        $route = new Route('test', [
-            'route' => '/test',
+        $route = new Route('static', [
+            'route' => '/static',
             'paths' => [
                 'module' => 'Test',
-                'controller' => 'TestCon',
+                'controller' => 'Static',
                 'action' => 'test'
             ],
-            'params' => [
-                'param' => 'value',
-                'hostname' => 'test.localhost'
-            ]
+            'type' => 'static'
         ]);
 
-        $baseRoute = new BaseRoute();
-        $baseRoute->add($router, $route);
+        $staticRoute = new Route\StaticRoute();
+        $staticRoute->add($router, $route);
 
         $this->assertNotEmpty($router->getRoutes());
-        $this->assertNotNull($router->getRouteByName('test'));
-        $testRoute = $router->getRouteByName('test');
+        $this->assertNotNull($router->getRouteByName('static'));
+        $testRoute = $router->getRouteByName('static');
         $this->assertInstanceOf('\Phalcon\Mvc\Router\RouteInterface', $testRoute);
-        $this->assertEquals('test.localhost', $testRoute->getHostname());
         $this->assertEquals('Test', $testRoute->getPaths()['module']);
-        $this->assertEquals('TestCon', $testRoute->getPaths()['controller']);
+        $this->assertEquals('Static', $testRoute->getPaths()['controller']);
         $this->assertEquals('test', $testRoute->getPaths()['action']);
-        $this->assertEquals('/test', $testRoute->getPattern());
+        $this->assertEquals('/static', $testRoute->getPattern());
     }
 
-    public function testShouldMatchBaseRoute()
+    public function testShouldMatchStaticRoute()
     {
         $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
 
-        $route = new Route('test', [
-            'route' => '/test',
+        $route = new Route('static', [
+            'route' => '/static',
             'paths' => [
                 'module' => 'Test',
-                'controller' => 'TestCon',
+                'controller' => 'Static',
                 'action' => 'test'
             ],
-            'params' => [
-                'param' => 'value',
-                'hostname' => 'test.localhost'
-            ]
+            'type' => 'static'
         ]);
 
-        $baseRoute = new BaseRoute();
-        $baseRoute->add($router, $route);
+        $staticRoute = new Route\StaticRoute();
+        $staticRoute->add($router, $route);
 
-        //note. the HTTP_HOST is empty atm
-        $router->handle('/test');
-        $this->assertNull($router->getMatchedRoute());
+        $router->handle('/static');
 
-        //hardcode the HTTP_HOST
-        $_SERVER['HTTP_HOST'] = 'test.localhost';
-        $router->handle('/test');
         $matchedRoute = $router->getMatchedRoute();
-
         $this->assertNotNull($matchedRoute);
-        $this->assertEquals($route->getName(), $matchedRoute->getName());
+
+        $this->assertEquals($matchedRoute->getName(), $route->getName());
         $this->assertEquals($matchedRoute->getPaths()['module'], $route->getPaths()['module']);
         $this->assertEquals($matchedRoute->getPaths()['controller'], $route->getPaths()['controller']);
         $this->assertEquals($matchedRoute->getPaths()['action'], $route->getPaths()['action']);
-        $this->assertEquals($route->getRoute(), $matchedRoute->getPattern());
+        $this->assertEquals($matchedRoute->getPattern(), $route->getRoute());
     }
 } 

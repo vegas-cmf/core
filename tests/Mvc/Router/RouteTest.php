@@ -47,5 +47,32 @@ class RouteTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('value_3', $route->getParam('param_3'));
         $this->assertSame(json_encode(['auth', 'authAdmin']), $route->getPaths()['auth']);
         $this->assertEquals('/url', $route->getRoute());
+
+        $this->assertInternalType('array', $route->getParams());
+        $this->assertInternalType('string', $route->getRoute());
+        $this->assertInternalType('array', $route->getPaths());
+        $this->assertInternalType('string', $route->getName());
+    }
+
+    public function testShouldThrowExceptionForInvalidName()
+    {
+        $exception = null;
+        try {
+            new Route(false, []);
+        } catch (\Exception $e) {
+            $exception = $e;
+        }
+        $this->assertInstanceOf('\Vegas\Mvc\Router\Exception\InvalidRouteNameException', $exception);
+    }
+
+    public function testShouldThrowExceptionForInvalidPaths()
+    {
+        $exception = null;
+        try {
+            new Route('test', []);
+        } catch (\Exception $e) {
+            $exception = $e;
+        }
+        $this->assertInstanceOf('\Vegas\Mvc\Router\Exception\InvalidRoutePathsException', $exception);
     }
 } 

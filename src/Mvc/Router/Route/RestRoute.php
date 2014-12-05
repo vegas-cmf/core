@@ -42,13 +42,15 @@ class RestRoute implements RouteInterface
         //add routes with http method
         //for each action new route is adding with specified HTTP Method.
         foreach ($actions as $actionRoute => $actionMethods) {
-            if ($actionRoute == '/') $actionRoute = '';
+            if ($actionRoute == '/') {
+                $actionRoute = '';
+            }
             foreach ($actionMethods as $action => $method) {
                 $paths = $route->getPaths();
                 $paths['action'] = $action;
 
                 $newRoute = $router->add($route->getRoute() . $actionRoute, $paths)->via($method);
-                $newRoute->setName($route->getName() . '/' . $action);
+                $newRoute->setName($route->getName() . $actionRoute . '/' . $action);
                 $newRoute->setHostName($route->getParam('hostname'));
             }
         }

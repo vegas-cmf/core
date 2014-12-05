@@ -54,7 +54,7 @@ class DefaultRouteTest extends \PHPUnit_Framework_TestCase
         $route = new Route('def', [
             'paths' => [
                 'module' => 'Def',
-                'controller' => 'Def',
+                'controller' => 'DefController',
                 'action' => 'def'
             ]
         ]);
@@ -66,7 +66,7 @@ class DefaultRouteTest extends \PHPUnit_Framework_TestCase
             'route' => '/test',
             'paths' => [
                 'module' => 'Test',
-                'controller' => 'Test'
+                'controller' => 'TestCon'
             ],
             'params' => [
                 'param' => 'value'
@@ -76,8 +76,15 @@ class DefaultRouteTest extends \PHPUnit_Framework_TestCase
         $baseRoute->add($router, $testRoute);
 
         $router->handle('/test');
-        $this->assertEquals('def', $router->getActionName());
-        $this->assertEquals('Test', $router->getControllerName());
-        $this->assertEquals('Test', $router->getModuleName());
+
+        $matchedRoute = $router->getMatchedRoute();
+
+        $this->assertEquals($route->getPaths()['action'], $router->getActionName());
+        $this->assertEquals($testRoute->getPaths()['controller'], $router->getControllerName());
+        $this->assertEquals($testRoute->getPaths()['module'], $router->getModuleName());
+        $this->assertEquals($testRoute->getRoute(), $matchedRoute->getPattern());
+        $this->assertEquals($testRoute->getPaths()['controller'], $matchedRoute->getPaths()['controller']);
+        $this->assertEquals($testRoute->getPaths()['module'], $matchedRoute->getPaths()['module']);
+        $this->assertArrayNotHasKey('action', $testRoute->getPaths());
     }
 } 
