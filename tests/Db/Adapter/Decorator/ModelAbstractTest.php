@@ -24,7 +24,6 @@ class FakeModel extends ModelAbstract
     }
 }
 
-
 class ModelAbstractTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -43,7 +42,13 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCreateRecord()
+    public static function tearDownAfterClass()
+    {
+        $di = DI::getDefault();
+        $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
+    }
+
+    public function testShouldCreateRecord()
     {
         $data = array(
             'title' =>  'Title test',
@@ -69,7 +74,7 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($fake->save());
     }
 
-    public function testUpdateRecord()
+    public function testShouldUpdateRecord()
     {
         $fake = FakeModel::findFirst();
         $fake->title = 'New title';

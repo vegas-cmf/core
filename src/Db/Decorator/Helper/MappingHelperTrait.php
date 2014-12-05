@@ -58,10 +58,36 @@ trait MappingHelperTrait
         if (!$this->hasMapping($name) && isset($this->mappings[$name])) {
             $this->addMapping($name, $this->mappings[$name]);
         }
-        $value = parent::readAttribute($name);
+        $value = $this->readAttribute($name);
 
         $value = $this->resolveMapping($name, $value);
 
         return $value;
     }
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    abstract public function hasMapping($name);
+
+    /**
+     * @param $name
+     * @param $mapping
+     * @return mixed
+     */
+    abstract public function addMapping($name, $mapping);
+
+    /**
+     * @param $name
+     * @return mixed
+     */
+    abstract public function readAttribute($name);
+
+    /**
+     * @param $name
+     * @param $value
+     * @return mixed
+     */
+    abstract public function resolveMapping($name, $value);
 } 

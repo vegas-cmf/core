@@ -17,7 +17,7 @@ use Vegas\Mvc\Module\Loader As ModuleLoader;
 
 class LoaderTest extends \PHPUnit_Framework_TestCase
 {
-    public function testDump()
+    public function testShouldLoadAllModulesFromApplication()
     {
         $modules = ModuleLoader::dump(DI::getDefault());
 

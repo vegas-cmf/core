@@ -124,7 +124,34 @@ class Camelize implements MappingInterface
 
 class MappingTest extends \PHPUnit_Framework_TestCase
 {
-    public function testMappingManager()
+    public static function setUpBeforeClass()
+    {
+        $data = array(
+            'title' =>  'Title test',
+            'content'   =>  'Content test',
+            'category_id' => rand(1000, 9999)
+        );
+
+        $fake = new FakeModel();
+        $fake->writeAttributes($data);
+        $fake->save();
+
+        $fake = new Fake();
+        $fake->writeAttributes($data);
+        $fake->save();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        foreach (Fake::find() as $fake) {
+            $fake->delete();
+        }
+        foreach (FakeModel::find() as $fake) {
+            $fake->delete();
+        }
+    }
+
+    public function testShouldAddMapperToMappingManager()
     {
         //define mappings
         $mappingManager = new MappingManager();
@@ -161,7 +188,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(sprintf('Mapping class \'%s\' was not found', 'fake_mapping'), $m);
     }
 
-    public function testResolveCollectionMappings()
+    public function testShouldResolveCollectionMappings()
     {
         $mappingManager = new MappingManager();
         $mappingManager->add(new Json());
@@ -229,7 +256,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($nonCamelText, $fakeDoc->readMapped('somecamel'));
     }
 
-    public function testResolveModelMappings()
+    public function testShouldResolveModelMappings()
     {
         $mappingManager = new MappingManager();
         $mappingManager->add(new Json());

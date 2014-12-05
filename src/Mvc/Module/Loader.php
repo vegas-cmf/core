@@ -34,27 +34,38 @@ class Loader
      */
     public static function dump(DiInterface $di)
     {
-        $modulesList = array();
+        $modulesList = [];
 
         //extracts list of modules from module directory
         $config = $di->get('config');
         $directoryIterator = new \DirectoryIterator($config->application->moduleDir);
         foreach ($directoryIterator as $moduleDir) {
-            if ($moduleDir->isDot()) continue;
-            $moduleSettingsFile = $moduleDir->getPathname() . DIRECTORY_SEPARATOR . self::MODULE_SETTINGS_FILE;
+            if ($moduleDir->isDot()) {
+                continue;
+            }
+
+            $moduleSettingsFile = $moduleDir->getPathname()
+                                        . DIRECTORY_SEPARATOR
+                                        . self::MODULE_SETTINGS_FILE;
             if (!file_exists($moduleSettingsFile)) {
                 continue;
             }
-            $modulesList[$moduleDir->getBasename()] = array(
-                'className' =>  $moduleDir->getBasename() . '\\' . pathinfo(self::MODULE_SETTINGS_FILE, PATHINFO_FILENAME),
+            $modulesList[$moduleDir->getBasename()] = [
+                'className' =>  $moduleDir->getBasename()
+                                        . '\\'
+                                        . pathinfo(self::MODULE_SETTINGS_FILE, PATHINFO_FILENAME),
                 'path'  =>  $moduleSettingsFile
-            );
+            ];
         }
 
-        $modulesList = self::dumpModulesFromVendor($modulesList);
+        self::dumpModulesFromVendor($modulesList);
 
         //saves generated array to php source file
-        FileWriter::write($config->application->configDir . 'modules.php', self::createFileContent($modulesList), true);
+        FileWriter::write(
+            $config->application->configDir . 'modules.php',
+            self::createFileContent($modulesList),
+            true
+        );
 
         return $modulesList;
     }
@@ -65,34 +76,46 @@ class Loader
      * @param $modulesList
      * @return mixed
      */
-    private static function dumpModulesFromVendor(array $modulesList)
+    private static function dumpModulesFromVendor(array &$modulesList)
     {
         if (!file_exists(APP_ROOT.'/composer.json')) {
             return $modulesList;
         }
 
-        $fileContent = file_get_contents(APP_ROOT.DIRECTORY_SEPARATOR.'composer.json');
+        $fileContent = file_get_contents(APP_ROOT . DIRECTORY_SEPARATOR . 'composer.json');
         $json = json_decode($fileContent, true);
 
-        $vendorDir = realpath(APP_ROOT.(isset($json['config']['vendor-dir']) ?
-                DIRECTORY_SEPARATOR.$json['config']['vendor-dir'] :
-                DIRECTORY_SEPARATOR.'vendor'));
+        $vendorDir = realpath(APP_ROOT .
+            (
+                isset($json['config']['vendor-dir'])
+                    ? DIRECTORY_SEPARATOR . $json['config']['vendor-dir']
+                    : DIRECTORY_SEPARATOR.'vendor'
+            )
+        );
 
-        $vendorDir .= DIRECTORY_SEPARATOR.'vegas-cmf';
+        $vendorDir .= DIRECTORY_SEPARATOR . 'vegas-cmf';
         $directoryIterator = new \DirectoryIterator($vendorDir);
         foreach ($directoryIterator as $libDir) {
-            if ($libDir->isDot()) continue;
-            $moduleSettingsFile = $vendorDir. DIRECTORY_SEPARATOR . $libDir . DIRECTORY_SEPARATOR . 'module' . DIRECTORY_SEPARATOR .self::MODULE_SETTINGS_FILE;
+            if ($libDir->isDot()) {
+                continue;
+            }
+            //creates path to Module.php file
+            $moduleSettingsFile = implode(DIRECTORY_SEPARATOR, [
+                $vendorDir, $libDir, 'module', self::MODULE_SETTINGS_FILE
+            ]);
+
             if (!file_exists($moduleSettingsFile)) {
                 continue;
             }
 
             $baseName = \Phalcon\Text::camelize($libDir->getBasename());
             if (!isset($modulesList[$baseName])) {
-                $modulesList[$baseName] = array(
-                    'className' =>  $baseName . '\\' . pathinfo(self::MODULE_SETTINGS_FILE, PATHINFO_FILENAME),
+                $modulesList[$baseName] = [
+                    'className' =>  $baseName
+                                        . '\\'
+                                        . pathinfo(self::MODULE_SETTINGS_FILE, PATHINFO_FILENAME),
                     'path'  =>  $moduleSettingsFile
-                );
+                ];
             }
         }
 

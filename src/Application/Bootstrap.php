@@ -183,8 +183,6 @@ class Bootstrap implements BootstrapInterface
 
     /**
      * Registers default dispatcher
-     *
-     * @param $di
      */
     protected function initDispatcher()
     {
