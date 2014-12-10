@@ -22,13 +22,13 @@ trait ColorsOuputTrait
      * @var array
      * @internal
      */
-    private $foreground_colors = array();
+    private $foregroundColors = array();
 
     /**
      * @var array
      * @internal
      */
-    private $background_colors = array();
+    private $backgroundColors = array();
 
     /**
      * Constructors
@@ -37,31 +37,31 @@ trait ColorsOuputTrait
     public function __construct()
     {
         // Set up shell colors
-        $this->foreground_colors['black'] = '0;30';
-        $this->foreground_colors['dark_gray'] = '1;30';
-        $this->foreground_colors['blue'] = '0;34';
-        $this->foreground_colors['light_blue'] = '1;34';
-        $this->foreground_colors['green'] = '0;32';
-        $this->foreground_colors['light_green'] = '1;32';
-        $this->foreground_colors['cyan'] = '0;36';
-        $this->foreground_colors['light_cyan'] = '1;36';
-        $this->foreground_colors['red'] = '0;31';
-        $this->foreground_colors['light_red'] = '1;31';
-        $this->foreground_colors['purple'] = '0;35';
-        $this->foreground_colors['light_purple'] = '1;35';
-        $this->foreground_colors['brown'] = '0;33';
-        $this->foreground_colors['yellow'] = '1;33';
-        $this->foreground_colors['light_gray'] = '0;37';
-        $this->foreground_colors['white'] = '1;37';
+        $this->foregroundColors['black'] = '0;30';
+        $this->foregroundColors['dark_gray'] = '1;30';
+        $this->foregroundColors['blue'] = '0;34';
+        $this->foregroundColors['light_blue'] = '1;34';
+        $this->foregroundColors['green'] = '0;32';
+        $this->foregroundColors['light_green'] = '1;32';
+        $this->foregroundColors['cyan'] = '0;36';
+        $this->foregroundColors['light_cyan'] = '1;36';
+        $this->foregroundColors['red'] = '0;31';
+        $this->foregroundColors['light_red'] = '1;31';
+        $this->foregroundColors['purple'] = '0;35';
+        $this->foregroundColors['light_purple'] = '1;35';
+        $this->foregroundColors['brown'] = '0;33';
+        $this->foregroundColors['yellow'] = '1;33';
+        $this->foregroundColors['light_gray'] = '0;37';
+        $this->foregroundColors['white'] = '1;37';
 
-        $this->background_colors['black'] = '40';
-        $this->background_colors['red'] = '41';
-        $this->background_colors['green'] = '42';
-        $this->background_colors['yellow'] = '43';
-        $this->background_colors['blue'] = '44';
-        $this->background_colors['magenta'] = '45';
-        $this->background_colors['cyan'] = '46';
-        $this->background_colors['light_gray'] = '47';
+        $this->backgroundColors['black'] = '40';
+        $this->backgroundColors['red'] = '41';
+        $this->backgroundColors['green'] = '42';
+        $this->backgroundColors['yellow'] = '43';
+        $this->backgroundColors['blue'] = '44';
+        $this->backgroundColors['magenta'] = '45';
+        $this->backgroundColors['cyan'] = '46';
+        $this->backgroundColors['light_gray'] = '47';
     }
 
     /**
@@ -77,12 +77,12 @@ trait ColorsOuputTrait
         $colored_string = "";
 
         // Check if given foreground color found
-        if (isset($this->foreground_colors[$foreground_color])) {
-            $colored_string .= "\033[" . $this->foreground_colors[$foreground_color] . "m";
+        if (isset($this->foregroundColors[$foreground_color])) {
+            $colored_string .= "\033[" . $this->foregroundColors[$foreground_color] . "m";
         }
         // Check if given background color found
-        if (isset($this->background_colors[$background_color])) {
-            $colored_string .= "\033[" . $this->background_colors[$background_color] . "m";
+        if (isset($this->backgroundColors[$background_color])) {
+            $colored_string .= "\033[" . $this->backgroundColors[$background_color] . "m";
         }
 
         // Add string and end coloring
@@ -98,7 +98,7 @@ trait ColorsOuputTrait
      */
     public function getForegroundColors()
     {
-        return array_keys($this->foreground_colors);
+        return array_keys($this->foregroundColors);
     }
 
     /**
@@ -108,6 +108,6 @@ trait ColorsOuputTrait
      */
     public function getBackgroundColors()
     {
-        return array_keys($this->background_colors);
+        return array_keys($this->backgroundColors);
     }
 } 

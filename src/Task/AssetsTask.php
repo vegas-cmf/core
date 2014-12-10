@@ -12,13 +12,15 @@
  
 namespace Vegas\Task;
 
+use Vegas\Cli\Task\Action;
 use Vegas\Cli\Task\Option;
+use Vegas\Cli\Task;
 
 /**
  * Class AssetsTask
  * @package Vegas\Task
  */
-class AssetsTask extends \Vegas\Cli\Task
+class AssetsTask extends Task
 {
     /**
      * Publishes assets provided by vegas-libraries installed via composer
@@ -111,7 +113,7 @@ class AssetsTask extends \Vegas\Cli\Task
      */
     public function setOptions()
     {
-        $action = new \Vegas\Cli\Task\Action('publish', 'Publish all assets');
+        $action = new Action('publish', 'Publish all assets');
 
         $dir = new Option('dir', 'd', 'Assets directory. Usage vegas:assets publish -d /path/to/assets');
         $action->addOption($dir);

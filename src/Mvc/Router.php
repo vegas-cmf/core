@@ -14,6 +14,7 @@ namespace Vegas\Mvc;
 
 use Phalcon\DI\InjectionAwareInterface;
 use Phalcon\DiInterface;
+use Phalcon\Mvc\RouterInterface;
 use Vegas\DI\InjectionAwareTrait;
 use Vegas\Mvc\Router\Exception\InvalidRouteTypeException;
 use Vegas\Mvc\Router\Route;
@@ -58,7 +59,7 @@ class Router implements InjectionAwareInterface
     private $routes = array();
 
     /**
-     * @var \Phalcon\Mvc\RouterInterface
+     * @var RouterInterface
      * @internal
      */
     private $adapter;
@@ -76,9 +77,9 @@ class Router implements InjectionAwareInterface
      * Sets router adapter
      *
      * @param DiInterface $di
-     * @param \Phalcon\Mvc\RouterInterface $routerAdapter
+     * @param RouterInterface $routerAdapter
      */
-    public function __construct(DiInterface $di, \Phalcon\Mvc\RouterInterface $routerAdapter)
+    public function __construct(DiInterface $di, RouterInterface $routerAdapter)
     {
         $this->setDI($di);
         $this->adapter = $routerAdapter;
@@ -190,7 +191,7 @@ class Router implements InjectionAwareInterface
     /**
      * Returns router adapter
      *
-     * @return \Phalcon\Mvc\RouterInterface
+     * @return RouterInterface
      */
     public function getRouter()
     {

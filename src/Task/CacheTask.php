@@ -14,12 +14,13 @@ namespace Vegas\Task;
 
 use Phalcon\DI;
 use Vegas\Cli\Task\Action;
+use Vegas\Cli\Task;
 
 /**
  * Class CacheTask
  * @package Vegas\Task
  */
-class CacheTask extends \Vegas\Cli\Task
+class CacheTask extends Task
 {
     /**
      * Cleans application cache

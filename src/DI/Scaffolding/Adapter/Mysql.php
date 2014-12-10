@@ -13,7 +13,13 @@
 namespace Vegas\DI\Scaffolding\Adapter;
 
 use Phalcon\DI;
+use Phalcon\DiInterface;
+use Phalcon\Paginator\Adapter\Model as PaginatorAdapterModel;
+use Vegas\Db\AdapterInterface;
+use Vegas\Db\Exception\NoRequiredServiceException;
+use Vegas\DI\Scaffolding\AdapterInterface as ScaffoldingAdapterInterface;
 use Vegas\DI\Scaffolding\Exception\RecordNotFoundException;
+use Vegas\DI\Scaffolding;
 
 /**
  * Class Mysql
@@ -22,12 +28,12 @@ use Vegas\DI\Scaffolding\Exception\RecordNotFoundException;
  *
  * @package Vegas\DI\Scaffolding\Adapter
  */
-class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\AdapterInterface
+class Mysql implements AdapterInterface, ScaffoldingAdapterInterface
 {
     /**
      * Scaffolding instance
      *
-     * @var \Vegas\DI\Scaffolding
+     * @var Scaffolding
      */
     protected $scaffolding;
 
@@ -59,7 +65,7 @@ class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
      */
     public function getPaginator($page = 1, $limit = 10)
     {
-        return new \Phalcon\Paginator\Adapter\Model(array(
+        return new PaginatorAdapterModel(array(
             'data' => call_user_func(array($this->scaffolding->getRecord(),'find')),
             'limit' => $limit,
             'page' => $page
@@ -69,7 +75,7 @@ class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
     /**
      * {@inheritdoc}
      */
-    public function setScaffolding(\Vegas\DI\Scaffolding $scaffolding) {
+    public function setScaffolding(Scaffolding $scaffolding) {
         $this->scaffolding = $scaffolding;
 
         return $this;
@@ -78,7 +84,7 @@ class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
     /**
      * {@inheritdoc}
      */
-    public function verifyRequiredServices(\Phalcon\DiInterface $di)
+    public function verifyRequiredServices(DiInterface $di)
     {
         if (!$di->has('db')) {
             throw new NoRequiredServiceException();

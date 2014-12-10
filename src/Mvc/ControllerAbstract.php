@@ -12,6 +12,8 @@
 namespace Vegas\Mvc;
 
 use Phalcon\Mvc\Controller;
+use Vegas\Exception;
+use Vegas\Mvc\View;
 
 /**
  * Class ControllerAbstract
@@ -30,7 +32,7 @@ abstract class ControllerAbstract extends Controller
          * It allows to use $this->view->partial inside of action method before action view is being rendered
          */
         $this->eventsManager->attach('view:beforeRenderView', function($event, $view, $engineViewPath) {
-            if ($view instanceof \Vegas\Mvc\View) {
+            if ($view instanceof View) {
                 $view->setControllerViewPath($this->router->getControllerName());
             }
         });
@@ -69,32 +71,32 @@ abstract class ControllerAbstract extends Controller
      * Throws exception with code 403
      *
      * @param string $message
-     * @throws \Vegas\Exception
+     * @throws Exception
      */
     protected function throw403($message = '')
     {
-        throw new \Vegas\Exception($message, 403);
+        throw new Exception($message, 403);
     }
 
     /**
      * Throws exception with code 404
      *
      * @param string $message
-     * @throws \Vegas\Exception
+     * @throws Exception
      */
     protected function throw404($message = '')
     {
-        throw new \Vegas\Exception($message, 404);
+        throw new Exception($message, 404);
     }
 
     /**
      * Throws exception with code 500
      *
      * @param string $message
-     * @throws \Vegas\Exception
+     * @throws Exception
      */
     protected function throw500($message = '')
     {
-        throw new \Vegas\Exception($message, 500);
+        throw new Exception($message, 500);
     }
 }

@@ -120,6 +120,8 @@ abstract class Task extends \Phalcon\CLI\Task
 
             $this->renderActionHelp();
         }
+
+        return true;
     }
 
     /**
@@ -278,7 +280,7 @@ abstract class Task extends \Phalcon\CLI\Task
      *
      * @param $object
      */
-    public function pubObject($object)
+    public function putObject($object)
     {
         $this->appendLine($this->getColoredString(print_r($object, true), 'black', 'light_gray'));
     }

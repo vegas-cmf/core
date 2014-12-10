@@ -10,6 +10,7 @@
  * file that was distributed with this source code.
  */
 namespace Vegas\DI;
+use Vegas\DI\Scaffolding\AdapterInterface;
 
 /**
  * Interface ScaffoldingInterface
@@ -21,14 +22,14 @@ interface ScaffoldingInterface
      * Constructor
      * Sets scaffolding adapter
      *
-     * @param Scaffolding\AdapterInterface $adapter
+     * @param AdapterInterface $adapter
      */
-    public function __construct(\Vegas\DI\Scaffolding\AdapterInterface $adapter);
+    public function __construct(AdapterInterface $adapter);
 
     /**
      * Returns scaffolding adapter
      *
-     * @return Scaffolding\AdapterInterface
+     * @return AdapterInterface
      */
     public function getAdapter();
 

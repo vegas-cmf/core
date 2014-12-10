@@ -12,6 +12,7 @@
 namespace Vegas\Paginator\Adapter;
 
 use Phalcon\Paginator\AdapterInterface;
+use Vegas\Paginator\Page;
 
 /**
  * Class Mongo
@@ -113,7 +114,7 @@ class Mongo implements AdapterInterface
      */
     public function getPaginate()
     {
-        $page = new \Vegas\Paginator\Page();
+        $page = new Page();
 
         $page->current = $this->page;
         $page->next = $this->getNextPage();

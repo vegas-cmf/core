@@ -11,6 +11,7 @@
  */
 
 namespace Vegas\Mvc;
+use Phalcon\Loader;
 
 /**
  * Class Application
@@ -51,7 +52,7 @@ class Application extends \Phalcon\Mvc\Application
      */
     private function registerSharedData($modules)
     {
-        $loader = new \Phalcon\Loader();
+        $loader = new Loader();
         
         foreach ($modules As $name => $module)
         {

@@ -12,9 +12,7 @@
  
 namespace Vegas\Cli;
 
-use Vegas\Cli\Console;
 use Vegas\Cli\Exception as CliException;
-use Vegas\Cli\Exception\TaskActionNotSpecifiedException;
 use Vegas\Cli\Exception\TaskNotFoundException;
 
 /**

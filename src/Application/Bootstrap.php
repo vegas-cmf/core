@@ -12,6 +12,7 @@
  
 namespace Vegas\Application;
 
+use Phalcon\Config;
 use Phalcon\DI\FactoryDefault;
 use Phalcon\DI;
 use Phalcon\DiInterface;
@@ -19,8 +20,12 @@ use Phalcon\Mvc\Dispatcher;
 use Vegas\BootstrapInterface;
 use Vegas\Constants;
 use Vegas\DI\ServiceProviderLoader;
+use Vegas\Mvc\Application;
 use Vegas\Mvc\Dispatcher\Events\BeforeException;
-use Vegas\Mvc\Module\Loader As ModuleLoader;
+use Vegas\Mvc\Module\Loader as ModuleLoader;
+use Vegas\Mvc\Module\Loader;
+use Vegas\Mvc\Router\Adapter\Standard;
+use Vegas\Mvc\Router;
 
 /**
  * Class Bootstrap
@@ -41,14 +46,14 @@ class Bootstrap implements BootstrapInterface
     /**
      * MVC Application
      *
-     * @var \Vegas\Mvc\Application
+     * @var Application
      */
     protected $application;
 
     /**
      * Application config
      *
-     * @var \Phalcon\Config
+     * @var Config
      */
     protected $config;
 
@@ -57,13 +62,13 @@ class Bootstrap implements BootstrapInterface
      * Initializes MVC Application
      * Initializes DI for Application
      *
-     * @param \Phalcon\Config $config
+     * @param Config $config
      */
-    public function __construct(\Phalcon\Config $config)
+    public function __construct(Config $config)
     {
         $this->config = $config;
         $this->di = new FactoryDefault();
-        $this->application = new \Vegas\Mvc\Application();
+        $this->application = new Application();
     }
 
     /**
@@ -127,7 +132,7 @@ class Bootstrap implements BootstrapInterface
     protected function initModules()
     {
         //registers modules defined in modules.php file
-        $modulesFile = $this->config->application->configDir . 'modules.php';
+        $modulesFile = $this->config->application->configDir . Loader::MODULE_STATIC_FILE;
         if (!file_exists($modulesFile) || $this->di->get('environment') != Constants::DEFAULT_ENV) {
             ModuleLoader::dump($this->di);
         }
@@ -160,8 +165,8 @@ class Bootstrap implements BootstrapInterface
     protected function initRoutes()
     {
         //setups router
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard($this->di);
-        $router = new \Vegas\Mvc\Router($this->di, $routerAdapter);
+        $routerAdapter = new Standard($this->di);
+        $router = new Router($this->di, $routerAdapter);
 
         //adds routes defined in modules
         $modules = $this->application->getModules();
@@ -189,6 +194,9 @@ class Bootstrap implements BootstrapInterface
         $this->di->set('dispatcher', function() {
             $dispatcher = new Dispatcher();
 
+            /**
+             * @var \Phalcon\Events\Manager $eventsManager
+             */
             $eventsManager = $this->di->getShared('eventsManager');
             $eventsManager->attach('dispatch:beforeException', BeforeException::getEvent());
 

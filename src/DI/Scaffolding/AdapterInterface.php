@@ -11,6 +11,8 @@
  */
 namespace Vegas\DI\Scaffolding;
 
+use Vegas\DI\Scaffolding;
+
 /**
  * Interface AdapterInterface
  * @package Vegas\DI\Scaffolding
@@ -37,8 +39,8 @@ interface AdapterInterface
     /**
      * Sets scaffolding instance
      *
-     * @param \Vegas\DI\Scaffolding $scaffolding
+     * @param Scaffolding $scaffolding
      * @return mixed
      */
-    public function setScaffolding(\Vegas\DI\Scaffolding $scaffolding);
+    public function setScaffolding(Scaffolding $scaffolding);
 }

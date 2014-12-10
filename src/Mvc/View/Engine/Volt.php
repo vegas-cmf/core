@@ -17,7 +17,6 @@ use Vegas\Mvc\View\Engine\Volt\Exception\UnknownFilterException;
 use Vegas\Mvc\View\Engine\Volt\VoltFilterAbstract;
 use Vegas\Mvc\View\Engine\Volt\VoltHelperAbstract;
 
-
 /**
  * Class Volt
  * @package Vegas\Mvc\View\Engine

@@ -11,6 +11,7 @@
  */
 namespace Vegas\DI;
 
+use Vegas\DI\Scaffolding\AdapterInterface;
 use Vegas\DI\Scaffolding\Exception\DeleteFailureException;
 use Vegas\DI\Scaffolding\Exception\InvalidFormException;
 
@@ -31,7 +32,7 @@ use Vegas\DI\Scaffolding\Exception\InvalidFormException;
  *
  * @package Vegas\DI
  */
-class Scaffolding implements \Vegas\DI\ScaffoldingInterface
+class Scaffolding implements ScaffoldingInterface
 {
     /**
      * Dependency injector
@@ -78,7 +79,7 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(\Vegas\DI\Scaffolding\AdapterInterface $adapter)
+    public function __construct(AdapterInterface $adapter)
     {
         $this->adapter = $adapter;
         $this->adapter->setScaffolding($this);

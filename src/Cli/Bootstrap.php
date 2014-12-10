@@ -12,12 +12,14 @@
 
 namespace Vegas\Cli;
 
+use Phalcon\Config;
 use Phalcon\DI\FactoryDefault\CLI;
 use Vegas\BootstrapInterface;
+use Vegas\Cli\EventsListener\TaskListener;
 use Vegas\Cli\Exception as CliException;
 use Vegas\Constants;
 use Vegas\DI\ServiceProviderLoader;
-use Vegas\Mvc\Module\Loader As ModuleLoader;
+use Vegas\Mvc\Module\Loader as ModuleLoader;
 
 /**
  * Class Bootstrap
@@ -39,9 +41,9 @@ class Bootstrap implements BootstrapInterface
      * Initializes Console Application
      * Initializes DI for CLI application
      *
-     * @param \Phalcon\Config $config
+     * @param Config $config
      */
-    public function __construct(\Phalcon\Config $config)
+    public function __construct(Config $config)
     {
         $this->config = $config;
         $this->di = new CLI();
@@ -145,10 +147,10 @@ class Bootstrap implements BootstrapInterface
         $eventsManager = $this->di->getShared('eventsManager');
         //attaches new event console:beforeTaskHandle and console:afterTaskHandle
         $eventsManager->attach(
-            'console:beforeHandleTask', \Vegas\Cli\EventsListener\TaskListener::beforeHandleTask($this->arguments)
+            'console:beforeHandleTask', TaskListener::beforeHandleTask($this->arguments)
         );
         $eventsManager->attach(
-            'console:afterHandleTask', \Vegas\Cli\EventsListener\TaskListener::afterHandleTask()
+            'console:afterHandleTask', TaskListener::afterHandleTask()
         );
         $this->console->setEventsManager($eventsManager);
     }

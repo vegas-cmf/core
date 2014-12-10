@@ -12,7 +12,9 @@
  
 namespace Vegas\DI;
 
+use Phalcon\Config;
 use Phalcon\DiInterface;
+use Phalcon\Loader;
 use Vegas\Constants;
 use Vegas\Util\FileWriter;
 
@@ -22,6 +24,11 @@ use Vegas\Util\FileWriter;
  */
 class ServiceProviderLoader
 {
+    /**
+     * Name of file containing static list of services
+     */
+    const SERVICES_STATIC_FILE = 'services.php';
+
     /**
      * Dumps services to source file
      *
@@ -41,7 +48,11 @@ class ServiceProviderLoader
         }
 
         //saves generated array to php source file
-        FileWriter::write($config->application->configDir . 'services.php', self::createFileContent($servicesList), true);
+        FileWriter::write(
+            $config->application->configDir . self::SERVICES_STATIC_FILE,
+            self::createFileContent($servicesList),
+            true
+        );
 
         ksort($servicesList);
         return $servicesList;
@@ -64,12 +75,16 @@ class ServiceProviderLoader
      */
     public static function autoload(DiInterface $di)
     {
+        /**
+         * @var \Phalcon\Config $config
+         */
         $config = $di->get('config');
         $configDir = $config->application->configDir;
-        if (!file_exists($configDir . 'services.php') || $di->get('environment') != Constants::DEFAULT_ENV) {
+        if (!file_exists($configDir . self::SERVICES_STATIC_FILE)
+                || $di->get('environment') != Constants::DEFAULT_ENV) {
             $services = self::dump($di);
         } else {
-            $services = require($configDir . 'services.php');
+            $services = require($configDir . self::SERVICES_STATIC_FILE);
         }
 
         self::setupServiceProvidersAutoloader($config, $services);
@@ -113,14 +128,14 @@ class ServiceProviderLoader
     /**
      * Registers classes that contains services providers
      *
-     * @param \Phalcon\Config $config
+     * @param Config $config
      * @param $services
      * @internal
      */
-    private static function setupServiceProvidersAutoloader(\Phalcon\Config $config, $services)
+    private static function setupServiceProvidersAutoloader(Config $config, $services)
     {
         //creates the autoloader
-        $loader = new \Phalcon\Loader();
+        $loader = new Loader();
 
         //setup default path when is not defined
         foreach ($services as $className => $path) {

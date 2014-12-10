@@ -60,7 +60,7 @@ class Route
     /**
      * Constructor
      *
-     * @param $name     Name of route
+     * @param $name     Route name
      * @param $routeArray
      * @throws Exception\InvalidRouteNameException
      * @throws Exception\InvalidRoutePathsException

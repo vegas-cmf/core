@@ -9,20 +9,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Vegas\Db\Exception;
 
-use Vegas\Db\Exception;
+namespace Vegas\Test;
 
-/**
- * Class NoRequiredServiceException
- * @package Vegas\Db\Exception
- */
-class NoRequiredServiceException extends Exception
+class Bootstrap
 {
-    /**
-     * Exception default message
-     *
-     * @var string
-     */
-    protected $message = 'Required service is not available';
-} 
+
+}
+ 

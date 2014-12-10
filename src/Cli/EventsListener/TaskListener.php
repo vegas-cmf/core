@@ -16,6 +16,7 @@ use Phalcon\CLI\Console;
 use Phalcon\CLI\Dispatcher;
 use Phalcon\Events\Event;
 use Vegas\Cli\OptionParser;
+use Vegas\Cli\Task;
 
 /**
  * Class TaskListener
@@ -50,7 +51,7 @@ class TaskListener
      */
     public static function afterHandleTask()
     {
-        return function(Event $event, Console $console, \Vegas\Cli\Task $task) {
+        return function(Event $event, Console $console, Task $task) {
             echo $task->getOutput();
         };
     }

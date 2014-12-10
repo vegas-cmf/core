@@ -12,7 +12,6 @@
  
 namespace Vegas\Mvc\View\Engine\Volt;
 
-
 use Phalcon\Mvc\View\Engine\Volt\Compiler;
 
 /**

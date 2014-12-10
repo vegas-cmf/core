@@ -13,6 +13,8 @@
 namespace Vegas\Mvc;
 
 use Phalcon\Mvc\View as PhalconView;
+use Phalcon\Mvc\View\Exception;
+use Vegas\Mvc\View\Engine\Volt;
 
 /**
  * Class View
@@ -55,7 +57,7 @@ class View extends PhalconView
 
         $this->registerEngines(array(
             '.volt' => function ($this, $di) use ($options) {
-                    $volt = new \Vegas\Mvc\View\Engine\Volt($this, $di);
+                    $volt = new Volt($this, $di);
                     if (isset($options['cacheDir'])) {
                         $volt->setOptions(array(
                             'compiledPath' => $options['cacheDir'],
@@ -89,7 +91,8 @@ class View extends PhalconView
      * @param boolean $silence
      * @param boolean $mustClean
      * @param \Phalcon\Cache\BackendInterface $cache
-     * @throws PhalconView\Exception
+     * @return null|void
+     * @throws Exception
      */
     protected function _engineRender($engines, $viewPath, $silence, $mustClean, $cache)
     {
@@ -110,7 +113,7 @@ class View extends PhalconView
                                     $key = $cacheOptions['key'];
                                 }
                                 if (isset($cacheOptions['lifetime'])) {
-                                    $lifetime = $cacheOptions['lifetime'];
+                                    $lifeTime = $cacheOptions['lifetime'];
                                 }
                             }
 
@@ -118,7 +121,11 @@ class View extends PhalconView
                                 $key = md5($viewPath);
                             }
 
-                            $cachedView = $cache->start($key, $lifetime);
+                            if (!isset($lifeTime)) {
+                                $lifeTime = 0;
+                            }
+
+                            $cachedView = $cache->start($key, $lifeTime);
                             if (!$cachedView) {
                                 $this->_content = $cachedView;
                                 return null;
@@ -161,7 +168,7 @@ class View extends PhalconView
             }
 
             if (!$silence) {
-                throw new \Phalcon\Mvc\View\Exception(sprintf("View %s was not found in the views directory", $viewEnginePath));
+                throw new Exception(sprintf("View %s was not found in the views directory", $viewEnginePath));
             }
         }
     }

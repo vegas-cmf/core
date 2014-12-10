@@ -21,13 +21,14 @@
  */
 namespace Vegas\DI;
 
+use Phalcon\DI\InjectionAwareInterface;
 use Vegas\DI\Service\Exception;
 
 /**
  * Class ServiceManager
  * @package Vegas\DI
  */
-class ServiceManager implements \Phalcon\DI\InjectionAwareInterface
+class ServiceManager implements InjectionAwareInterface
 {
     use InjectionAwareTrait;
 

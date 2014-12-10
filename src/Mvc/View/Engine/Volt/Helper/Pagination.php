@@ -12,7 +12,6 @@
  
 namespace Vegas\Mvc\View\Engine\Volt\Helper;
 
-
 use Vegas\Mvc\View\Engine\Volt\VoltHelperAbstract;
 
 /**

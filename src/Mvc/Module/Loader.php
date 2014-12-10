@@ -13,6 +13,7 @@
 namespace Vegas\Mvc\Module;
 
 use Phalcon\DiInterface;
+use Phalcon\Text;
 use Vegas\Util\FileWriter;
 
 /**
@@ -25,6 +26,11 @@ class Loader
      * Default name of file containing module settings
      */
     const MODULE_SETTINGS_FILE = 'Module.php';
+
+    /**
+     * Name of file containing list of modules
+     */
+    const MODULE_STATIC_FILE = 'modules.php';
 
     /**
      * Generates list of modules into source file
@@ -62,7 +68,7 @@ class Loader
 
         //saves generated array to php source file
         FileWriter::write(
-            $config->application->configDir . 'modules.php',
+            $config->application->configDir . self::MODULE_STATIC_FILE,
             self::createFileContent($modulesList),
             true
         );
@@ -108,7 +114,7 @@ class Loader
                 continue;
             }
 
-            $baseName = \Phalcon\Text::camelize($libDir->getBasename());
+            $baseName = Text::camelize($libDir->getBasename());
             if (!isset($modulesList[$baseName])) {
                 $modulesList[$baseName] = [
                     'className' =>  $baseName
