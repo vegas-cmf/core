@@ -12,12 +12,24 @@
 
 namespace Vegas\Test;
 
+use Phalcon\DI;
+use Vegas\Bootstrap\ModulesInitializerTrait;
+use Vegas\Test\Bootstrap;
+
+/**
+ * @codeCoverageIgnore
+ */
 class TestCase extends \PHPUnit_Framework_TestCase
 {
+
     /**
      * @var \Bootstrap
      */
     protected $bootstrap;
+
+    /**
+     * @var \Phalcon\DI\FactoryDefault|\Phalcon\DiInterface
+     */
     protected $di;
 
     /**
@@ -30,28 +42,21 @@ class TestCase extends \PHPUnit_Framework_TestCase
     public function __construct($name = null, array $data = [], $dataName = '')
     {
         parent::__construct($name, $data, $dataName);
+    }
 
-        $loader = new \Phalcon\Loader();
-
-        $loader->registerNamespaces([
-            'Tests'  =>  APP_ROOT  . '/tests',
-        ], true);
-
-        $loader->registerDirs([APP_ROOT. '/app'], true);
-        $loader->register();
-
-        $config = require APP_ROOT . '/tests/config.php';
-
-        $bootstrap = new \Bootstrap(new \Phalcon\Config($config));
+    /**
+     *
+     */
+    public function setUp()
+    {
+        $config = DI::getDefault()->get('config');
+        $bootstrap = new Bootstrap($config);
+        $bootstrap->setup();
 
         $this->di = $bootstrap->getDI();
-        $this->di->set('request', function() {
-            return new \Vegas\Test\Http\Request();
-        }, true);
-
-        $bootstrap->setup();
         $this->bootstrap = $bootstrap;
 
+        DI::setDefault($bootstrap->getDI());
     }
 
     /**
@@ -60,7 +65,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      * @param $uri
      * @return \Phalcon\Http\ResponseInterface
      */
-    public function handle($uri)
+    public function handleUri($uri)
     {
         $response = $this->bootstrap->getApplication()->handle($uri);
         return $response;
@@ -80,6 +85,14 @@ class TestCase extends \PHPUnit_Framework_TestCase
     public function getDI()
     {
         return $this->di;
+    }
+
+    /**
+     * @return \Bootstrap|Bootstrap
+     */
+    public function getBootstrap()
+    {
+        return $this->bootstrap;
     }
 }
  

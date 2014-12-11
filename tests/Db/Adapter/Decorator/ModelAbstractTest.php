@@ -74,6 +74,16 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($fake->save());
     }
 
+    public function testShouldFindRecordByItsId()
+    {
+        $fake = FakeModel::findFirst();
+
+        $this->assertSame(
+            $fake->toArray(),
+            FakeModel::findById($fake->getId())->toArray()
+        );
+    }
+
     public function testShouldUpdateRecord()
     {
         $fake = FakeModel::findFirst();

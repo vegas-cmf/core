@@ -12,8 +12,8 @@
  
 namespace Vegas\Mvc\Module;
 
-use Phalcon\DiInterface;
 use Phalcon\Text;
+use Vegas\DI\InjectionAwareTrait;
 use Vegas\Util\FileWriter;
 
 /**
@@ -35,16 +35,17 @@ class Loader
     /**
      * Generates list of modules into source file
      *
-     * @param DiInterface $di
+     * @param string $inputDirectory
+     * @param string $outputDirectory
+     * @param bool $dumpVendorModules
      * @return array
      */
-    public static function dump(DiInterface $di)
+    public function dump($inputDirectory, $outputDirectory, $dumpVendorModules = true)
     {
         $modulesList = [];
 
         //extracts list of modules from module directory
-        $config = $di->get('config');
-        $directoryIterator = new \DirectoryIterator($config->application->moduleDir);
+        $directoryIterator = new \DirectoryIterator($inputDirectory);
         foreach ($directoryIterator as $moduleDir) {
             if ($moduleDir->isDot()) {
                 continue;
@@ -64,12 +65,14 @@ class Loader
             ];
         }
 
-        self::dumpModulesFromVendor($modulesList);
+        if ($dumpVendorModules) {
+            $this->dumpModulesFromVendor($modulesList);
+        }
 
         //saves generated array to php source file
-        FileWriter::write(
-            $config->application->configDir . self::MODULE_STATIC_FILE,
-            self::createFileContent($modulesList),
+        FileWriter::writeObject(
+            $outputDirectory . self::MODULE_STATIC_FILE,
+            $modulesList,
             true
         );
 
@@ -82,7 +85,7 @@ class Loader
      * @param $modulesList
      * @return mixed
      */
-    private static function dumpModulesFromVendor(array &$modulesList)
+    private function dumpModulesFromVendor(array &$modulesList)
     {
         if (!file_exists(APP_ROOT.'/composer.json')) {
             return $modulesList;
@@ -126,17 +129,5 @@ class Loader
         }
 
         return $modulesList;
-    }
-
-    /**
-     * Creates file's content with list of modules
-     *
-     * @param $modulesList
-     * @return string
-     * @internal
-     */
-    private static function createFileContent($modulesList)
-    {
-        return '<?php return ' . var_export($modulesList, true) . ';';
     }
 } 

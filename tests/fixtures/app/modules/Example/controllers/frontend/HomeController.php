@@ -9,23 +9,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+ 
+namespace Example\Controllers\Frontend;
 
-use Phalcon\Events\Event;
-use Phalcon\Mvc\Dispatcher;
+use Vegas\Mvc\ControllerAbstract;
 
-/**
- *
- * @package App\Plugins
- */
-class Foo
+class HomeController extends ControllerAbstract
 {
-    /**
-     * @param Event $event
-     * @param Dispatcher $dispatcher
-     * @return bool
-     */
-    public function beforeDispatch(Event $event, Dispatcher $dispatcher)
+    public function indexAction()
     {
-        return true;
+
     }
-} 
+}

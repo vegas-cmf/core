@@ -53,4 +53,12 @@ class FooController extends ControllerAbstract
         $throwName = 'throw'.$code;
         $this->$throwName('Message');
     }
+
+    public function translateAction($str)
+    {
+        $this->view->disable();
+        return $this->response->setContent(
+            $this->_($str)
+        );
+    }
 } 

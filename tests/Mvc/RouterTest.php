@@ -14,7 +14,7 @@ namespace Vegas\Tests\Mvc;
 
 use Phalcon\DI;
 use Vegas\Http\Method;
-use Vegas\Mvc\Module\Loader As ModuleLoader;
+use Vegas\Mvc\Module\Loader as ModuleLoader;
 use Vegas\Mvc\Router;
 
 class RouterTest extends \PHPUnit_Framework_TestCase
@@ -215,7 +215,11 @@ class RouterTest extends \PHPUnit_Framework_TestCase
         $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
         $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
 
-        $modules = ModuleLoader::dump(DI::getDefault());
+        $moduleLoader = new ModuleLoader(DI::getDefault());
+        $modules = $moduleLoader->dump(
+            TESTS_ROOT_DIR . '/fixtures/app/modules/',
+            TESTS_ROOT_DIR . '/fixtures/app/config/'
+        );
         foreach ($modules as $module) {
             $router->addModuleRoutes($module);
         }

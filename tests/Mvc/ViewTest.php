@@ -13,7 +13,7 @@
 namespace Vegas\Tests\Mvc;
 
 use Vegas\Mvc\View;
-use Vegas\Tests\App\TestCase;
+use Vegas\Test\TestCase;
 
 class ViewTest extends TestCase
 {
@@ -50,19 +50,18 @@ class ViewTest extends TestCase
 
     public function testPathsResolving()
     {
-        $configView = $this->di->get('config')->application->view->toArray();
+        $configView = $this->getDI()->get('config')->application->view->toArray();
         if (!file_exists($configView['cacheDir'])) {
             mkdir($configView['cacheDir'], 0777);
         } else {
             chmod($configView['cacheDir'], 0777);
         }
 
-        $content = function($params) {
+        $getContent = function($params) {
             $this->setUp();
-            $route = $this->bootstrap->getDI()->get('router')->getRouteByName('test');
+            $route = $this->getDI()->get('router')->getRouteByName('test');
             $url = rtrim(str_replace(array(':action', ':params'), $params, $route->getPattern()), DIRECTORY_SEPARATOR);
-            $this->bootstrap->run($url);
-            return $this->bootstrap->getDI()->get('response')->getContent();
+            return $this->handleUri($url)->getContent();
         };
 
         //compares output rendered by dispatcher
@@ -72,26 +71,26 @@ class ViewTest extends TestCase
         //app/modules/Test/views/frontend/fake/test.volt    =>  3
         //app/modules/Test/views/frontend/fake/partials/test.volt    =>  4
         //output of dispatcher => 1234
-        $response = $content(array('test', ''));
+        $response = $getContent(array('test', ''));
         $this->assertEquals('1234', $response);
 
         //tests rendering only layout with one partial
         //should return 12 regarding to upwards comments
-        $response = $content(array('testLayout', ''));
+        $response = $getContent(array('testLayout', ''));
         $this->assertEquals('12', $response);
 
         //test rendering only view with one partial
         //should return 34 regarding to upwards comments
-        $response = $content(array('testView', ''));
+        $response = $getContent(array('testView', ''));
         $this->assertEquals('34', $response);
 
         //test rendering only global partial
         //should return 2 regarding to upwards comments
-        $response = $content(array('testGlobal', ''));
+        $response = $getContent(array('testGlobal', ''));
         $this->assertEquals('2', $response);
 
         //extract volt engine
-        $view = $this->bootstrap->getDI()->get('view');
+        $view = $this->getDI()->get('view');
 
         ob_start();
         $view->partial('test/sample');
@@ -123,24 +122,26 @@ class ViewTest extends TestCase
         $view->partial(APP_ROOT . '/test');
         $this->assertEquals('OUTSIDER', ob_get_contents());
         ob_end_clean();
+
+        //reverts view configuration
+        $this->getDI()->get('config')->application->view = $configView;
     }
 
     public function testPathsResolvingWithoutPartialsDirInConfig()
     {
-        $configView = $this->di->get('config')->application->view->toArray();
+        $configView = $this->getDI()->get('config')->application->view->toArray();
         if (!file_exists($configView['cacheDir'])) {
             mkdir($configView['cacheDir'], 0777);
         } else {
             chmod($configView['cacheDir'], 0777);
         }
-        $content = function($params) {
+        $getContent = function($params) {
             $this->setUp();
-            $this->bootstrap->getDI()->get('config')->application->view->partialsDir = false;
-            $this->bootstrap->getDI()->get('config')->application->view->layout = 'main2';
-            $route = $this->bootstrap->getDI()->get('router')->getRouteByName('testfoo');
+            $this->getDI()->get('config')->application->view->partialsDir = false;
+            $this->getDI()->get('config')->application->view->layout = 'main2';
+            $route = $this->getDI()->get('router')->getRouteByName('testfoo');
             $url = rtrim(str_replace(array(':action', ':params'), $params, $route->getPattern()), DIRECTORY_SEPARATOR);
-            $this->bootstrap->run($url);
-            return $this->bootstrap->getDI()->get('response')->getContent();
+            return $this->handleUri($url)->getContent();
         };
 
         //compares output rendered by dispatcher
@@ -150,26 +151,26 @@ class ViewTest extends TestCase
         //app/modules/Test/views/frontend/foo/test.volt    =>  3
         //app/modules/Test/views/frontend/foo/partials/test.volt    =>  4
         //output of dispatcher => 1234
-        $response = $content(array('test', ''));
+        $response = $getContent(array('test', ''));
         $this->assertEquals('1234', $response);
 
         //tests rendering only layout with one partial
         //should return 12 regarding to upwards comments
-        $response = $content(array('testLayout', ''));
+        $response = $getContent(array('testLayout', ''));
         $this->assertEquals('12', $response);
 
         //test rendering only view with one partial
         //should return 34 regarding to upwards comments
-        $response = $content(array('testView', ''));
+        $response = $getContent(array('testView', ''));
         $this->assertEquals('34', $response);
 
         //test rendering only local partial
         //should return 4 regarding to upwards comments
-        $response = $content(array('testLocal', ''));
+        $response = $getContent(array('testLocal', ''));
         $this->assertEquals('4', $response);
 
         //extract volt engine
-        $view = $this->bootstrap->getDI()->get('view');
+        $view = $this->getDI()->get('view');
 
         ob_start();
         $view->partial('../../../layouts/partials/test/sample');
@@ -201,23 +202,25 @@ class ViewTest extends TestCase
         $view->partial(APP_ROOT . '/test');
         $this->assertEquals('OUTSIDER', ob_get_contents());
         ob_end_clean();
+
+        //reverts view configuration
+        $this->getDI()->get('config')->application->view = $configView;
     }
 
     public function testShortNamespacePathsResolving()
     {
-        $configView = $this->di->get('config')->application->view->toArray();
+        $configView = $this->getDI()->get('config')->application->view->toArray();
         if (!file_exists($configView['cacheDir'])) {
             mkdir($configView['cacheDir'], 0777);
         } else {
             chmod($configView['cacheDir'], 0777);
         }
 
-        $content = function($params) {
+        $getContent = function($params) {
             $this->setUp();
-            $route = $this->bootstrap->getDI()->get('router')->getRouteByName('testshort');
+            $route = $this->getDI()->get('router')->getRouteByName('testshort');
             $url = rtrim(str_replace(array(':action', ':params'), $params, $route->getPattern()), DIRECTORY_SEPARATOR);
-            $this->bootstrap->run($url);
-            return $this->bootstrap->getDI()->get('response')->getContent();
+            return $this->handleUri($url)->getContent();
         };
 
         //compares output rendered by dispatcher
@@ -227,21 +230,21 @@ class ViewTest extends TestCase
         //app/modules/Test/views/fake/test.volt    =>  3
         //app/modules/Test/views/fake/partials/test.volt    =>  4
         //output of dispatcher => 1234
-        $response = $content(array('test', ''));
+        $response = $getContent(array('test', ''));
         $this->assertEquals('12shortPartialShort', $response);
 
         //tests rendering only layout with one partial
         //should return 12 regarding to upwards comments
-        $response = $content(array('testLayout', ''));
+        $response = $getContent(array('testLayout', ''));
         $this->assertEquals('12', $response);
 
         //test rendering only view with one partial
-        //should return 34 regarding to upwards comments
-        $response = $content(array('testView', ''));
+        //should return shortPartialShort regarding to upwards comments
+        $response = $getContent(array('testView', ''));
         $this->assertEquals('shortPartialShort', $response);
 
         //extract volt engine
-        $view = $this->bootstrap->getDI()->get('view');
+        $view = $this->getDI()->get('view');
 
         ob_start();
         $view->partial('test/sample');

@@ -13,7 +13,6 @@
 namespace Vegas\Tests\Mvc\Router\Route;
 
 use Phalcon\DI;
-use Vegas\Mvc\Router\Route\BaseRoute;
 use Vegas\Mvc\Router\Route;
 
 class NotFoundRouteTest extends \PHPUnit_Framework_TestCase

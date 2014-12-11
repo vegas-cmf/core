@@ -14,11 +14,30 @@ namespace Vegas\Mvc;
 
 use Phalcon\Config;
 use Phalcon\DI\FactoryDefault;
+use Phalcon\DI;
 use Phalcon\DiInterface;
+use Phalcon\Mvc\Dispatcher;
+use Vegas\Bootstrap\EnvironmentInitializerTrait;
+use Vegas\Bootstrap\LoaderInitializerTrait;
+use Vegas\Bootstrap\ModulesInitializerTrait;
+use Vegas\Bootstrap\RoutesInitializerTrait;
+use Vegas\Bootstrap\ServicesInitializerTrait;
 use Vegas\BootstrapInterface;
+use Vegas\Mvc\Dispatcher\Events\ExceptionListener;
+use Vegas\Mvc\Router;
 
 class Bootstrap implements BootstrapInterface
 {
+    use ModulesInitializerTrait;
+
+    use ServicesInitializerTrait;
+
+    use RoutesInitializerTrait;
+
+    use EnvironmentInitializerTrait;
+
+    use LoaderInitializerTrait;
+
     /**
      * Dependency injection
      *
@@ -81,6 +100,30 @@ class Bootstrap implements BootstrapInterface
     {
         return $this->application;
     }
+
+    /**
+     * Registers default dispatcher
+     */
+    protected function initDispatcher()
+    {
+        $this->di->set('dispatcher', function() {
+            $dispatcher = new Dispatcher();
+
+            /**
+             * @var \Phalcon\Events\Manager $eventsManager
+             */
+            $eventsManager = $this->di->getShared('eventsManager');
+            $eventsManager->attach(
+                'dispatch:beforeException',
+                (new ExceptionListener())->beforeException()
+            );
+
+            $dispatcher->setEventsManager($eventsManager);
+
+            return $dispatcher;
+        });
+    }
+
     /**
      * Executes all bootstrap initialization methods
      * This method can be overloaded to load own initialization method.
@@ -88,17 +131,32 @@ class Bootstrap implements BootstrapInterface
      */
     public function setup()
     {
-        // TODO: Implement setup() method.
+        $this->di->set('config', $this->config);
+
+        $this->initEnvironment($this->config);
+        $this->initLoader($this->config);
+        $this->initModules($this->config);
+        $this->initRoutes($this->config);
+        $this->initServices($this->config);
+        $this->initDispatcher();
+
+        $this->application->setDI($this->di);
+        DI::setDefault($this->di);
+
+        return $this;
     }
 
     /**
-     * Runs application
+     * Start handling MVC requests
      *
-     * @return mixed
+     * @param string $uri
+     * @return string
      */
-    public function run()
+    public function run($uri = null)
     {
-        // TODO: Implement run() method.
+        return $this->application
+            ->handle($uri)
+            ->getContent();
     }
 }
  

@@ -12,9 +12,8 @@
 namespace Vegas\Tests\Tag;
 
 use Vegas\Paginator\Adapter\Mongo;
-use Vegas\Paginator\Page;
 use Vegas\Tag\Pagination;
-use Vegas\Tests\App\TestCase;
+use Vegas\Test\TestCase;
 use Vegas\Tests\Stub\Models\FakeModel;
 
 class PaginationTest extends TestCase

@@ -26,6 +26,16 @@ interface BootstrapInterface
     public function setup();
 
     /**
+     * @return mixed
+     */
+    public function getApplication();
+
+    /**
+     * @return mixed
+     */
+    public function getDI();
+
+    /**
      * Runs application
      *
      * @return mixed

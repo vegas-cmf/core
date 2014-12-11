@@ -14,7 +14,6 @@ namespace Vegas\Mvc;
 use Phalcon\Loader;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\ModuleDefinitionInterface;
-use Vegas\Mvc\Module\SubModuleManager;
 
 /**
  * Class ModuleAbstract
@@ -95,9 +94,11 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
         foreach ((array) $plugins As $plugin) {
             $className = $plugin['class'];
             $reflectionClass = new \ReflectionClass($className);
-            $authenticationPlugin = $reflectionClass->newInstance();
-            $reflectionClass->getMethod('setDI')->invoke($authenticationPlugin, $di);
-            $eventsManager->attach($plugin['attach'], $authenticationPlugin);
+            $dispatcherPlugin = $reflectionClass->newInstance();
+            if ($reflectionClass->hasMethod('setDI')) {
+                $reflectionClass->getMethod('setDI')->invoke($dispatcherPlugin, $di);
+            }
+            $eventsManager->attach($plugin['attach'], $dispatcherPlugin);
         }
         $dispatcher->setEventsManager($eventsManager);
     }

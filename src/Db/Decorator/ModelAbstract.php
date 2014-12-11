@@ -51,7 +51,7 @@ abstract class ModelAbstract extends Model
      * @param $id
      * @return \Phalcon\Mvc\Model\ResultsetInterface
      */
-    public function findById($id)
+    public static function findById($id)
     {
         return parent::findFirst(array(
             "conditions" => "id = ?1",

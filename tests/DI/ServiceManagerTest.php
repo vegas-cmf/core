@@ -26,6 +26,18 @@ class ServiceManagerTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals($di->get('serviceManager'), $sm);
     }
+
+    public function testHasService()
+    {
+        $di = DI::getDefault();
+        $sm = new ServiceManager();
+        $sm->setDI($di);
+
+        $this->assertTrue($sm->has('vegas\Tests\Stub:fakeService'));
+        $this->assertTrue($sm->hasService('vegas\Tests\Stub:fakeService'));
+        $this->assertFalse($sm->has('notExisting:mock'));
+        $this->assertFalse($sm->hasService('notExisting:mock'));
+    }
     
     public function testGetNotExistingService()
     {

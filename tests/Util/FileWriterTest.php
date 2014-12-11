@@ -14,7 +14,7 @@ namespace Vegas\Tests\Util;
 
 use Vegas\Util\FileWriter;
 
-class FileWriterTest extends \Vegas\Tests\App\TestCase
+class FileWriterTest extends \PHPUnit_Framework_TestCase
 {
     public function testShouldWriteContentToFile()
     {

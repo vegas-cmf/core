@@ -126,38 +126,42 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 {
     public static function setUpBeforeClass()
     {
-        $data = array(
-            'title' =>  'Title test',
-            'content'   =>  'Content test',
-            'category_id' => rand(1000, 9999)
+        $di = \Phalcon\DI::getDefault();
+        $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
+        $di->get('db')->execute(
+            'CREATE TABLE fake_table(
+            id int not null primary key auto_increment,
+            somedata varchar(250) null,
+            somecamel varchar(250) null
+            )'
         );
-
-        $fake = new FakeModel();
-        $fake->writeAttributes($data);
-        $fake->save();
-
-        $fake = new Fake();
-        $fake->writeAttributes($data);
-        $fake->save();
     }
 
     public static function tearDownAfterClass()
     {
+        $di = \Phalcon\DI::getDefault();
+
         foreach (Fake::find() as $fake) {
             $fake->delete();
         }
-        foreach (FakeModel::find() as $fake) {
-            $fake->delete();
-        }
+
+        $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
     }
 
     public function testShouldAddMapperToMappingManager()
     {
         //define mappings
         $mappingManager = new MappingManager();
+
+        $this->assertInternalType('array', $mappingManager->getMappers());
+        $this->assertEmpty($mappingManager->getMappers());
+
         $mappingManager->add(new Json());
         $mappingManager->add(new Camelize());
         $mappingManager->add(new UpperCase());
+
+        $this->assertInternalType('array', $mappingManager->getMappers());
+        $this->assertNotEmpty($mappingManager->getMappers());
 
         $this->assertNotEmpty(MappingManager::find('json'));
         $this->assertInstanceOf('\Vegas\Db\MappingInterface', MappingManager::find('json'));
@@ -261,16 +265,6 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $mappingManager = new MappingManager();
         $mappingManager->add(new Json());
         $mappingManager->add(new Camelize());
-
-        $di = DI::getDefault();
-        $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
-        $di->get('db')->execute(
-            'CREATE TABLE fake_table(
-            id int not null primary key auto_increment,
-            somedata varchar(250) null,
-            somecamel varchar(250) null
-            )'
-        );
 
         $someData = json_encode(array(1,2,3,4,5,6));
         $fake = new FakeModel();

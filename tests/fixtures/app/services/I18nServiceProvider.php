@@ -11,9 +11,9 @@
  */
 
 use Phalcon\DiInterface;
-use Vegas\DI\ServiceProviderInterface;
 use Phalcon\Mvc\Url as UrlResolver;
-use \Vegas\Session\Adapter\Files as SessionAdapter;
+use Vegas\DI\ServiceProviderInterface;
+use Vegas\Session\Adapter\Files as SessionAdapter;
 
 class I18nServiceProvider implements ServiceProviderInterface
 {

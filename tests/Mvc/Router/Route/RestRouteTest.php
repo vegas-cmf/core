@@ -13,9 +13,7 @@
 namespace Vegas\Tests\Mvc\Router\Route;
 
 use Phalcon\DI;
-use Phalcon\Mvc\Router\RouteInterface;
 use Vegas\Http\Method;
-use Vegas\Mvc\Router\Route\BaseRoute;
 use Vegas\Mvc\Router\Route;
 
 class RestRouteTest extends \PHPUnit_Framework_TestCase

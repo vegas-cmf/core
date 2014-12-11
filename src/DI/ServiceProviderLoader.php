@@ -13,6 +13,7 @@
 namespace Vegas\DI;
 
 use Phalcon\Config;
+use Phalcon\DI\InjectionAwareInterface;
 use Phalcon\DiInterface;
 use Phalcon\Loader;
 use Vegas\Constants;
@@ -22,35 +23,45 @@ use Vegas\Util\FileWriter;
  * Class ServiceProviderLoader
  * @package Vegas\DI
  */
-class ServiceProviderLoader
+class ServiceProviderLoader implements InjectionAwareInterface
 {
+    use InjectionAwareTrait;
+
     /**
      * Name of file containing static list of services
      */
     const SERVICES_STATIC_FILE = 'services.php';
 
     /**
+     * @param DiInterface $di
+     */
+    public function __construct(DiInterface $di)
+    {
+        $this->setDI($di);
+    }
+
+    /**
      * Dumps services to source file
      *
-     * @param DiInterface $di
+     * @param string $inputDirectory
+     * @param string $outputDirectory
      * @return array
      */
-    public static function dump(DiInterface $di)
+    public function dump($inputDirectory, $outputDirectory)
     {
-        $config = $di->get('config');
         $servicesList = array();
 
         //browses directory for searching service provider classes
-        $directoryIterator = new \DirectoryIterator($config->application->serviceDir);
+        $directoryIterator = new \DirectoryIterator($inputDirectory);
         foreach ($directoryIterator as $fileInfo) {
             if ($fileInfo->isDot()) continue;
             $servicesList[$fileInfo->getBasename('.php')] = $fileInfo->getPathname();
         }
 
         //saves generated array to php source file
-        FileWriter::write(
-            $config->application->configDir . self::SERVICES_STATIC_FILE,
-            self::createFileContent($servicesList),
+        FileWriter::writeObject(
+            $outputDirectory . self::SERVICES_STATIC_FILE,
+            $servicesList,
             true
         );
 
@@ -59,35 +70,19 @@ class ServiceProviderLoader
     }
 
     /**
-     * @param $servicesList
-     * @return string
-     * @internal
-     */
-    private static function createFileContent($servicesList)
-    {
-        return '<?php return ' . var_export($servicesList, true) . ';';
-    }
-
-    /**
      * Creates services autoloader
      *
-     * @param DiInterface $di
      */
-    public static function autoload(DiInterface $di)
+    public function autoload($inputDirectory, $outputDirectory)
     {
-        /**
-         * @var \Phalcon\Config $config
-         */
-        $config = $di->get('config');
-        $configDir = $config->application->configDir;
-        if (!file_exists($configDir . self::SERVICES_STATIC_FILE)
-                || $di->get('environment') != Constants::DEFAULT_ENV) {
-            $services = self::dump($di);
+        if (!file_exists($outputDirectory . self::SERVICES_STATIC_FILE)
+                || $this->di->get('environment') != Constants::DEFAULT_ENV) {
+            $services = self::dump($inputDirectory, $outputDirectory);
         } else {
-            $services = require($configDir . self::SERVICES_STATIC_FILE);
+            $services = require($outputDirectory . self::SERVICES_STATIC_FILE);
         }
 
-        self::setupServiceProvidersAutoloader($config, $services);
+        self::setupServiceProvidersAutoloader($inputDirectory, $services);
 
         //resolves services dependencies
         $dependencies = array();
@@ -121,18 +116,18 @@ class ServiceProviderLoader
 
         //registers ordered dependencies
         foreach ($dependencies as $serviceProviderName => $dependency) {
-            $servicesProviders[$serviceProviderName]->register($di);
+            $servicesProviders[$serviceProviderName]->register($this->di);
         }
     }
 
     /**
      * Registers classes that contains services providers
      *
-     * @param Config $config
-     * @param $services
+     * @param string $inputDirectory
+     * @param array $services
      * @internal
      */
-    private static function setupServiceProvidersAutoloader(Config $config, $services)
+    private function setupServiceProvidersAutoloader($inputDirectory, array $services)
     {
         //creates the autoloader
         $loader = new Loader();
@@ -140,7 +135,7 @@ class ServiceProviderLoader
         //setup default path when is not defined
         foreach ($services as $className => $path) {
             if (!$path) {
-                $services[$className] = $config->application->serviceDir . sprintf('%s.php', $className);
+                $services[$className] = $inputDirectory . sprintf('%s.php', $className);
             }
         }
         $loader->registerClasses($services, true);

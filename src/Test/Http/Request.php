@@ -13,8 +13,7 @@
 namespace Vegas\Test\Http;
 
 /**
- * Class Request
- * @package Vegas\Test\Http
+ * @codeCoverageIgnore
  */
 class Request extends \Phalcon\Http\Request
 {

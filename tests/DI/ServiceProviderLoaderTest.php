@@ -20,7 +20,11 @@ class ServiceProviderLoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testDump()
     {
-        ServiceProviderLoader::dump(DI::getDefault());
+        $serviceProviderLoader = new ServiceProviderLoader(DI::getDefault());
+        $serviceProviderLoader->dump(
+            TESTS_ROOT_DIR . '/fixtures/app/services/',
+            TESTS_ROOT_DIR . '/fixtures/app/config/'
+        );
         $this->assertTrue(file_exists(TESTS_ROOT_DIR . '/fixtures/app/config/services.php'));
     }
 
@@ -30,7 +34,11 @@ class ServiceProviderLoaderTest extends \PHPUnit_Framework_TestCase
         $di->set('environment', function() {
             return Constants::DEV_ENV;
         }, true);
-        ServiceProviderLoader::autoload($di);
+        $serviceProviderLoader = new ServiceProviderLoader(DI::getDefault());
+        $serviceProviderLoader->autoload(
+            TESTS_ROOT_DIR . '/fixtures/app/services/',
+            TESTS_ROOT_DIR . '/fixtures/app/config/'
+        );
 
         $this->assertTrue($di->has('url'));
         $this->assertTrue($di->has('assets'));

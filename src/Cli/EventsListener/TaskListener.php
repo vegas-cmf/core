@@ -30,7 +30,7 @@ class TaskListener
      * @param $argv
      * @return callable
      */
-    public static function beforeHandleTask($argv)
+    public function beforeHandleTask($argv)
     {
         return function(Event $event, Console $console, Dispatcher $dispatcher) use ($argv) {
             //parse parameters
@@ -49,7 +49,7 @@ class TaskListener
      *
      * @return callable
      */
-    public static function afterHandleTask()
+    public function afterHandleTask()
     {
         return function(Event $event, Console $console, Task $task) {
             echo $task->getOutput();

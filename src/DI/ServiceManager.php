@@ -86,6 +86,8 @@ class ServiceManager implements InjectionAwareInterface
             return !empty($service);
         } catch (\Phalcon\DI\Exception $ex) {
             return false;
+        } catch (\Vegas\DI\Service\Exception $ex) {
+            return false;
         }
     }
 

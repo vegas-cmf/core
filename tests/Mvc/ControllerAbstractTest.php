@@ -11,51 +11,35 @@
  */
 namespace Vegas\Tests\Mvc;
 
-use Vegas\Tests\App\TestCase;
+use Vegas\Test\TestCase;
 
 class ControllerAbstractTest extends TestCase
 {
-    public function testNoActionError()
-    {
-        $this->bootstrap->run('/test/front/no-action-like-this');
-    }
-
     public function testNoActionErrorResponse()
     {
+        $response = $this->handleUri('/test/front/no-action-like-this');
         $this->assertEquals(
             '404 Action \'no-action-like-this\' was not found on handler \'Frontend\Fake\'',
-            $this->di->get('response')->getHeaders()->get('Status')
+            $response->getHeaders()->get('Status')
         );
-    }
-
-    public function test403Error()
-    {
-        $this->bootstrap->run('/test/front/error/403');
     }
 
     public function test403ErrorResponse()
     {
-        $this->assertEquals('403 Message', $this->di->get('response')->getHeaders()->get('Status'));
-    }
-
-    public function test404Error()
-    {
-        $this->bootstrap->run('/test/front/error/404');
+        $response = $this->handleUri('/test/front/error/403');
+        $this->assertEquals('403 Message', $response->getHeaders()->get('Status'));
     }
 
     public function test404ErrorResponse()
     {
-        $this->assertEquals('404 Message', $this->di->get('response')->getHeaders()->get('Status'));
-    }
-
-    public function test500Error()
-    {
-        $this->bootstrap->run('/test/front/error/500');
+        $response = $this->handleUri('/test/front/error/404');
+        $this->assertEquals('404 Message', $response->getHeaders()->get('Status'));
     }
 
     public function test500ErrorResponse()
     {
-        $this->assertEquals('500 Message', $this->di->get('response')->getHeaders()->get('Status'));
+        $response = $this->handleUri('/test/front/error/500');
+        $this->assertEquals('500 Message', $response->getHeaders()->get('Status'));
     }
 
     public function testJson()
@@ -66,5 +50,10 @@ class ControllerAbstractTest extends TestCase
     public function testEmptyJson()
     {
         $this->assertEquals('[]', $this->bootstrap->run('/test/front/emptyjson'));
+    }
+
+    public function testTranslatorAlias()
+    {
+        $this->assertEquals('test', $this->bootstrap->run('/testfoo/front/translate/test'));
     }
 }

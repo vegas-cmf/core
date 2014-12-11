@@ -21,13 +21,7 @@ namespace Vegas\Cli;
  */
 class OptionParser
 {
-    /**
-     * Array of parsed arguments
-     *
-     * @var array
-     * @internal
-     */
-    private static $args;
+    public static $args;
 
     /**
      * PARSE ARGUMENTS
@@ -73,26 +67,24 @@ class OptionParser
      * @since               August 21, 2009
      * @see                 https://github.com/pwfisher/CommandLine.php
      * @see                 http://www.php.net/manual/en/features.commandline.php
-     * @usage               $args = OptionParser::parse($argv);
+     *                      #81042 function arguments($argv) by technorati at gmail dot com, 12-Feb-2008
+     *                      #78651 function getArgs($args) by B Crawford, 22-Oct-2007
+     * @usage               $args = CommandLine::parseArgs($_SERVER['argv']);
+     * @codeCoverageIgnore
      */
     public static function parse($argv = null)
     {
         $argv = $argv ? $argv : $_SERVER['argv'];
-
         array_shift($argv);
         $out = array();
-
         for ($i = 0, $j = count($argv); $i < $j; $i++) {
             $arg = $argv[$i];
-
             // --foo --bar=baz
             if (substr($arg, 0, 2) === '--') {
                 $eqPos = strpos($arg, '=');
-
                 // --foo
                 if ($eqPos === false) {
                     $key = substr($arg, 2);
-
                     // --foo value
                     if ($i + 1 < $j && $argv[$i + 1][0] !== '-') {
                         $value = $argv[$i + 1];
@@ -134,36 +126,26 @@ class OptionParser
                 $out[] = $value;
             }
         }
-
         self::$args = $out;
-
         return $out;
     }
 
     /**
-     * Converts string argument value to strict boolean value
-     *
-     * @author              Patrick Fisher <patrick@pwfisher.com>
-     * @since               August 21, 2009
-     * @see                 https://github.com/pwfisher/CommandLine.php
-     * @see                 http://www.php.net/manual/en/features.commandline.php
-     * @usage               $args = OptionParser::parse($argv);
+     * GET BOOLEAN
+     * @codeCoverageIgnore
      */
-    public static function toBoolean($key, $default = false)
+    public static function getBoolean($key, $default = false)
     {
         if (!isset(self::$args[$key])) {
             return $default;
         }
         $value = self::$args[$key];
-
         if (is_bool($value)) {
             return $value;
         }
-
         if (is_int($value)) {
             return (bool)$value;
         }
-
         if (is_string($value)) {
             $value = strtolower($value);
             $map = array(
@@ -182,7 +164,6 @@ class OptionParser
                 return $map[$value];
             }
         }
-
         return $default;
     }
 } 

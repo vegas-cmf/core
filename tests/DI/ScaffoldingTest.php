@@ -11,6 +11,7 @@
  */
 namespace Vegas\Tests\DI;
 
+use Vegas\Db\Exception\NoRequiredServiceException;
 use Vegas\DI\Scaffolding;
 
 class ScaffoldingTest extends \PHPUnit_Framework_TestCase
@@ -31,6 +32,25 @@ class ScaffoldingTest extends \PHPUnit_Framework_TestCase
         $record->save();
         
         $this->record = $record;
+    }
+
+    public function testRequiredServicesVerification()
+    {
+        $di = \Phalcon\DI::getDefault();
+
+        $emptyDI = new \Phalcon\DI\FactoryDefault();
+        \Phalcon\DI::setDefault($emptyDI);
+
+        $exception = null;
+        try {
+            new Scaffolding(new Scaffolding\Adapter\Mongo());
+        } catch (NoRequiredServiceException $e) {
+            $exception = $e;
+        }
+        $this->assertInstanceOf('\Vegas\Db\Exception\NoRequiredServiceException', $exception);
+
+        //reverts DI
+        \Phalcon\DI::setDefault($di);
     }
     
     public function testGetRecord()

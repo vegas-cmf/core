@@ -1,12 +1,10 @@
 <?php
-if (!defined('APP_ROOT')) define('APP_ROOT', dirname(dirname(__DIR__)));
-
 return array(
     'application' => array(
         'environment'   =>  \Vegas\Constants::TEST_ENV,
 
         'serviceDir'   =>  APP_ROOT . '/app/services/',
-        'configDir'     => dirname(__FILE__) . DIRECTORY_SEPARATOR,
+        'configDir'     => APP_ROOT . '/app/config/',
         'libraryDir'     => dirname(APP_ROOT) . DIRECTORY_SEPARATOR . '/lib/',
         'pluginDir'      => APP_ROOT . '/app/plugins/',
         'moduleDir'      => APP_ROOT . '/app/modules/',
@@ -29,6 +27,7 @@ return array(
     ),
 
     'db'    =>  array(
+        "adapter" => 'mysql',
         "host" => "localhost",
         "dbname" => "vegas_test",
         "port" => 3306,

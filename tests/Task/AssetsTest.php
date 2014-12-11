@@ -11,7 +11,6 @@
  */
 namespace Vegas\Tests\Task;
 
-use Vegas\Task\AssetsTask;
 use Vegas\Tests\Cli\TestCase;
 
 class AssetsTest extends TestCase
