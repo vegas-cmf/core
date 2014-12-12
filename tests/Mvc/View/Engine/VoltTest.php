@@ -34,4 +34,43 @@ class VoltTest extends TestCase
         $this->assertEquals('<?php echo (new \Vegas\Tag\Pagination($this->getDI()))->render($page,array()); ?>', $compiler->compileString('{{ pagination(page) }}'));
         $this->assertEquals('<?php echo (new \Vegas\Tag\Pagination($this->getDI()))->render($page,array(\'class\' => \'test\')); ?>', $compiler->compileString('{{ pagination(page,["class": "test"]) }}'));
     }
+
+    public function testFilters()
+    {
+        $view = new View();
+
+        $engines = $view->getRegisteredEngines();
+
+        $volt = $engines['.volt'];
+        $volt = $volt($view, DI::getDefault());
+
+        $compiler = $volt->getCompiler();
+        $this->assertEquals('<?php echo (string)1; ?>', $compiler->compileString('{{ 1|toString }}'));
+    }
+
+    public function testShouldThrowExceptionForUnknownFilter()
+    {
+        $view = new View();
+        $volt = new View\Engine\Volt($view);
+        $exception = null;
+        try {
+            $volt->registerFilter('test');
+        } catch (\Exception $e) {
+            $exception = $e;
+        }
+        $this->assertInstanceOf('\Vegas\Mvc\View\Engine\Volt\Exception\UnknownFilterException', $exception);
+    }
+
+    public function testShouldThrowExceptionForUnknownHelper()
+    {
+        $view = new View();
+        $volt = new View\Engine\Volt($view);
+        $exception = null;
+        try {
+            $volt->registerHelper('test');
+        } catch (\Exception $e) {
+            $exception = $e;
+        }
+        $this->assertInstanceOf('\Vegas\Mvc\View\Engine\Volt\Exception\UnknownHelperException', $exception);
+    }
 }
