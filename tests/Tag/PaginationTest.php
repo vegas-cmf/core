@@ -17,6 +17,17 @@ use Vegas\Tag\Pagination;
 use Vegas\Tests\App\TestCase;
 use Vegas\Tests\Stub\Models\FakeModel;
 
+class RequestMock
+{
+    public function get()
+    {
+        return [
+            'by' => 'name',
+            'order' => 'asc'
+        ];
+    }
+}
+
 class PaginationTest extends TestCase
 {
     public function testException()
@@ -100,6 +111,9 @@ class PaginationTest extends TestCase
     public function testArguments()
     {
         $this->createObjectCollection();
+        $this->di->setShared('request', function(){
+           return new RequestMock();
+        });
 
         $pagination = new Pagination($this->di);
 

@@ -168,23 +168,26 @@ class Pagination
     private function renderElement($page, $title, $class = '')
     {
         $href = sprintf($this->htmlHref, $this->currentUri, $page);
-        $args = $this->getSortingArguments();
-        if($args !== false){
-            foreach($args as $key => $arg) {
-                $href .= '&' . $key . '=' . $arg;
-            }
+        $href .= $this->getUrlParams();
 
-        }
         $element = sprintf($this->htmlAHref, $href, $title);
         return sprintf($this->htmlElement, $class, $element);
     }
 
-    private function getSortingArguments()
+    private function getUrlParams()
     {
-        if(!isset($this->settings['sorting'])) {
-            return false;
+        $arguments = $this->di->get('request')->get();
+        unset($arguments['_url']);
+        unset($arguments['page']);
+
+        $href = '';
+        if($arguments !== false){
+            foreach($arguments as $key => $arg) {
+                $href .= '&' . $key . '=' . $arg;
+            }
+
         }
-        return $this->settings['sorting'];
+        return $href;
     }
 
     /**
