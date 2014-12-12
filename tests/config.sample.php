@@ -1,6 +1,6 @@
 <?php
-return array(
-    'application' => array(
+return [
+    'application' => [
         'environment'   =>  \Vegas\Constants::TEST_ENV,
 
         'serviceDir'   =>  APP_ROOT . '/app/services/',
@@ -11,30 +11,35 @@ return array(
         'taskDir'      => APP_ROOT . '/app/tasks/',
         'baseUri'        => '/',
         'language'       => 'nl_NL',
-        'view'  => array(
+        'view'  => [
             'cacheDir'  =>  APP_ROOT . '/cache/',
             'layout'    =>  'main',
             'layoutsDir'    =>  APP_ROOT . '/app/layouts/',
             'partialsDir'    =>  APP_ROOT . '/app/layouts/partials/',
             'compileAlways' =>  true
-        )
-    ),
+        ]
+    ],
 
-    'plugins' => array(),
+    'plugins' => [
+        'foo' => [
+            'class' => 'Foo',
+            'attach' => 'beforeDispatch'
+        ]
+    ],
 
-    'mongo' => array(
+    'mongo' => [
         'db' => 'vegas_test',
-    ),
+    ],
 
-    'db'    =>  array(
+    'db'    =>  [
         "adapter" => 'mysql',
         "host" => "localhost",
         "dbname" => "vegas_test",
         "port" => 3306,
         "username" => "root",
         'password'=> 'root',
-        "options" => array(
+        "options" => [
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
-        )
-    )
-);
+        ]
+    ]
+];
