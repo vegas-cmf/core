@@ -19,7 +19,7 @@
                                     {% do element.setAttribute('class', element.getAttribute('class')~' form-control') %}
                                     {% set hasErrors = form.hasMessagesFor(element.getName()) %}
 
-                                    <div class="form-group{% if hasErrors %} has-error{% endif %}">
+                                    <div class="clearfix form-group{% if hasErrors %} has-error{% endif %}">
                                         {% if element.getLabel() %}
                                             <label for="{{ element.getName() }}">{{ element.getLabel() }}</label>
                                         {% endif %}
@@ -34,7 +34,7 @@
                                     </div>
                                 {% endfor %}
 
-                                <div class="form-group">
+                                <div class="clearfix form-group">
                                     <button type="submit" class="btn btn-flat success">Save</button>
                                     <a href="{{ url.get(['for': router.getMatchedRoute().getName(), 'action':'index']) }}" class="btn pull-right">Cancel</a>
                                 </div>
