@@ -65,6 +65,7 @@ class View extends PhalconView
                             'compileAlways' => isset($options['compileAlways']) ? $options['compileAlways'] : false
                         ));
                     }
+
                     $volt->registerFilters();
                     $volt->registerHelpers();
                     $volt->setExtension('.volt');

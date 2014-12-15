@@ -40,7 +40,8 @@ class ViewTest extends TestCase
     {
         $options = array(
             'layout'    =>  'main.volt',
-            'layoutsDir'    =>  APP_ROOT.'/app/layouts/'
+            'layoutsDir'    =>  APP_ROOT.'/app/layouts/',
+            'compileAlways' => true
         );
         $view = new View($options, __DIR__);
 
@@ -51,11 +52,6 @@ class ViewTest extends TestCase
     public function testPathsResolving()
     {
         $configView = $this->getDI()->get('config')->application->view->toArray();
-        if (!file_exists($configView['cacheDir'])) {
-            mkdir($configView['cacheDir'], 0777);
-        } else {
-            chmod($configView['cacheDir'], 0777);
-        }
 
         $getContent = function($params) {
             $this->setUp();
@@ -130,11 +126,7 @@ class ViewTest extends TestCase
     public function testPathsResolvingWithoutPartialsDirInConfig()
     {
         $configView = $this->getDI()->get('config')->application->view->toArray();
-        if (!file_exists($configView['cacheDir'])) {
-            mkdir($configView['cacheDir'], 0777);
-        } else {
-            chmod($configView['cacheDir'], 0777);
-        }
+
         $getContent = function($params) {
             $this->setUp();
             $this->getDI()->get('config')->application->view->partialsDir = false;
@@ -210,11 +202,6 @@ class ViewTest extends TestCase
     public function testShortNamespacePathsResolving()
     {
         $configView = $this->getDI()->get('config')->application->view->toArray();
-        if (!file_exists($configView['cacheDir'])) {
-            mkdir($configView['cacheDir'], 0777);
-        } else {
-            chmod($configView['cacheDir'], 0777);
-        }
 
         $getContent = function($params) {
             $this->setUp();
@@ -271,6 +258,32 @@ class ViewTest extends TestCase
         $view->partial(APP_ROOT . '/test');
         $this->assertEquals('OUTSIDER', ob_get_contents());
         ob_end_clean();
+    }
+
+    public function testViewCaching()
+    {
+        $this->getDI()->get('config')->application->view->compileAlways = false;
+        $configView = $this->getDI()->get('config')->application->view->toArray();
+
+        $view = new View($configView);
+        $this->getDI()->set('view', function() use ($view) { return $view; });
+
+        if (!file_exists($configView['cacheDir'])) {
+            mkdir($configView['cacheDir'], 0777);
+        } else {
+            chmod($configView['cacheDir'], 0777);
+        }
+
+        $getContent = function() {
+            $this->setUp();
+            $route = $this->getDI()->get('router')->getRouteByName('test');
+            $url = rtrim(str_replace([':action', ':params'], ['test', ''], $route->getPattern()), DIRECTORY_SEPARATOR);
+            return $this->handleUri($url)->getContent();
+        };
+        $getContent();
+
+        $cacheFileKey = str_replace('/', '_', APP_ROOT) . '_app_modules_test_views_frontend_fake_test.volt.php';
+        $this->assertFileExists($configView['cacheDir'] . $cacheFileKey);
     }
 }
  

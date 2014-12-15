@@ -16,7 +16,7 @@ namespace Vegas\Cli;
  * Class ColorsOuputTrait
  * @package Vegas\Cli
  */
-trait ColorsOuputTrait 
+trait ColorsOutputTrait
 {
     /**
      * @var array
@@ -68,21 +68,21 @@ trait ColorsOuputTrait
      * Returns colored string
      *
      * @param $string
-     * @param null $foreground_color
-     * @param null $background_color
+     * @param null $foregroundColor
+     * @param null $backgroundColor
      * @return string
      */
-    public function getColoredString($string, $foreground_color = null, $background_color = null) {
+    public function getColoredString($string, $foregroundColor = null, $backgroundColor = null) {
 
         $colored_string = "";
 
         // Check if given foreground color found
-        if (isset($this->foregroundColors[$foreground_color])) {
-            $colored_string .= "\033[" . $this->foregroundColors[$foreground_color] . "m";
+        if (isset($this->foregroundColors[$foregroundColor])) {
+            $colored_string .= "\033[" . $this->foregroundColors[$foregroundColor] . "m";
         }
         // Check if given background color found
-        if (isset($this->backgroundColors[$background_color])) {
-            $colored_string .= "\033[" . $this->backgroundColors[$background_color] . "m";
+        if (isset($this->backgroundColors[$backgroundColor])) {
+            $colored_string .= "\033[" . $this->backgroundColors[$backgroundColor] . "m";
         }
 
         // Add string and end coloring

@@ -30,7 +30,7 @@ abstract class Task extends \Phalcon\CLI\Task
     /**
      * Trait for coloring console output
      */
-    use ColorsOuputTrait;
+    use ColorsOutputTrait;
 
     /**
      * Task's available options
