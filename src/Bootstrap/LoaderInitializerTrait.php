@@ -22,7 +22,7 @@ trait LoaderInitializerTrait
      * Initializes loader
      * Registers library and plugin directory
      */
-    protected function initLoader(Config $config)
+    public function initLoader(Config $config)
     {
         $loader = new Loader();
         $loader->registerDirs(

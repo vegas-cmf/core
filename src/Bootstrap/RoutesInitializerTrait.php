@@ -18,7 +18,7 @@ trait RoutesInitializerTrait
     /**
      * Initializes routing
      */
-    protected function initRoutes(Config $config)
+    public function initRoutes(Config $config)
     {
         //setups router
         $routerAdapter = new Standard($this->getDI());

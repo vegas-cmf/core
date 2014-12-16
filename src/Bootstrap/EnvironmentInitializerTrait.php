@@ -15,9 +15,9 @@ trait EnvironmentInitializerTrait
     /**
      * Initializes application environment
      */
-    protected function initEnvironment(Config $config)
+    public function initEnvironment(Config $config)
     {
-        if (isset($config->application->environment)) {
+        if (isset($config->application) && isset($config->application->environment)) {
             $env = $config->application->environment;
         } else {
             $env = Constants::DEFAULT_ENV;

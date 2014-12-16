@@ -27,7 +27,7 @@ trait ModulesInitializerTrait
     /**
      * Initializes application modules
      */
-    protected function initModules(Config $config)
+    public function initModules(Config $config)
     {
         $moduleLoader = new ModuleLoader($this->getDI());
         //registers modules defined in modules.php file

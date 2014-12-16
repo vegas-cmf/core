@@ -15,12 +15,13 @@ namespace Vegas\Task;
 use Phalcon\DI;
 use Vegas\Cli\Task\Action;
 use Vegas\Cli\Task;
+use Vegas\Cli\TaskAbstract;
 
 /**
  * Class CacheTask
  * @package Vegas\Task
  */
-class CacheTask extends Task
+class CacheTask extends TaskAbstract
 {
     /**
      * Cleans application cache
@@ -69,7 +70,7 @@ class CacheTask extends Task
      *
      * @return mixed
      */
-    public function setOptions()
+    public function setupOptions()
     {
         $action = new Action('clean', 'Clean cache');
         $this->addTaskAction($action);

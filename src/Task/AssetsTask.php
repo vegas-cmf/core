@@ -15,12 +15,13 @@ namespace Vegas\Task;
 use Vegas\Cli\Task\Action;
 use Vegas\Cli\Task\Option;
 use Vegas\Cli\Task;
+use Vegas\Cli\TaskAbstract;
 
 /**
  * Class AssetsTask
  * @package Vegas\Task
  */
-class AssetsTask extends Task
+class AssetsTask extends TaskAbstract
 {
     /**
      * Publishes assets provided by vegas-libraries installed via composer
@@ -111,7 +112,7 @@ class AssetsTask extends Task
      *
      * @return mixed
      */
-    public function setOptions()
+    public function setupOptions()
     {
         $action = new Action('publish', 'Publish all assets');
 

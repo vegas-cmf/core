@@ -11,6 +11,7 @@
  */
 namespace Vegas\Mvc;
 
+use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Controller;
 use Vegas\Exception;
 use Vegas\Mvc\View;
@@ -42,7 +43,7 @@ abstract class ControllerAbstract extends Controller
      * Renders JSON response
      * Disables view
      *
-     * @param \Vegas\Http\Response\Json|array $data
+     * @param array|\Phalcon\Http\ResponseInterface $data
      * @return null|\Phalcon\Http\ResponseInterface
      */
     protected function jsonResponse($data = array())

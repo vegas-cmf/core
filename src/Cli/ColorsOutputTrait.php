@@ -90,24 +90,4 @@ trait ColorsOutputTrait
 
         return $colored_string;
     }
-
-    /**
-     * Returns all foreground color names
-     *
-     * @return array
-     */
-    public function getForegroundColors()
-    {
-        return array_keys($this->foregroundColors);
-    }
-
-    /**
-     * Returns all background color names
-     *
-     * @return array
-     */
-    public function getBackgroundColors()
-    {
-        return array_keys($this->backgroundColors);
-    }
 } 

@@ -22,7 +22,7 @@ use Vegas\Cli\Task\Option;
  * Class Task
  * @package Vegas\Cli
  */
-abstract class Task extends \Phalcon\CLI\Task
+abstract class TaskAbstract extends \Phalcon\CLI\Task
 {
     const HELP_OPTION = 'help';
     const HELP_SHORTOPTION = 'h';
@@ -37,7 +37,7 @@ abstract class Task extends \Phalcon\CLI\Task
      *
      * @return mixed
      */
-    abstract public function setOptions();
+    abstract public function setupOptions();
 
     /**
      * Task output buffer
@@ -93,7 +93,7 @@ abstract class Task extends \Phalcon\CLI\Task
         $this->actionName = $this->dispatcher->getActionName();
         $this->taskName = $this->dispatcher->getTaskName();
 
-        $this->setOptions();
+        $this->setupOptions();
 
         //if -h or --help option was typed in command line then show only help
         $this->args = $this->dispatcher->getParam('args');
@@ -105,7 +105,7 @@ abstract class Task extends \Phalcon\CLI\Task
         try {
             $this->validate($this->args);
         } catch (InvalidArgumentException $ex) {
-            $this->putError(strtr(':command: Invalid argument `:argument` for option `:option`', array(
+            $this->throwError(strtr(':command: Invalid argument `:argument` for option `:option`', array(
                 ':command' => sprintf('%s %s', $this->dispatcher->getParam('activeTask'), $this->dispatcher->getParam('activeAction')),
                 ':option' => $ex->getOption(),
                 ':argument' => $ex->getArgument()
@@ -113,7 +113,7 @@ abstract class Task extends \Phalcon\CLI\Task
 
             $this->renderActionHelp();
         } catch (InvalidOptionException $ex) {
-            $this->putError(strtr(':command: Invalid option `:option`', array(
+            $this->throwError(strtr(':command: Invalid option `:option`', array(
                 ':command' => sprintf('%s %s', $this->dispatcher->getParam('activeTask'), $this->dispatcher->getParam('activeAction')),
                 ':option' => $ex->getOption()
             )));
@@ -127,7 +127,7 @@ abstract class Task extends \Phalcon\CLI\Task
     /**
      * Action executed by default when no action was specified in execution
      */
-    final public function mainAction()
+    public function mainAction()
     {
         $this->renderTaskHelp();
     }
@@ -137,11 +137,11 @@ abstract class Task extends \Phalcon\CLI\Task
      *
      * @param $args
      * @return bool
-     * @internal
      */
     private function containHelpOption($args)
     {
-        return array_key_exists(self::HELP_OPTION, $args) || array_key_exists(self::HELP_SHORTOPTION, $args);
+        return array_key_exists(self::HELP_OPTION, $args)
+                || array_key_exists(self::HELP_SHORTOPTION, $args);
     }
 
     /**
@@ -149,7 +149,6 @@ abstract class Task extends \Phalcon\CLI\Task
      *
      * @param $str
      * @return $this
-     * @internal
      */
     private function appendLine($str)
     {
@@ -171,7 +170,7 @@ abstract class Task extends \Phalcon\CLI\Task
      * Return argument from indicated index
      *
      * @param $index
-     * @return null
+     * @return null|mixed
      */
     protected function getArg($index)
     {
@@ -245,7 +244,7 @@ abstract class Task extends \Phalcon\CLI\Task
     }
 
     /**
-     * Puts warning into buffer
+     * Puts warning message into buffer
      *
      * @param $str
      */
@@ -255,7 +254,7 @@ abstract class Task extends \Phalcon\CLI\Task
     }
 
     /**
-     * Puts success into buffer
+     * Puts success message into buffer
      *
      * @param $str
      */
@@ -265,14 +264,13 @@ abstract class Task extends \Phalcon\CLI\Task
     }
 
     /**
-     * Puts error into buffer
+     * Puts error message into buffer
      *
      * @param $str
-     * @throws \Exception
      */
     public function putError($str)
     {
-        throw new \Exception($this->getColoredString($str, 'red', 'dark_gray'));
+        $this->appendLine($this->getColoredString($str, 'red'));
     }
 
     /**
@@ -283,6 +281,17 @@ abstract class Task extends \Phalcon\CLI\Task
     public function putObject($object)
     {
         $this->appendLine($this->getColoredString(print_r($object, true), 'black', 'light_gray'));
+    }
+
+    /**
+     * Throws CLI error
+     *
+     * @param $str
+     * @throws \Exception
+     */
+    public function throwError($str)
+    {
+        throw new \Exception($this->getColoredString($str, 'red', 'dark_gray'));
     }
 
     /**

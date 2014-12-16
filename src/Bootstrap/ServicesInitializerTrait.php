@@ -20,7 +20,7 @@ trait ServicesInitializerTrait
     /**
      * Initializes services
      */
-    protected function initServices(Config $config)
+    public function initServices(Config $config)
     {
         $serviceProviderLoader = new ServiceProviderLoader($this->getDI());
         $serviceProviderLoader->autoload(

@@ -12,10 +12,10 @@
 
 use Vegas\Cli\Task\Option;
 
-class CustomTask extends \Vegas\Cli\Task
+class CustomTask extends \Vegas\Cli\TaskAbstract
 {
 
-    public function setOptions()
+    public function setupOptions()
     {
         $action = new \Vegas\Cli\Task\Action('test', 'Test action');
 
