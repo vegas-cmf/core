@@ -25,7 +25,15 @@ class Pagination
      * @var string
      * @internal
      */
-    private $htmlHref = '<a href="%s?page=%d">%s</a>';
+    private $htmlAHref = '<a href="%s">%s</a>';
+
+    /**
+     * Pagination link url
+     *
+     * @var string
+     * @internal
+     */
+    private $htmlHref = "%s?page=%d";
 
     /**
      * Pagination list element
@@ -79,7 +87,7 @@ class Pagination
         $this->settings = array_merge($this->settings, $settings);
 
         if (!empty($page->currentUri)) {
-            $this->htmlHref = str_replace('?', '&', $this->htmlHref);
+            $this->htmlAHref = str_replace('?', '&', $this->htmlAHref);
             $this->currentUri = $page->currentUri;
         } else {
             $this->currentUri = $this->di->get('router')->getRewriteUri();
@@ -159,8 +167,27 @@ class Pagination
      */
     private function renderElement($page, $title, $class = '')
     {
-        $href = sprintf($this->htmlHref, $this->currentUri, $page, $title);
-        return sprintf($this->htmlElement, $class, $href);
+        $href = sprintf($this->htmlHref, $this->currentUri, $page);
+        $href .= $this->getUrlParams();
+
+        $element = sprintf($this->htmlAHref, $href, $title);
+        return sprintf($this->htmlElement, $class, $element);
+    }
+
+    private function getUrlParams()
+    {
+        $arguments = $this->di->get('request')->get();
+        unset($arguments['_url']);
+        unset($arguments['page']);
+
+        $href = '';
+        if($arguments !== false){
+            foreach($arguments as $key => $arg) {
+                $href .= '&' . $key . '=' . $arg;
+            }
+
+        }
+        return $href;
     }
 
     /**

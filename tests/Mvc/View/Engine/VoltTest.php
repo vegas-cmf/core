@@ -34,4 +34,49 @@ class VoltTest extends TestCase
         $this->assertEquals('<?php echo (new \Vegas\Tag\Pagination($this->getDI()))->render($page,array()); ?>', $compiler->compileString('{{ pagination(page) }}'));
         $this->assertEquals('<?php echo (new \Vegas\Tag\Pagination($this->getDI()))->render($page,array(\'class\' => \'test\')); ?>', $compiler->compileString('{{ pagination(page,["class": "test"]) }}'));
     }
+
+    public function testFilters()
+    {
+        $view = new View();
+
+        $engines = $view->getRegisteredEngines();
+
+        $volt = $engines['.volt'];
+        $volt = $volt($view, DI::getDefault());
+
+        $compiler = $volt->getCompiler();
+
+        $this->assertEquals('<?php echo (string)0; ?>', $compiler->compileString('{{ 0|toString }}'));
+    }
+
+    public function testInvalidFilters()
+    {
+        $view = new View();
+        $volt = new View\Engine\Volt($view);
+        try {
+
+            $volt->registerFilter('NotExistedFilter');
+            throw new \Vegas\Exception('Not this exception');
+
+        } catch (\Vegas\Exception $ex) {
+            $this->assertInstanceOf('Vegas\Mvc\View\Engine\Volt\Exception\UnknownFilterException', $ex);
+        }
+
+    }
+
+    public function testInvalidHelpers()
+    {
+        $view = new View();
+        $volt = new View\Engine\Volt($view);
+        try {
+
+            $volt->registerHelper('NotExistedFilter');
+            throw new \Vegas\Exception('Not this exception');
+
+        } catch (\Vegas\Exception $ex) {
+            $this->assertInstanceOf('Vegas\Mvc\View\Engine\Volt\Exception\UnknownFilterException', $ex);
+        }
+
+    }
+
 }
