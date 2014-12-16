@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
  
-namespace Vegas\Tests\Db\Adapter\Decorator;
+namespace Vegas\Tests\Db\Decorator;
 
 use Phalcon\Utils\Slug;
 use Vegas\Db\Decorator\CollectionAbstract;
