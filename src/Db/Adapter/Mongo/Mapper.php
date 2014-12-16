@@ -153,6 +153,9 @@ class Mapper
      */
     private function cacheMap($cacheFilePath, $map)
     {
+        if (!file_exists(dirname($cacheFilePath))) {
+            mkdir(dirname($cacheFilePath), 0777, true);
+        }
         return FileWriter::writeObject($cacheFilePath, $map, true);
     }
 

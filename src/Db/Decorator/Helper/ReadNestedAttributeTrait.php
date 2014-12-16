@@ -41,10 +41,13 @@ trait ReadNestedAttributeTrait
      * </code>
      *
      * @param $attributeName
-     * @return mixed
+     * @return mixed|null
      */
     public function readNestedAttribute($attributeName)
     {
+        if (!$attributeName) {
+            return null;
+        }
         $keys = explode('.', $attributeName);
         return $this->traverseObject($this->readAttribute($keys[0]), array_splice($keys, 1));
     }
