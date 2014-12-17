@@ -11,6 +11,7 @@
  */
 namespace Vegas\Mvc;
 
+use Phalcon\DI\InjectionAwareInterface;
 use Phalcon\Loader;
 use Phalcon\Mvc\Dispatcher;
 use Phalcon\Mvc\ModuleDefinitionInterface;
@@ -95,7 +96,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
             $className = $plugin['class'];
             $reflectionClass = new \ReflectionClass($className);
             $dispatcherPlugin = $reflectionClass->newInstance();
-            if ($reflectionClass->hasMethod('setDI')) {
+            if ($dispatcherPlugin instanceof InjectionAwareInterface) {
                 $reflectionClass->getMethod('setDI')->invoke($dispatcherPlugin, $di);
             }
             $eventsManager->attach($plugin['attach'], $dispatcherPlugin);

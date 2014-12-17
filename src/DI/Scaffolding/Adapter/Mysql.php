@@ -18,6 +18,7 @@ use Phalcon\Paginator\Adapter\Model as PaginatorAdapterModel;
 use Vegas\Db\AdapterInterface;
 use Vegas\Db\Exception\NoRequiredServiceException;
 use Vegas\DI\Scaffolding\AdapterInterface as ScaffoldingAdapterInterface;
+use Vegas\DI\Scaffolding\Exception\MissingScaffoldingException;
 use Vegas\DI\Scaffolding\Exception\RecordNotFoundException;
 use Vegas\DI\Scaffolding;
 
@@ -51,6 +52,8 @@ class Mysql implements AdapterInterface, ScaffoldingAdapterInterface
      */
     public function retrieveOne($id)
     {
+        $this->ensureScaffolding();
+
         $record = call_user_func(array($this->scaffolding->getRecord(),'findById'),$id);
 
         if (!$record) {
@@ -65,8 +68,10 @@ class Mysql implements AdapterInterface, ScaffoldingAdapterInterface
      */
     public function getPaginator($page = 1, $limit = 10)
     {
+        $this->ensureScaffolding();
+
         return new PaginatorAdapterModel(array(
-            'data' => call_user_func(array($this->scaffolding->getRecord(),'find')),
+            'data' => (object) call_user_func(array($this->scaffolding->getRecord(), 'find')),
             'limit' => $limit,
             'page' => $page
         ));
@@ -89,5 +94,20 @@ class Mysql implements AdapterInterface, ScaffoldingAdapterInterface
         if (!$di->has('db')) {
             throw new NoRequiredServiceException();
         }
+    }
+
+    /**
+     * Determines if scaffolding has been set
+     *
+     * @return bool
+     * @throws \Vegas\DI\Scaffolding\Exception\MissingScaffoldingException
+     */
+    protected function ensureScaffolding()
+    {
+        if (!$this->scaffolding instanceof Scaffolding) {
+            throw new MissingScaffoldingException();
+        }
+
+        return true;
     }
 }

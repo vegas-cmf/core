@@ -5,7 +5,7 @@ return [
 
         'serviceDir'   =>  APP_ROOT . '/app/services/',
         'configDir'     => APP_ROOT . '/app/config/',
-        'libraryDir'     => dirname(APP_ROOT) . DIRECTORY_SEPARATOR . '/lib/',
+        'libraryDir'     => APP_ROOT. '/lib/',
         'pluginDir'      => APP_ROOT . '/app/plugins/',
         'moduleDir'      => APP_ROOT . '/app/modules/',
         'taskDir'      => APP_ROOT . '/app/tasks/',
@@ -37,7 +37,6 @@ return [
         "dbname" => "vegas_test",
         "port" => 3306,
         "username" => "root",
-        'password'=> 'root',
         "options" => [
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
         ]
