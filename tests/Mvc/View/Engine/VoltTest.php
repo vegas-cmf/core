@@ -13,7 +13,7 @@ namespace Vegas\Tests\Mvc\View\Engine;
 
 use Phalcon\DI;
 use Vegas\Mvc\View;
-use Vegas\Test\TestCase;
+use Vegas\Tests\App\TestCase;
 
 class VoltTest extends TestCase
 {
