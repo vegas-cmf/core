@@ -12,7 +12,7 @@
  
 namespace Test\Tasks;
 
-class FooTask extends \Vegas\Cli\Task
+class FooTask extends \Vegas\Cli\TaskAbstract
 {
     public function testAction()
     {
@@ -24,7 +24,7 @@ class FooTask extends \Vegas\Cli\Task
      *
      * @return mixed
      */
-    public function setOptions()
+    public function setupOptions()
     {
         // TODO: Implement setOptions() method.
     }

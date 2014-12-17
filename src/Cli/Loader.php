@@ -12,9 +12,7 @@
  
 namespace Vegas\Cli;
 
-use Vegas\Cli\Console;
 use Vegas\Cli\Exception as CliException;
-use Vegas\Cli\Exception\TaskActionNotSpecifiedException;
 use Vegas\Cli\Exception\TaskNotFoundException;
 
 /**
@@ -106,15 +104,12 @@ class Loader
      * @internal
      */
     private function toNamespace($str) {
-        $string_parts = preg_split('/_+/', $str);
+        $stringParts = preg_split('/_+/', $str);
 
-        if (!is_array($string_parts) || (sizeof($string_parts) < 1)){
-            throw new CliException("Unable to split the input string");
+        foreach($stringParts as $key => $stringPart){
+            $stringParts[$key] = ucfirst(strtolower($stringPart));
         }
-        foreach($string_parts as $key => $string_part){
-            $string_parts[$key] = ucfirst(strtolower($string_part));
-        }
-        return implode('\\', $string_parts) . '\\';
+        return implode('\\', $stringParts) . '\\';
     }
 
     /**

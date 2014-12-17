@@ -12,6 +12,7 @@
  
 namespace Vegas\Mvc\Router;
 
+use Phalcon\Mvc\RouterInterface;
 use Vegas\Mvc\Router\Route;
 
 /**
@@ -24,9 +25,9 @@ interface RouteInterface
     /**
      * Methods adds new Route definition to indicated Router
      *
-     * @param \Phalcon\Mvc\RouterInterface $router
+     * @param RouterInterface $router
      * @param Route $route
      * @return mixed
      */
-    public function add(\Phalcon\Mvc\RouterInterface $router, Route $route);
+    public function add(RouterInterface $router, Route $route);
 }

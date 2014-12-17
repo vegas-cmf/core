@@ -12,6 +12,7 @@
  
 namespace Vegas\Mvc\Router\Route;
 
+use Phalcon\Mvc\RouterInterface;
 use Vegas\Http\Method;
 use Vegas\Mvc\Router\Route;
 use Vegas\Mvc\Router\RouteInterface;
@@ -27,7 +28,7 @@ class RestRoute implements RouteInterface
     /**
      * {@inheritdoc}
      */
-    public function add(\Phalcon\Mvc\RouterInterface $router, Route $route)
+    public function add(RouterInterface $router, Route $route)
     {
         //resolves actions with http methods
         $actions = $route->getParam('actions');
@@ -42,13 +43,15 @@ class RestRoute implements RouteInterface
         //add routes with http method
         //for each action new route is adding with specified HTTP Method.
         foreach ($actions as $actionRoute => $actionMethods) {
-            if ($actionRoute == '/') $actionRoute = '';
+            if ($actionRoute == '/') {
+                $actionRoute = '';
+            }
             foreach ($actionMethods as $action => $method) {
                 $paths = $route->getPaths();
                 $paths['action'] = $action;
 
                 $newRoute = $router->add($route->getRoute() . $actionRoute, $paths)->via($method);
-                $newRoute->setName($route->getName() . '/' . $action);
+                $newRoute->setName($route->getName() . $actionRoute . '/' . $action);
                 $newRoute->setHostName($route->getParam('hostname'));
             }
         }

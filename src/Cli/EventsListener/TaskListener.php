@@ -16,6 +16,8 @@ use Phalcon\CLI\Console;
 use Phalcon\CLI\Dispatcher;
 use Phalcon\Events\Event;
 use Vegas\Cli\OptionParser;
+use Vegas\Cli\Task;
+use Vegas\Cli\TaskAbstract;
 
 /**
  * Class TaskListener
@@ -29,7 +31,7 @@ class TaskListener
      * @param $argv
      * @return callable
      */
-    public static function beforeHandleTask($argv)
+    public function beforeHandleTask($argv)
     {
         return function(Event $event, Console $console, Dispatcher $dispatcher) use ($argv) {
             //parse parameters
@@ -38,7 +40,7 @@ class TaskListener
             $dispatcher->setParams(array(
                 'activeTask'  => isset($parsedOptions[0]) ? $parsedOptions[0] : false,
                 'activeAction'  => isset($parsedOptions[1]) ? $parsedOptions[1] : false,
-                'args'    =>  count($parsedOptions) > 2 ? array_slice($parsedOptions, 2) : array()
+                'args'    =>  count($parsedOptions) > 2 ? array_slice($parsedOptions, 2) : []
             ));
         };
     }
@@ -48,9 +50,9 @@ class TaskListener
      *
      * @return callable
      */
-    public static function afterHandleTask()
+    public function afterHandleTask()
     {
-        return function(Event $event, Console $console, \Vegas\Cli\Task $task) {
+        return function(Event $event, Console $console, TaskAbstract $task) {
             echo $task->getOutput();
         };
     }

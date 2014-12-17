@@ -19,6 +19,7 @@ namespace Vegas\Mvc\Controller\Crud;
  */
 class Events
 {
+    const BEFORE_READ = 'crud:beforeRead';
     const AFTER_READ = 'crud:afterRead';
 
     const BEFORE_NEW = 'crud:beforeNew';
@@ -27,17 +28,18 @@ class Events
     const BEFORE_CREATE = 'crud:beforeCreate';
     const AFTER_CREATE = 'crud:afterCreate';
     const AFTER_CREATE_EXCEPTION = 'crud:afterCreateException';
-    
+
+    const BEFORE_EDIT = 'crud:beforeEdit';
+    const AFTER_EDIT = 'crud:afterEdit';
+
     const BEFORE_UPDATE = 'crud:beforeUpdate';
     const AFTER_UPDATE = 'crud:afterUpdate';
     const AFTER_UPDATE_EXCEPTION = 'crud:afterUpdateException';
     
     const BEFORE_DELETE = 'crud:beforeDelete';
     const AFTER_DELETE = 'crud:afterDelete';
-    
-    const BEFORE_EDIT = 'crud:beforeEdit';
-    const AFTER_EDIT = 'crud:afterEdit';
-    
+    const AFTER_DELETE_EXCEPTION = 'crud:afterDeleteException';
+
     const BEFORE_UPLOAD = 'crud:beforeUpload';
     const AFTER_UPLOAD = 'crud:afterUpload';
 

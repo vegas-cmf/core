@@ -32,7 +32,7 @@ class MappingManager
     /**
      * Adds new mapping class
      *
-     * @param $mappingClass     Object or full class name is acceptable
+     * @param mixed $mappingClass     Object or full class name is acceptable
      * @return $this
      * @throws Exception\InvalidMappingClassException
      */

@@ -9,11 +9,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Vegas\Tests\Mvc\View\Engine;
 
 use Phalcon\DI;
 use Vegas\Mvc\View;
-use Vegas\Tests\App\TestCase;
+use Vegas\Test\TestCase;
 
 class VoltTest extends TestCase
 {
@@ -45,38 +46,32 @@ class VoltTest extends TestCase
         $volt = $volt($view, DI::getDefault());
 
         $compiler = $volt->getCompiler();
-
-        $this->assertEquals('<?php echo (string)0; ?>', $compiler->compileString('{{ 0|toString }}'));
+        $this->assertEquals('<?php echo (string)1; ?>', $compiler->compileString('{{ 1|toString }}'));
     }
 
-    public function testInvalidFilters()
+    public function testShouldThrowExceptionForUnknownFilter()
     {
         $view = new View();
         $volt = new View\Engine\Volt($view);
+        $exception = null;
         try {
-
-            $volt->registerFilter('NotExistedFilter');
-            throw new \Vegas\Exception('Not this exception');
-
-        } catch (\Vegas\Exception $ex) {
-            $this->assertInstanceOf('Vegas\Mvc\View\Engine\Volt\Exception\UnknownFilterException', $ex);
+            $volt->registerFilter('test');
+        } catch (\Exception $e) {
+            $exception = $e;
         }
-
+        $this->assertInstanceOf('\Vegas\Mvc\View\Engine\Volt\Exception\UnknownFilterException', $exception);
     }
 
-    public function testInvalidHelpers()
+    public function testShouldThrowExceptionForUnknownHelper()
     {
         $view = new View();
         $volt = new View\Engine\Volt($view);
+        $exception = null;
         try {
-
-            $volt->registerHelper('NotExistedFilter');
-            throw new \Vegas\Exception('Not this exception');
-
-        } catch (\Vegas\Exception $ex) {
-            $this->assertInstanceOf('Vegas\Mvc\View\Engine\Volt\Exception\UnknownFilterException', $ex);
+            $volt->registerHelper('test');
+        } catch (\Exception $e) {
+            $exception = $e;
         }
-
+        $this->assertInstanceOf('\Vegas\Mvc\View\Engine\Volt\Exception\UnknownHelperException', $exception);
     }
-
 }

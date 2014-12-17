@@ -12,8 +12,7 @@
  
 namespace Foo\Controllers\Custom;
 
-
-use Vegas\Mvc\Controller\ControllerAbstract;
+use Vegas\Mvc\ControllerAbstract;
 
 class FakeController extends ControllerAbstract
 {

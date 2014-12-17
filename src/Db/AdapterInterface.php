@@ -10,6 +10,7 @@
  * file that was distributed with this source code.
  */
 namespace Vegas\Db;
+use Phalcon\DiInterface;
 
 /**
  * Interface AdapterInterface
@@ -20,8 +21,8 @@ interface AdapterInterface
     /**
      * Verifies services required by db adapter
      *
-     * @param \Phalcon\DiInterface $di
+     * @param DiInterface $di
      * @return mixed
      */
-    public function verifyRequiredServices(\Phalcon\DiInterface $di);
+    public function verifyRequiredServices(DiInterface $di);
 }

@@ -21,13 +21,14 @@
  */
 namespace Vegas\DI;
 
+use Phalcon\DI\InjectionAwareInterface;
 use Vegas\DI\Service\Exception;
 
 /**
  * Class ServiceManager
  * @package Vegas\DI
  */
-class ServiceManager implements \Phalcon\DI\InjectionAwareInterface
+class ServiceManager implements InjectionAwareInterface
 {
     use InjectionAwareTrait;
 
@@ -83,7 +84,7 @@ class ServiceManager implements \Phalcon\DI\InjectionAwareInterface
         try {
             $service = $this->getService($name);
             return !empty($service);
-        } catch (\Phalcon\DI\Exception $ex) {
+        } catch (\Vegas\DI\Service\Exception $ex) {
             return false;
         }
     }

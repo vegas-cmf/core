@@ -35,3 +35,4 @@ com_crashlytics_export_strings.xml
 composer.phar
 composer.lock
 travis.log
+tests/config.php

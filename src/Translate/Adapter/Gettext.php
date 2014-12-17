@@ -6,7 +6,7 @@
 namespace Vegas\Translate\Adapter;
 
 use Phalcon\Translate\Adapter;
-use Phalcon\Translate\Adapter\Gettext As PhalconGettext;
+use Phalcon\Translate\Adapter\Gettext as PhalconGettext;
 use Phalcon\Translate\Exception;
 
 class Gettext extends PhalconGettext

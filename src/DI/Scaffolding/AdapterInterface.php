@@ -11,6 +11,8 @@
  */
 namespace Vegas\DI\Scaffolding;
 
+use Vegas\DI\Scaffolding;
+
 /**
  * Interface AdapterInterface
  * @package Vegas\DI\Scaffolding
@@ -26,10 +28,19 @@ interface AdapterInterface
     public function retrieveOne($id);
 
     /**
+     * Retrieve list of records as paginator object.
+     *
+     * @param int $page
+     * @param int $limit
+     * @return \Phalcon\Paginator\AdapterInterface
+     */
+    public function getPaginator($page = 1, $limit = 10);
+
+    /**
      * Sets scaffolding instance
      *
-     * @param \Vegas\DI\Scaffolding $scaffolding
+     * @param Scaffolding $scaffolding
      * @return mixed
      */
-    public function setScaffolding(\Vegas\DI\Scaffolding $scaffolding);
+    public function setScaffolding(Scaffolding $scaffolding);
 }

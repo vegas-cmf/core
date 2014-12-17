@@ -11,7 +11,10 @@
  */
 namespace Vegas\Db\Decorator;
 
+use Phalcon\Mvc\Collection;
+use Vegas\Db\Adapter\Mongo\RefResolverTrait;
 use Vegas\Db\Decorator\Helper\MappingHelperTrait;
+use Vegas\Db\Decorator\Helper\ReadNestedAttributeTrait;
 use Vegas\Db\Decorator\Helper\SlugTrait;
 use Vegas\Db\Decorator\Helper\WriteAttributesTrait;
 use Vegas\Db\MappingResolverTrait;
@@ -20,12 +23,14 @@ use Vegas\Db\MappingResolverTrait;
  * Class CollectionAbstract
  * @package Vegas\Db\Decorator
  */
-abstract class CollectionAbstract extends \Phalcon\Mvc\Collection
+abstract class CollectionAbstract extends Collection
 {
     use MappingResolverTrait;
     use MappingHelperTrait;
     use SlugTrait;
     use WriteAttributesTrait;
+    use ReadNestedAttributeTrait;
+    use RefResolverTrait;
 
     /**
      * Event fired when record is being created

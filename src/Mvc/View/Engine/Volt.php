@@ -13,10 +13,11 @@
 namespace Vegas\Mvc\View\Engine;
 
 use Vegas\Mvc\View\Engine\Volt\Exception\InvalidFilterException;
+use Vegas\Mvc\View\Engine\Volt\Exception\InvalidHelperException;
 use Vegas\Mvc\View\Engine\Volt\Exception\UnknownFilterException;
+use Vegas\Mvc\View\Engine\Volt\Exception\UnknownHelperException;
 use Vegas\Mvc\View\Engine\Volt\VoltFilterAbstract;
 use Vegas\Mvc\View\Engine\Volt\VoltHelperAbstract;
-
 
 /**
  * Class Volt
@@ -24,8 +25,8 @@ use Vegas\Mvc\View\Engine\Volt\VoltHelperAbstract;
  */
 class Volt extends \Phalcon\Mvc\View\Engine\Volt
 {
-    use RegisterFilters;
-    use RegisterHelpers;
+    use RegisterFiltersTrait;
+    use RegisterHelpersTrait;
 
     /**
      * Extension of template file
@@ -48,7 +49,8 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
      * Registers a new filter in the compiler
      *
      * @param $filterName
-     * @throws Volt\Exception\UnknownFilterException
+     * @throws InvalidFilterException
+     * @throws UnknownFilterException
      */
     public function registerFilter($filterName)
     {
@@ -59,8 +61,10 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
                 throw new InvalidFilterException();
             }
             $this->getCompiler()->addFilter($filterName, $filterInstance->getFilter());
-        } catch (\Exception $e) {
+        } catch (\ReflectionException $e) {
             throw new UnknownFilterException(sprintf('Filter \'%s\' does not exist', $filterName));
+        } catch (\Exception $e) {
+            throw new InvalidFilterException(sprintf('Invalid filter \'%s\'', $filterName));
         }
     }
 
@@ -68,7 +72,8 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
      * Registers a new helper in the compiler
      *
      * @param $helperName
-     * @throws Volt\Exception\UnknownFilterException
+     * @throws InvalidHelperException
+     * @throws UnknownHelperException
      */
     public function registerHelper($helperName)
     {
@@ -76,11 +81,13 @@ class Volt extends \Phalcon\Mvc\View\Engine\Volt
         try {
             $helperInstance = $this->getClassInstance($className);
             if (!$helperInstance instanceof VoltHelperAbstract) {
-                throw new InvalidFilterException();
+                throw new InvalidHelperException();
             }
             $this->getCompiler()->addFunction($helperName, $helperInstance->getHelper());
+        } catch (\ReflectionException $e) {
+            throw new UnknownHelperException(sprintf('Helper \'%s\' does not exist', $helperName));
         } catch (\Exception $e) {
-            throw new UnknownFilterException(sprintf('Helper \'%s\' does not exist', $helperName));
+            throw new InvalidHelperException(sprintf('Invalid helper \'%s\'', $helperName));
         }
     }
 

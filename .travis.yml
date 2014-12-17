@@ -18,7 +18,9 @@ before_script:
   - php composer.phar install --dev
 
 script:
+  - cp tests/config.sample.php tests/config.php
   - mkdir -p tests/fixtures/cache
+  - mkdir -p tests/fixtures/tmp
   - mkdir -p build/logs
   - php vendor/bin/phpunit -c travis/phpunit.xml.dist
 

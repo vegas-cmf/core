@@ -12,14 +12,18 @@
 
 namespace Vegas\Cli;
 
+use Phalcon\Config;
 use Phalcon\DI\FactoryDefault\CLI;
-use Vegas\BootstrapAbstract;
+use Phalcon\DI\FactoryDefault;
+use Phalcon\DiInterface;
+use Phalcon\Loader as PhalconLoader;
+use Vegas\Bootstrap\EnvironmentInitializerTrait;
+use Vegas\Bootstrap\LoaderInitializerTrait;
+use Vegas\Bootstrap\ModulesInitializerTrait;
+use Vegas\Bootstrap\ServicesInitializerTrait;
 use Vegas\BootstrapInterface;
+use Vegas\Cli\EventsListener\TaskListener;
 use Vegas\Cli\Exception as CliException;
-use Vegas\Constants;
-use Vegas\DI\ServiceProviderLoader;
-use Vegas\Mvc\Module\ModuleLoader;
-use Vegas\Mvc\Module\SubModuleManager;
 
 /**
  * Class Bootstrap
@@ -27,6 +31,16 @@ use Vegas\Mvc\Module\SubModuleManager;
  */
 class Bootstrap implements BootstrapInterface
 {
+    use ModulesInitializerTrait {
+        initModules as baseInitModule;
+    }
+
+    use ServicesInitializerTrait;
+
+    use EnvironmentInitializerTrait;
+
+    use LoaderInitializerTrait;
+
     /**
      * Application arguments
      *
@@ -41,90 +55,60 @@ class Bootstrap implements BootstrapInterface
      * Initializes Console Application
      * Initializes DI for CLI application
      *
-     * @param \Phalcon\Config $config
+     * @param Config $config
      */
-    public function __construct(\Phalcon\Config $config)
+    public function __construct(Config $config)
     {
         $this->config = $config;
         $this->di = new CLI();
-        $this->console = new Console();
+        $this->application = new Console();
+    }
+    /**
+     * Sets Dependency Injector
+     *
+     * @param DiInterface $di
+     */
+    public function setDI(DiInterface $di)
+    {
+        $this->di = $di;
     }
 
     /**
-     * Initializes loader
-     * Registers library and plugin directory
+     * Returns Dependency Injector
+     *
+     * @return CLI|DiInterface
      */
-    protected function initLoader()
+    public function getDI()
     {
-        $loader = new \Phalcon\Loader();
-        $loader->registerDirs(
-            array(
-                $this->config->application->libraryDir,
-                $this->config->application->pluginDir,
-                $this->config->application->taskDir
-            )
-        )->register();
+        return $this->di;
     }
 
     /**
-     * Initializes application environment
+     * @return Console
      */
-    protected function initEnvironment()
+    public function getApplication()
     {
-        if (isset($this->config->application->environment)) {
-            $env = $this->config->application->environment;
-        } else {
-            $env = Constants::DEFAULT_ENV;
-        }
-
-        if (!defined('APPLICATION_ENV')) {
-            define('APPLICATION_ENV', $env);
-        }
-
-        $this->di->set('environment', function() use ($env) {
-            return $env;
-        }, true);
+        return $this->application;
     }
 
     /**
      * Initializes application modules
      */
-    protected function initModules()
+    public function initModules(Config $config)
     {
-        //registers modules defined in modules.php file
-        $modulesFile = $this->config->application->configDir . 'modules.php';
-        if (!file_exists($modulesFile) || $this->di->get('environment') != Constants::DEFAULT_ENV) {
-            ModuleLoader::dump($this->di);
-        }
-        $this->console->registerModules(require $modulesFile);
+        $this->baseInitModule($config);
 
         $namespaces = array();
         //prepares modules configurations and modules task namespace
-        foreach ($this->console->getModules() as $moduleName => $module) {
-            $moduleConfigFile = dirname($module['path']) . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'config.php';
-            if (file_exists($moduleConfigFile)) {
-                $this->config->merge(require $moduleConfigFile);
-            }
-
-            $namespaces[$moduleName . '\Tasks'] = dirname($module['path']) . DIRECTORY_SEPARATOR . 'tasks';
+        foreach ($this->application->getModules() as $moduleName => $module) {
+            $namespaces[$moduleName . '\Tasks'] = dirname($module['path'])
+                                                        . DIRECTORY_SEPARATOR . 'tasks';
         }
 
         //registers module's tasks directories
-        $loader = new \Phalcon\Loader();
+        $loader = new PhalconLoader();
         $loader->registerNamespaces($namespaces, true);
         $loader->register();
-
-        $this->di->set('modules', function() {
-            return $this->console->getModules();
-        });
-    }
-
-    /**
-     * Initializes services
-     */
-    protected function initServices()
-    {
-        ServiceProviderLoader::autoload($this->di);
     }
 
 
@@ -141,18 +125,20 @@ class Bootstrap implements BootstrapInterface
     /**
      * Setups CLI events manager
      */
-    protected function initEventsManager()
+    public function initEventsManager()
     {
+        $taskListener = new TaskListener();
+
         //extracts default events manager
         $eventsManager = $this->di->getShared('eventsManager');
         //attaches new event console:beforeTaskHandle and console:afterTaskHandle
         $eventsManager->attach(
-            'console:beforeHandleTask', \Vegas\Cli\EventsListener\TaskListener::beforeHandleTask($this->arguments)
+            'console:beforeHandleTask', $taskListener->beforeHandleTask($this->arguments)
         );
         $eventsManager->attach(
-            'console:afterHandleTask', \Vegas\Cli\EventsListener\TaskListener::afterHandleTask()
+            'console:afterHandleTask', $taskListener->afterHandleTask()
         );
-        $this->console->setEventsManager($eventsManager);
+        $this->application->setEventsManager($eventsManager);
     }
 
     /**
@@ -162,13 +148,13 @@ class Bootstrap implements BootstrapInterface
     {
         $this->di->set('config', $this->config);
 
-        $this->initEnvironment();
-        $this->initLoader();
-        $this->initModules();
-        $this->initServices();
+        $this->initEnvironment($this->config);
+        $this->initLoader($this->config);
+        $this->initModules($this->config);
+        $this->initServices($this->config);
         $this->initEventsManager();
 
-        $this->console->setDI($this->di);
+        $this->application->setDI($this->di);
         return $this;
     }
 
@@ -177,10 +163,9 @@ class Bootstrap implements BootstrapInterface
      */
     public function run()
     {
-        $argumentParser = new Loader();
-        $arguments = $argumentParser->parseArguments($this->console, $this->arguments);
+        $taskLoader = new Loader();
+        $arguments = $taskLoader->parseArguments($this->application, $this->arguments);
 
-        $this->console->handle($arguments);
+        $this->application->handle($arguments);
     }
 }
- 

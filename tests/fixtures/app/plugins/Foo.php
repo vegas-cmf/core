@@ -17,8 +17,10 @@ use Phalcon\Mvc\Dispatcher;
  *
  * @package App\Plugins
  */
-class Foo
+class Foo implements \Phalcon\DI\InjectionAwareInterface
 {
+    use \Vegas\DI\InjectionAwareTrait;
+
     /**
      * @param Event $event
      * @param Dispatcher $dispatcher
@@ -26,6 +28,6 @@ class Foo
      */
     public function beforeDispatch(Event $event, Dispatcher $dispatcher)
     {
-        return false;
+        return true;
     }
 } 

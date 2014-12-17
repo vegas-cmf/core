@@ -11,8 +11,8 @@
  */
 
 use Phalcon\DiInterface;
-use Vegas\DI\ServiceProviderInterface;
 use Vegas\DI\Scaffolding;
+use Vegas\DI\ServiceProviderInterface;
 
 /**
  * Class ScaffoldingServiceProvider
