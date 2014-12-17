@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Vegas\Fake\Task;
+namespace Vegas\Fake\Nested\Task;
 
 use Vegas\Cli\Task\Action;
 

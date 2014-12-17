@@ -105,7 +105,7 @@ class BootstrapTest extends TestCase
         }
     }
 
-    public function testShouldThrowExeptionAboutInvalidArgument()
+    public function testShouldThrowExceptionAboutInvalidArgument()
     {
         $cli = new Bootstrap($this->di->get('config'));
         $cli->setArguments(array(
@@ -154,17 +154,33 @@ class BootstrapTest extends TestCase
         ob_start();
 
         $cli->setup()->run();
-        $returnedValue = base64_encode(ob_get_contents());
+        $returnedValue = ob_get_contents();
 
         ob_end_clean();
 
-        $this->assertEquals('G1swOzMybVRlc3QgYWN0aW9uG1swbQoKVXNhZ2U6ChtbMTszMG0gICBhcHA6Y3VzdG9tIHRlc3QgW29wdGlvbnNdG1swbQoKT3B0aW9uczobWzBtChtbMTszMm0gICAtLWZvbyAgICAgLWYgICAgICBGb28gb3B0aW9uLiBVc2FnZSBhcHA6Y3VzdG9tIHRlc3QgLWYgbnVtYmVyT2ZTdGgbWzBtCg==', $returnedValue);
+        $this->assertContains('Usage', $returnedValue);
+        $this->assertContains('Options', $returnedValue);
+    }
+
+    public function testShouldReturnTaskHelpWhenNoActionSpecified()
+    {
+        $cli = new Bootstrap($this->di->get('config'));
+        $cli->setArguments(array(
+            0 => 'cli/cli.php',
+            1 => 'app:custom'
+        ));
+
+        ob_start();
+
+        $cli->setup()->run();
+        $returnedValue = ob_get_contents();
+        ob_end_clean();
+
+        $this->assertContains('Available actions', $returnedValue);
     }
 
     public function testShouldExecuteApplicationTask()
     {
-        $correctBase = 'G1sxOzM0bRtbMG0KG1sxOzM0bTEyMxtbMG0K';
-
         $cli = new Bootstrap($this->di->get('config'));
         $cli->setArguments(array(
             0 => 'cli/cli.php',
@@ -177,29 +193,29 @@ class BootstrapTest extends TestCase
         ob_start();
 
         $cli->setup()->run();
-        $returnedValue = base64_encode(ob_get_contents());
+        $returnedValue = ob_get_contents();
 
         ob_end_clean();
 
-        $this->assertEquals($correctBase, $returnedValue);
+        $this->assertContains('123', $returnedValue);
 
         $cli = new Bootstrap($this->di->get('config'));
         $cli->setArguments(array(
             0 => 'cli/cli.php',
             1 => 'app:custom',
             2 => 'test',
-            3 => '--f',
+            3 => '--foo',
             4 => 123
         ));
 
         ob_start();
 
         $cli->setup()->run();
-        $returnedValue = base64_encode(ob_get_contents());
+        $returnedValue = ob_get_contents();
 
         ob_end_clean();
 
-        $this->assertEquals($correctBase, $returnedValue);
+        $this->assertContains('123', $returnedValue);
 
         $cli = new Bootstrap($this->di->get('config'));
         $cli->setArguments(array(
@@ -212,28 +228,45 @@ class BootstrapTest extends TestCase
         ob_start();
 
         $cli->setup()->run();
-        $returnedValue = base64_encode(ob_get_contents());
+        $returnedValue = ob_get_contents();
 
         ob_end_clean();
 
-        $this->assertEquals($correctBase, $returnedValue);
+        $this->assertContains('123', $returnedValue);
 
         $cli = new Bootstrap($this->di->get('config'));
         $cli->setArguments(array(
             0 => 'cli/cli.php',
             1 => 'app:custom',
             2 => 'test',
-            3 => '--f=123'
+            3 => '--foo=123'
         ));
 
         ob_start();
 
         $cli->setup()->run();
-        $returnedValue = base64_encode(ob_get_contents());
+        $returnedValue = ob_get_contents();
 
         ob_end_clean();
 
-        $this->assertEquals($correctBase, $returnedValue);
+        $this->assertContains('123', $returnedValue);
+
+        $cli = new Bootstrap($this->di->get('config'));
+        $cli->setArguments(array(
+            0 => 'cli/cli.php',
+            1 => 'app:custom',
+            2 => 'testArg',
+            3 => '999'
+        ));
+
+        ob_start();
+
+        $cli->setup()->run();
+        $returnedValue = ob_get_contents();
+
+        ob_end_clean();
+
+        $this->assertContains('999', $returnedValue);
     }
 
     public function testShouldExecuteModuleTask()
@@ -248,10 +281,115 @@ class BootstrapTest extends TestCase
         ob_start();
 
         $cli->setup()->run();
-        $returnedValue = base64_encode(ob_get_contents());
+        $returnedValue = ob_get_contents();
 
         ob_end_clean();
 
-        $this->assertEquals('Rk9P', $returnedValue);
+        $this->assertContains('FOO', $returnedValue);
+    }
+
+    public function testShouldReturnTextInResponse()
+    {
+        $colorsOutput = $this->getMockForTrait('\Vegas\Cli\ColorsOutputTrait');
+
+        $runTask = function($action) {
+            $cli = new Bootstrap($this->di->get('config'));
+            $cli->setArguments(array(
+                0 => 'cli/cli.php',
+                1 => 'app:custom',
+                2 => $action
+            ));
+
+            ob_start();
+            $cli->setup()->run();
+            $returnedValue = ob_get_contents();
+
+            ob_end_clean();
+
+            return $returnedValue;
+        };
+        $this->assertContains($colorsOutput->getColoredString('Error message', 'red'), $runTask('testError'));
+        $this->assertContains($colorsOutput->getColoredString('Warning message', 'yellow'), $runTask('testWarning'));
+        $this->assertContains($colorsOutput->getColoredString('Success message', 'green'), $runTask('testSuccess'));
+        $this->assertContains($colorsOutput->getColoredString('Some text', 'light_blue'), $runTask('testText'));
+        $this->assertContains(print_r(['key' => 'value'], true), $runTask('testObject'));
+    }
+
+    public function testShouldLoadLibraryTask()
+    {
+        $cli = new Bootstrap($this->di->get('config'));
+        $cli->setArguments(array(
+            0 => 'cli/cli.php',
+            1 => 'vegas:cache',
+            2 => 'clean'
+        ));
+
+        ob_start();
+        $cli->setup()->run();
+        $returnedValue = ob_get_contents();
+
+        ob_end_clean();
+
+        $this->assertContains('Cleaning cache', $returnedValue);
+
+        $cli = new Bootstrap($this->di->get('config'));
+        $cli->setArguments(array(
+            0 => 'cli/cli.php',
+            1 => 'vegas:fake:fake',
+            2 => 'test'
+        ));
+
+        ob_start();
+        $cli->setup()->run();
+        $returnedValue = ob_get_contents();
+
+        ob_end_clean();
+
+        $this->assertContains('Vegas\Fake\Task\FakeTask', $returnedValue);
+
+        $cli = new Bootstrap($this->di->get('config'));
+        $cli->setArguments(array(
+            0 => 'cli/cli.php',
+            1 => 'vegas:fake_nested:fake',
+            2 => 'test'
+        ));
+
+        ob_start();
+        $cli->setup()->run();
+        $returnedValue = ob_get_contents();
+
+        ob_end_clean();
+
+        $this->assertContains('Vegas\Fake\Nested\Task\FakeTask', $returnedValue);
+    }
+
+    public function testShouldThrowExceptionAboutNotExistingModuleTask()
+    {
+        $cli = new Bootstrap($this->di->get('config'));
+        $cli->setup();
+
+        //remove Test module
+        $application = $cli->getApplication();
+        $modules = $application->getModules();
+
+        $modulesWithoutTest = array_merge([], $modules);
+        unset($modulesWithoutTest['Test']);
+        $application->registerModules($modulesWithoutTest);
+
+        $cli->setArguments(array(
+            0 => 'cli/cli.php',
+            1 => 'app:test:foo',
+            2 => 'test'
+        ));
+
+        $exception = null;
+        try {
+            $cli->run();
+        } catch (\Exception $e) {
+            $exception = $e;
+        }
+        $this->assertInstanceOf('Vegas\Cli\Exception\TaskNotFoundException', $exception);
+
+        $application->registerModules($modules);
     }
 }

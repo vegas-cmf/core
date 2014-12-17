@@ -40,7 +40,7 @@ class TaskListener
             $dispatcher->setParams(array(
                 'activeTask'  => isset($parsedOptions[0]) ? $parsedOptions[0] : false,
                 'activeAction'  => isset($parsedOptions[1]) ? $parsedOptions[1] : false,
-                'args'    =>  count($parsedOptions) > 2 ? array_slice($parsedOptions, 2) : array()
+                'args'    =>  count($parsedOptions) > 2 ? array_slice($parsedOptions, 2) : []
             ));
         };
     }

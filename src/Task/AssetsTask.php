@@ -78,7 +78,7 @@ class AssetsTask extends TaskAbstract
         // Simple copy for a file
         if (is_file($source)) {
             if (is_file($dest)) {
-                $this->putWarn("Cannot copy $source. File already exists.");
+                $this->putWarning("Cannot copy $source. File already exists.");
                 return false;
             } else {
                 return copy($source, $dest);

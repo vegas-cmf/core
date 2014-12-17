@@ -9,12 +9,87 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
- 
 
 namespace Vegas\Util;
 
-
-class DateTime 
+class DateTime extends \DateTime implements \JsonSerializable
 {
+    /**
+     * Default format used for the whole class
+     * @var string
+     */
+    public static $globalDefaultFormat = 'Y-m-d H:i:s';
 
-} 
+    /**
+     * Default format used for this object
+     * @var string
+     */
+    private $defaultFormat;
+
+    /**
+     * Prints the object as string using default format available.
+     * @return string
+     */
+    public function __toString()
+    {
+        if (is_string($this->defaultFormat)) {
+            return $this->format($this->defaultFormat);
+        } else if (is_string(self::$globalDefaultFormat)) {
+            return $this->format(self::$globalDefaultFormat);
+        }
+        return '';
+    }
+
+    /**
+     * Sets default format
+     *
+     * @param string $defaultFormat
+     * @return $this
+     */
+    public function setDefaultFormat($defaultFormat)
+    {
+        $this->defaultFormat = $defaultFormat;
+        return $this;
+    }
+
+    /**
+     * Default \DateTime method creates parent classtype object.
+     * This implementation overrides this behavior.
+     * {@inheritdoc}
+     */
+    public static function createFromFormat($format, $time, $object = NULL)
+    {
+        $date = $object ? \DateTime::createFromFormat($format, $time, $object)
+            : \DateTime::createFromFormat($format, $time);
+
+        return $date !== false ?
+            new self($date->format('Y-m-d H:i:s'), $date->getTimezone())
+            : false;
+    }
+
+    /**
+     * @return mixed|string
+     */
+    public function jsonSerialize()
+    {
+        return $this->format(self::ISO8601);
+    }
+
+    /**
+     * Validates date
+     *
+     * @param mixed $value
+     * @return bool
+     */
+    public static function isValid($value)
+    {
+        if ($value instanceof \DateTime)
+            return true;
+        try {
+            new static($value);
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+}

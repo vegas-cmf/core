@@ -17,7 +17,7 @@ use Vegas\Db\MappingInterface;
 /**
  * Class DateTime
  *
- * Simple mapper for decoding JSON value
+ * Simple mapper for DateTime object
  *
  * @package Vegas\Db\Mapping
  */
@@ -36,10 +36,13 @@ class DateTime implements MappingInterface
      */
     public function resolve(& $value)
     {
-        if (is_integer($value) && strlen($value) > 0) {
-            $dateTime = new \DateTime();
+        if (is_numeric($value) && strlen($value) > 0) {
+            $dateTime = new \Vegas\Util\DateTime();
             $dateTime->setTimestamp($value);
-            $value = $dateTime->format('Y-m-d H:i:s');
+            $value = $dateTime;
+        } else if (\Vegas\Util\DateTime::isValid($value)) {
+            $dateTime = new \Vegas\Util\DateTime($value);
+            $value = $dateTime;
         }
 
         return $value;

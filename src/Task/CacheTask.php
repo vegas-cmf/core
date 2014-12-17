@@ -58,7 +58,7 @@ class CacheTask extends TaskAbstract
                 }
 
                 if (!unlink($dir.DIRECTORY_SEPARATOR.$entry)) {
-                    $this->putWarn("Can not remove: ".$dir.DIRECTORY_SEPARATOR.$entry);
+                    $this->putWarning("Can not remove: ".$dir.DIRECTORY_SEPARATOR.$entry);
                 }
             }
             closedir($handle);

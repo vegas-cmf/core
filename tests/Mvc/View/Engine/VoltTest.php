@@ -9,11 +9,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace Vegas\Tests\Mvc\View\Engine;
 
 use Phalcon\DI;
 use Vegas\Mvc\View;
-use Vegas\Tests\App\TestCase;
+use Vegas\Test\TestCase;
 
 class VoltTest extends TestCase
 {

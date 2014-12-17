@@ -104,7 +104,7 @@ class Bootstrap implements BootstrapInterface
     /**
      * Registers default dispatcher
      */
-    protected function initDispatcher()
+    public function initDispatcher()
     {
         $this->di->set('dispatcher', function() {
             $dispatcher = new Dispatcher();

@@ -94,7 +94,7 @@ class Bootstrap implements BootstrapInterface
     /**
      * Initializes application modules
      */
-    protected function initModules(Config $config)
+    public function initModules(Config $config)
     {
         $this->baseInitModule($config);
 
@@ -125,7 +125,7 @@ class Bootstrap implements BootstrapInterface
     /**
      * Setups CLI events manager
      */
-    protected function initEventsManager()
+    public function initEventsManager()
     {
         $taskListener = new TaskListener();
 
@@ -163,8 +163,8 @@ class Bootstrap implements BootstrapInterface
      */
     public function run()
     {
-        $argumentParser = new Loader();
-        $arguments = $argumentParser->parseArguments($this->application, $this->arguments);
+        $taskLoader = new Loader();
+        $arguments = $taskLoader->parseArguments($this->application, $this->arguments);
 
         $this->application->handle($arguments);
     }

@@ -15,8 +15,7 @@ namespace Vegas\Cli;
 use Vegas\Cli\Task\Action;
 use Vegas\Cli\Task\Exception\InvalidArgumentException;
 use Vegas\Cli\Task\Exception\InvalidOptionException;
-use Vegas\Cli\Task\Exception\MissingArgumentException;
-use Vegas\Cli\Task\Option;
+use Vegas\Cli\Task\Exception\MissingRequiredArgumentException;
 
 /**
  * Class Task
@@ -110,22 +109,18 @@ abstract class TaskAbstract extends \Phalcon\CLI\Task
                 ':option' => $ex->getOption(),
                 ':argument' => $ex->getArgument()
             )));
-
-            $this->renderActionHelp();
         } catch (InvalidOptionException $ex) {
             $this->throwError(strtr(':command: Invalid option `:option`', array(
                 ':command' => sprintf('%s %s', $this->dispatcher->getParam('activeTask'), $this->dispatcher->getParam('activeAction')),
                 ':option' => $ex->getOption()
             )));
-
-            $this->renderActionHelp();
         }
 
         return true;
     }
 
     /**
-     * Action executed by default when no action was specified in execution
+     * Action executed by default when no action was specified in command line
      */
     public function mainAction()
     {
@@ -187,7 +182,7 @@ abstract class TaskAbstract extends \Phalcon\CLI\Task
      *
      * @param $name
      * @param null $default
-     * @throws Task\Exception\MissingArgumentException
+     * @throws MissingRequiredArgumentException
      * @return mixed
      */
     protected function getOption($name, $default = null)
@@ -198,15 +193,7 @@ abstract class TaskAbstract extends \Phalcon\CLI\Task
                 $matchedOption = $option;
             }
         }
-        if ($matchedOption instanceof Option) {
-            $value = $matchedOption->getValue($this->args, $default);
-
-            if ($matchedOption->isRequired() && empty($value)) {
-                throw new MissingArgumentException($name);
-            }
-        } else {
-            throw new MissingArgumentException($name);
-        }
+        $value = $matchedOption->getValue($this->args, $default);
 
         return $value;
     }
@@ -248,7 +235,7 @@ abstract class TaskAbstract extends \Phalcon\CLI\Task
      *
      * @param $str
      */
-    public function putWarn($str)
+    public function putWarning($str)
     {
         $this->appendLine($this->getColoredString($str, 'yellow'));
     }
@@ -299,31 +286,27 @@ abstract class TaskAbstract extends \Phalcon\CLI\Task
      */
     protected function renderActionHelp()
     {
-        if (!isset($this->actions[$this->actionName])) {
-            $this->appendLine('No help available');
-        } else {
-            $action = $this->actions[$this->actionName];
-            //puts name of action
-            $this->appendLine($this->getColoredString($action->getDescription(), 'green'));
-            $this->appendLine('');
+        $action = $this->actions[$this->actionName];
+        //puts name of action
+        $this->appendLine($this->getColoredString($action->getDescription(), 'green'));
+        $this->appendLine('');
 
-            //puts usage hint
-            $this->appendLine('Usage:');
+        //puts usage hint
+        $this->appendLine('Usage:');
+        $this->appendLine($this->getColoredString(sprintf(
+            '   %s %s [options]',
+            $this->dispatcher->getParam('activeTask'),
+            $this->dispatcher->getParam('activeAction')
+        ), 'dark_gray'));
+        $this->appendLine('');
+
+        //puts available options
+        $this->appendLine($this->getColoredString('Options:', 'gray'));
+        foreach ($action->getOptions() as $option) {
             $this->appendLine($this->getColoredString(sprintf(
-                '   %s %s [options]',
-                $this->dispatcher->getParam('activeTask'),
-                $this->dispatcher->getParam('activeAction')
-            ), 'dark_gray'));
-            $this->appendLine('');
-
-            //puts available options
-            $this->appendLine($this->getColoredString('Options:', 'gray'));
-            foreach ($action->getOptions() as $option) {
-                $this->appendLine($this->getColoredString(sprintf(
-                    '   --%s     -%s      %s',
-                    $option->getName(), $option->getShortName(), $option->getDescription()
-                ), 'light_green'));
-            }
+                '   --%s     -%s      %s',
+                $option->getName(), $option->getShortName(), $option->getDescription()
+            ), 'light_green'));
         }
     }
 

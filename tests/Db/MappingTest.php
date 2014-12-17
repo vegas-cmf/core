@@ -20,6 +20,7 @@ use Vegas\Db\Exception\MappingClassNotFoundException;
 use Vegas\Db\Mapping\Json;
 use Vegas\Db\MappingInterface;
 use Vegas\Db\MappingManager;
+use Vegas\Util\DateTime;
 
 class Fake extends CollectionAbstract
 {
@@ -48,6 +49,18 @@ class FakeModel extends ModelAbstract
         'somecamel' =>  'camelize',
         'encoded'   =>  'decoder',
     );
+}
+
+class FakeDate extends CollectionAbstract
+{
+    public function getSource()
+    {
+        return 'fake_date';
+    }
+
+    protected $mappings = [
+        'createdAt' => 'dateTime'
+    ];
 }
 
 class UpperCase implements MappingInterface
@@ -298,5 +311,30 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
         $fakeRecord->clearMappings();
         $this->assertEquals($nonCamelText, $fakeRecord->readMapped('somecamel'));
+    }
+
+    public function testShouldResolveDateTime()
+    {
+        $mappingManager = new MappingManager();
+        $mappingManager->add(new \Vegas\Db\Mapping\DateTime());
+
+        $now = new \DateTime('now');
+
+        $fake = new FakeDate();
+        $fake->createdAt = time();
+
+        $this->assertEquals($now->format(DateTime::$globalDefaultFormat), $fake->readMapped('createdAt'));
+        $this->assertInstanceOf('\Vegas\Util\DateTime', $fake->readMapped('createdAt'));
+        $this->assertSame($fake->createdAt, (int)$fake->readMapped('createdAt')->format('U'));
+
+        $fake->createdAt = $now->format('m/d/Y');
+        $this->assertInstanceOf('\Vegas\Util\DateTime', $fake->readMapped('createdAt'));
+        $this->assertEquals($now->format('m/d/Y'), $fake->readMapped('createdAt')->format('m/d/Y'));
+        $this->assertSame($fake->createdAt, $fake->readMapped('createdAt')->format('m/d/Y'));
+
+        $fake->createdAt = $now->format('d/m/Y');
+        $this->assertNotInstanceOf('\Vegas\Util\DateTime', $fake->readMapped('createdAt'));
+        $this->assertEquals($now->format('d/m/Y'), $fake->readMapped('createdAt'));
+        $this->assertInternalType('string', $fake->readMapped('createdAt'));
     }
 } 

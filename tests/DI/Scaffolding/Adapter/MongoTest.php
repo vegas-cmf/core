@@ -26,5 +26,22 @@ class MongoTest extends \Vegas\Test\TestCase
 
         $this->getDI()->set('collectionManager', $collectionManager, true);
     }
+
+    public function testShouldThrowExceptionAboutMissingRequiredService()
+    {
+        $mongo = $this->getDI()->get('mongo');
+
+        $this->getDI()->remove('mongo');
+
+        $exception = null;
+        try {
+            new \Vegas\DI\Scaffolding\Adapter\Mongo();
+        } catch (\Exception $e) {
+            $exception = $e;
+        }
+        $this->assertInstanceOf('\Vegas\Db\Exception\NoRequiredServiceException', $exception);
+
+        $this->getDI()->set('mongo', $mongo);
+    }
 }
  
