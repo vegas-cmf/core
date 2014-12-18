@@ -10,6 +10,7 @@
  * file that was distributed with this source code.
  */
 namespace Vegas\DI\Service\Component;
+use Phalcon\Mvc\View;
 
 /**
  * Interface RendererInterface
@@ -21,9 +22,9 @@ interface RendererInterface
      * Constructor
      * Sets view instance
      *
-     * @param \Phalcon\Mvc\View $view
+     * @param View $view
      */
-    public function __construct(\Phalcon\Mvc\View $view = null);
+    public function __construct(View $view = null);
 
     /**
      * Sets module name

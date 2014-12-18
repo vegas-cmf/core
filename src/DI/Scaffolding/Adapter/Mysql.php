@@ -13,7 +13,14 @@
 namespace Vegas\DI\Scaffolding\Adapter;
 
 use Phalcon\DI;
+use Phalcon\DiInterface;
+use Phalcon\Paginator\Adapter\Model as PaginatorAdapterModel;
+use Vegas\Db\AdapterInterface;
+use Vegas\Db\Exception\NoRequiredServiceException;
+use Vegas\DI\Scaffolding\AdapterInterface as ScaffoldingAdapterInterface;
+use Vegas\DI\Scaffolding\Exception\MissingScaffoldingException;
 use Vegas\DI\Scaffolding\Exception\RecordNotFoundException;
+use Vegas\DI\Scaffolding;
 
 /**
  * Class Mysql
@@ -22,12 +29,12 @@ use Vegas\DI\Scaffolding\Exception\RecordNotFoundException;
  *
  * @package Vegas\DI\Scaffolding\Adapter
  */
-class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\AdapterInterface
+class Mysql implements AdapterInterface, ScaffoldingAdapterInterface
 {
     /**
      * Scaffolding instance
      *
-     * @var \Vegas\DI\Scaffolding
+     * @var Scaffolding
      */
     protected $scaffolding;
 
@@ -45,31 +52,62 @@ class Mysql implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
      */
     public function retrieveOne($id)
     {
+        $this->ensureScaffolding();
+
         $record = call_user_func(array($this->scaffolding->getRecord(),'findById'),$id);
-        
+
         if (!$record) {
             throw new RecordNotFoundException();
         }
-        
+
         return $record;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setScaffolding(\Vegas\DI\Scaffolding $scaffolding) {
+    public function getPaginator($page = 1, $limit = 10)
+    {
+        $this->ensureScaffolding();
+
+        return new PaginatorAdapterModel(array(
+            'data' => (object) call_user_func(array($this->scaffolding->getRecord(), 'find')),
+            'limit' => $limit,
+            'page' => $page
+        ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setScaffolding(Scaffolding $scaffolding) {
         $this->scaffolding = $scaffolding;
-        
+
         return $this;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function verifyRequiredServices(\Phalcon\DiInterface $di)
+    public function verifyRequiredServices(DiInterface $di)
     {
         if (!$di->has('db')) {
             throw new NoRequiredServiceException();
         }
+    }
+
+    /**
+     * Determines if scaffolding has been set
+     *
+     * @return bool
+     * @throws \Vegas\DI\Scaffolding\Exception\MissingScaffoldingException
+     */
+    protected function ensureScaffolding()
+    {
+        if (!$this->scaffolding instanceof Scaffolding) {
+            throw new MissingScaffoldingException();
+        }
+
+        return true;
     }
 }

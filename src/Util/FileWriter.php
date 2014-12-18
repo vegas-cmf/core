@@ -24,21 +24,37 @@ class FileWriter
      * Writes string content to a file
      *
      * @param $filePath
-     * @param $newContent
+     * @param $content
      * @param bool $compareContents     Determines if new content should be compared with the
      *                                  current file content. When contents are the same, then
      *                                  new content will not be written to the file.
      * @return int                      Number of bytes that were written to the file
      */
-    public static function write($filePath, $newContent, $compareContents = false)
+    public static function write($filePath, $content, $compareContents = false)
     {
         if ($compareContents) {
-            if (self::compareContents($filePath, $newContent)) {
+            if (self::compareContents($filePath, $content)) {
                 return 0;
             }
         }
 
-        return file_put_contents($filePath, $newContent);
+        return file_put_contents($filePath, $content);
+    }
+
+    /**
+     * Writes string representation of PHP object into plain file
+     *
+     * @param $filePath
+     * @param $object
+     * @param bool $compareContents     Determines if new content should be compared with the
+     *                                  current file content. When contents are the same, then
+     *                                  new content will not be written to the file.
+     * @return int                      Number of bytes that were written to the file
+     */
+    public static function writeObject($filePath, $object, $compareContents = false)
+    {
+        $content = '<?php return ' . var_export($object, true) . ';';
+        return self::write($filePath, $content, $compareContents);
     }
 
     /**

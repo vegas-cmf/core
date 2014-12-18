@@ -115,7 +115,8 @@ class Option
      */
     public function matchParam($paramName)
     {
-        return (0 == strcasecmp($this->name, $paramName)) || (0 == strcasecmp($this->shortName, $paramName));
+        return (0 == strcasecmp($this->name, $paramName))
+                || (0 == strcasecmp($this->shortName, $paramName));
     }
 
     /**

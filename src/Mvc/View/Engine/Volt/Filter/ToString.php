@@ -12,7 +12,6 @@
  
 namespace Vegas\Mvc\View\Engine\Volt\Filter;
 
-
 use Vegas\Mvc\View\Engine\Volt\VoltFilterAbstract;
 
 /**

@@ -15,9 +15,9 @@ use Phalcon\DI;
 use Test\Components\Fake;
 use Vegas\DI\Service\Component\Renderer;
 use Vegas\Mvc\Application;
-use Vegas\Mvc\Module\ModuleLoader;
+use Vegas\Mvc\Module\Loader as ModuleLoader;
 use Vegas\Mvc\View;
-use Vegas\Tests\App\TestCase;
+use Vegas\Test\TestCase;
 
 class ComponentTest extends TestCase
 {
@@ -39,8 +39,10 @@ class ComponentTest extends TestCase
 
             return $view;
         });
-
-        $modules = ModuleLoader::dump($di);
+        $modules = (new ModuleLoader($di))->dump(
+            $di->get('config')->application->moduleDir,
+            $di->get('config')->application->configDir
+        );
         $app = new Application();
         $app->registerModules($modules);
 

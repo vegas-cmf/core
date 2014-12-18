@@ -13,6 +13,7 @@
 namespace Vegas\Mvc\Router\Route;
 
 
+use Phalcon\Mvc\RouterInterface;
 use Vegas\Mvc\Router\Route;
 use Vegas\Mvc\Router\RouteInterface;
 
@@ -20,6 +21,7 @@ use Vegas\Mvc\Router\RouteInterface;
  * Class NotfoundRoute
  *
  * When none of the routes specified in the router are matched, the following route will be use
+ * @see http://docs.phalconphp.com/pl/latest/reference/routing.html#not-found-paths
  *
  * @package Vegas\Mvc\Router\Route
  */
@@ -28,7 +30,7 @@ class NotfoundRoute implements RouteInterface
     /**
      * {@inheritdoc}
      */
-    public function add(\Phalcon\Mvc\RouterInterface $router, Route $route)
+    public function add(RouterInterface $router, Route $route)
     {
         $router
             ->notFound($route->getPaths());

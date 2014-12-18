@@ -20,6 +20,7 @@ use Vegas\Db\Exception\MappingClassNotFoundException;
 use Vegas\Db\Mapping\Json;
 use Vegas\Db\MappingInterface;
 use Vegas\Db\MappingManager;
+use Vegas\Util\DateTime;
 
 class Fake extends CollectionAbstract
 {
@@ -48,6 +49,18 @@ class FakeModel extends ModelAbstract
         'somecamel' =>  'camelize',
         'encoded'   =>  'decoder',
     );
+}
+
+class FakeDate extends CollectionAbstract
+{
+    public function getSource()
+    {
+        return 'fake_date';
+    }
+
+    protected $mappings = [
+        'createdAt' => 'dateTime'
+    ];
 }
 
 class UpperCase implements MappingInterface
@@ -124,13 +137,44 @@ class Camelize implements MappingInterface
 
 class MappingTest extends \PHPUnit_Framework_TestCase
 {
-    public function testMappingManager()
+    public static function setUpBeforeClass()
+    {
+        $di = \Phalcon\DI::getDefault();
+        $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
+        $di->get('db')->execute(
+            'CREATE TABLE fake_table(
+            id int not null primary key auto_increment,
+            somedata varchar(250) null,
+            somecamel varchar(250) null
+            )'
+        );
+    }
+
+    public static function tearDownAfterClass()
+    {
+        $di = \Phalcon\DI::getDefault();
+
+        foreach (Fake::find() as $fake) {
+            $fake->delete();
+        }
+
+        $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
+    }
+
+    public function testShouldAddMapperToMappingManager()
     {
         //define mappings
         $mappingManager = new MappingManager();
+
+        $this->assertInternalType('array', $mappingManager->getMappers());
+        $this->assertEmpty($mappingManager->getMappers());
+
         $mappingManager->add(new Json());
         $mappingManager->add(new Camelize());
         $mappingManager->add(new UpperCase());
+
+        $this->assertInternalType('array', $mappingManager->getMappers());
+        $this->assertNotEmpty($mappingManager->getMappers());
 
         $this->assertNotEmpty(MappingManager::find('json'));
         $this->assertInstanceOf('\Vegas\Db\MappingInterface', MappingManager::find('json'));
@@ -161,7 +205,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(sprintf('Mapping class \'%s\' was not found', 'fake_mapping'), $m);
     }
 
-    public function testResolveCollectionMappings()
+    public function testShouldResolveCollectionMappings()
     {
         $mappingManager = new MappingManager();
         $mappingManager->add(new Json());
@@ -229,21 +273,11 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($nonCamelText, $fakeDoc->readMapped('somecamel'));
     }
 
-    public function testResolveModelMappings()
+    public function testShouldResolveModelMappings()
     {
         $mappingManager = new MappingManager();
         $mappingManager->add(new Json());
         $mappingManager->add(new Camelize());
-
-        $di = DI::getDefault();
-        $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
-        $di->get('db')->execute(
-            'CREATE TABLE fake_table(
-            id int not null primary key auto_increment,
-            somedata varchar(250) null,
-            somecamel varchar(250) null
-            )'
-        );
 
         $someData = json_encode(array(1,2,3,4,5,6));
         $fake = new FakeModel();
@@ -277,5 +311,30 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
         $fakeRecord->clearMappings();
         $this->assertEquals($nonCamelText, $fakeRecord->readMapped('somecamel'));
+    }
+
+    public function testShouldResolveDateTime()
+    {
+        $mappingManager = new MappingManager();
+        $mappingManager->add(new \Vegas\Db\Mapping\DateTime());
+
+        $now = new \DateTime('now');
+
+        $fake = new FakeDate();
+        $fake->createdAt = time();
+
+        $this->assertEquals($now->format(DateTime::$globalDefaultFormat), $fake->readMapped('createdAt'));
+        $this->assertInstanceOf('\Vegas\Util\DateTime', $fake->readMapped('createdAt'));
+        $this->assertSame($fake->createdAt, (int)$fake->readMapped('createdAt')->format('U'));
+
+        $fake->createdAt = $now->format('m/d/Y');
+        $this->assertInstanceOf('\Vegas\Util\DateTime', $fake->readMapped('createdAt'));
+        $this->assertEquals($now->format('m/d/Y'), $fake->readMapped('createdAt')->format('m/d/Y'));
+        $this->assertSame($fake->createdAt, $fake->readMapped('createdAt')->format('m/d/Y'));
+
+        $fake->createdAt = $now->format('d/m/Y');
+        $this->assertNotInstanceOf('\Vegas\Util\DateTime', $fake->readMapped('createdAt'));
+        $this->assertEquals($now->format('d/m/Y'), $fake->readMapped('createdAt'));
+        $this->assertInternalType('string', $fake->readMapped('createdAt'));
     }
 } 

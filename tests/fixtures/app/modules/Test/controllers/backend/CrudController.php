@@ -12,35 +12,45 @@
  
 namespace Test\Controllers\Backend;
 
-use Vegas\Mvc\Controller\Crud;
+use Vegas\Mvc\Controller\CrudAbstract;
 use Vegas\Mvc\View;
 
-class CrudController extends Crud
+class CrudController extends CrudAbstract
 {
     protected $formName = 'Test\Forms\Fake';
     protected $modelName = 'Test\Models\Fake';
 
+    protected $showFields = [
+        'fake_field' => 'Fake field',
+        'created_at' => 'Created at'
+    ];
+    protected $indexFields = [
+        'fake_field' => 'Fake field index',
+        'created_at' => 'Created at index'
+    ];
+
     public function initialize()
     {
         parent::initialize();
-
         $this->view->disableLevel(View::LEVEL_LAYOUT);
-
-        $this->dispatcher->getEventsManager()->attach(Crud\Events::AFTER_CREATE, $this->printAfterSuccess());
-        $this->dispatcher->getEventsManager()->attach(Crud\Events::AFTER_UPDATE, $this->printAfterSuccess());
-    }
-
-    private function printAfterSuccess()
-    {
-        // for testing purposes only
-        return function() {
-            echo $this->scaffolding->getRecord()->getId();
-        };
     }
 
     protected function afterCreate()
     {
-        parent::afterCreate();
-        echo '::afterCreate method call';
+        $record = $this->scaffolding->getRecord();
+        $record->after_create_content = 'afterCreate added content';
+        $record->save();
+
+        return parent::afterCreate();
     }
-} 
+
+    protected function afterSave()
+    {
+        return $this->jsonResponse($this->scaffolding->getRecord()->getId());
+    }
+
+    protected function afterDelete()
+    {
+        return $this->jsonResponse();
+    }
+}

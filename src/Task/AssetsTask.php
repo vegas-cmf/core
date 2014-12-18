@@ -12,13 +12,16 @@
  
 namespace Vegas\Task;
 
+use Vegas\Cli\Task\Action;
 use Vegas\Cli\Task\Option;
+use Vegas\Cli\Task;
+use Vegas\Cli\TaskAbstract;
 
 /**
  * Class AssetsTask
  * @package Vegas\Task
  */
-class AssetsTask extends \Vegas\Cli\Task
+class AssetsTask extends TaskAbstract
 {
     /**
      * Publishes assets provided by vegas-libraries installed via composer
@@ -75,7 +78,7 @@ class AssetsTask extends \Vegas\Cli\Task
         // Simple copy for a file
         if (is_file($source)) {
             if (is_file($dest)) {
-                $this->putWarn("Cannot copy $source. File already exists.");
+                $this->putWarning("Cannot copy $source. File already exists.");
                 return false;
             } else {
                 return copy($source, $dest);
@@ -109,9 +112,9 @@ class AssetsTask extends \Vegas\Cli\Task
      *
      * @return mixed
      */
-    public function setOptions()
+    public function setupOptions()
     {
-        $action = new \Vegas\Cli\Task\Action('publish', 'Publish all assets');
+        $action = new Action('publish', 'Publish all assets');
 
         $dir = new Option('dir', 'd', 'Assets directory. Usage vegas:assets publish -d /path/to/assets');
         $action->addOption($dir);

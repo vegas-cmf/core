@@ -12,6 +12,7 @@
 namespace Vegas\DI\Service;
 
 use Phalcon\DI\InjectionAwareInterface;
+use Vegas\DI\InjectionAwareTrait;
 
 /**
  * Class ComponentAbstract
@@ -19,7 +20,7 @@ use Phalcon\DI\InjectionAwareInterface;
  */
 abstract class ComponentAbstract implements ComponentInterface, InjectionAwareInterface
 {
-    use \Vegas\DI\InjectionAwareTrait;
+    use InjectionAwareTrait;
 
     /**
      * Renderer instance

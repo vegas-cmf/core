@@ -11,20 +11,22 @@
  */
 namespace Vegas\Mvc\Dispatcher;
 
+use Phalcon\DI\InjectionAwareInterface;
 use Phalcon\Dispatcher;
 use Vegas\Constants;
+use Vegas\DI\InjectionAwareTrait;
 use Vegas\Exception;
-use Vegas\Mvc\Dispatcher\Exception\CannotHandleErrorException;
 use Vegas\Exception as VegasException;
+use Vegas\Mvc\Dispatcher\Exception\CannotHandleErrorException;
 use Vegas\Mvc\View;
 
 /**
  * Class ExceptionResolver
  * @package Vegas\Mvc\Dispatcher
  */
-class ExceptionResolver implements \Phalcon\DI\InjectionAwareInterface
+class ExceptionResolver implements InjectionAwareInterface
 {
-    use \Vegas\DI\InjectionAwareTrait;
+    use InjectionAwareTrait;
 
     /**
      * Resolves application error and renders error

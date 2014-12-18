@@ -10,6 +10,7 @@
  * file that was distributed with this source code.
  */
 namespace Vegas\DI;
+use Vegas\DI\Scaffolding\AdapterInterface;
 
 /**
  * Interface ScaffoldingInterface
@@ -21,14 +22,14 @@ interface ScaffoldingInterface
      * Constructor
      * Sets scaffolding adapter
      *
-     * @param Scaffolding\AdapterInterface $adapter
+     * @param AdapterInterface $adapter
      */
-    public function __construct(\Vegas\DI\Scaffolding\AdapterInterface $adapter);
+    public function __construct(AdapterInterface $adapter);
 
     /**
      * Returns scaffolding adapter
      *
-     * @return Scaffolding\AdapterInterface
+     * @return AdapterInterface
      */
     public function getAdapter();
 
@@ -63,6 +64,23 @@ interface ScaffoldingInterface
      * @return mixed
      */
     public function setModelName($name);
+
+    /**
+     * Retrieve record by its ID
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function doRead($id);
+
+    /**
+     * Retrieve list of records as paginator object
+     *
+     * @param int $page
+     * @param int $limit
+     * @return \Phalcon\Paginator\AdapterInterface
+     */
+    public function doPaginate($page = 1, $limit = 10);
 
     /**
      * Creates new record

@@ -12,6 +12,7 @@
  
 namespace Vegas\Db\Decorator;
 
+use Phalcon\Mvc\Model;
 use Vegas\Db\Decorator\Helper\MappingHelperTrait;
 use Vegas\Db\Decorator\Helper\SlugTrait;
 use Vegas\Db\Decorator\Helper\WriteAttributesTrait;
@@ -21,7 +22,7 @@ use Vegas\Db\MappingResolverTrait;
  * Class ModelAbstract
  * @package Vegas\Db\Decorator
  */
-abstract class ModelAbstract extends \Phalcon\Mvc\Model
+abstract class ModelAbstract extends Model
 {
     use MappingResolverTrait;
     use MappingHelperTrait;
@@ -50,7 +51,7 @@ abstract class ModelAbstract extends \Phalcon\Mvc\Model
      * @param $id
      * @return \Phalcon\Mvc\Model\ResultsetInterface
      */
-    public function findById($id)
+    public static function findById($id)
     {
         return parent::findFirst(array(
             "conditions" => "id = ?1",

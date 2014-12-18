@@ -13,6 +13,8 @@
 namespace Vegas\Mvc;
 
 use Phalcon\Mvc\View as PhalconView;
+use Phalcon\Mvc\View\Exception;
+use Vegas\Mvc\View\Engine\Volt;
 
 /**
  * Class View
@@ -55,20 +57,21 @@ class View extends PhalconView
 
         $this->registerEngines(array(
             '.volt' => function ($this, $di) use ($options) {
-                $volt = new \Vegas\Mvc\View\Engine\Volt($this, $di);
-                if (isset($options['cacheDir'])) {
-                    $volt->setOptions(array(
-                        'compiledPath' => $options['cacheDir'],
-                        'compiledSeparator' => '_',
-                        'compileAlways' => isset($options['compileAlways']) ? $options['compileAlways'] : false
-                    ));
-                }
-                $volt->registerFilters();
-                $volt->registerHelpers();
-                $volt->setExtension('.volt');
+                    $volt = new Volt($this, $di);
+                    if (isset($options['cacheDir'])) {
+                        $volt->setOptions(array(
+                            'compiledPath' => $options['cacheDir'],
+                            'compiledSeparator' => '_',
+                            'compileAlways' => isset($options['compileAlways']) ? $options['compileAlways'] : false
+                        ));
+                    }
 
-                return $volt;
-            },
+                    $volt->registerFilters();
+                    $volt->registerHelpers();
+                    $volt->setExtension('.volt');
+
+                    return $volt;
+                },
             '.phtml' => 'Phalcon\Mvc\View\Engine\Php'
         ));
     }
@@ -89,7 +92,8 @@ class View extends PhalconView
      * @param boolean $silence
      * @param boolean $mustClean
      * @param \Phalcon\Cache\BackendInterface $cache
-     * @throws PhalconView\Exception
+     * @return null|void
+     * @throws Exception
      */
     protected function _engineRender($engines, $viewPath, $silence, $mustClean, $cache)
     {
@@ -110,7 +114,7 @@ class View extends PhalconView
                                     $key = $cacheOptions['key'];
                                 }
                                 if (isset($cacheOptions['lifetime'])) {
-                                    $lifetime = $cacheOptions['lifetime'];
+                                    $lifeTime = $cacheOptions['lifetime'];
                                 }
                             }
 
@@ -118,7 +122,11 @@ class View extends PhalconView
                                 $key = md5($viewPath);
                             }
 
-                            $cachedView = $cache->start($key, $lifetime);
+                            if (!isset($lifeTime)) {
+                                $lifeTime = 0;
+                            }
+
+                            $cachedView = $cache->start($key, $lifeTime);
                             if (!$cachedView) {
                                 $this->_content = $cachedView;
                                 return null;
@@ -137,6 +145,7 @@ class View extends PhalconView
 
         foreach ($engines as $extension => $engine) {
             $viewEnginePath = $basePath . $this->resolveFullViewPath($viewPath) . $extension;
+
             if (file_exists($viewEnginePath)) {
                 if (is_object($eventsManager)) {
                     $this->_activeRenderPath = $viewEnginePath;
@@ -160,7 +169,7 @@ class View extends PhalconView
             }
 
             if (!$silence) {
-                throw new \Phalcon\Mvc\View\Exception(sprintf("View %s was not found in the views directory", $viewEnginePath));
+                throw new Exception(sprintf("View %s was not found in the views directory", $viewEnginePath));
             }
         }
     }
@@ -191,9 +200,7 @@ class View extends PhalconView
      */
     private function resolveViewPath($viewPath)
     {
-        $path = $this->getViewsDir();
-        $path = realpath($path . dirname($viewPath)) . DIRECTORY_SEPARATOR . basename($viewPath);
-
+        $path = realpath($this->_viewsDir . dirname($viewPath)) . DIRECTORY_SEPARATOR . basename($viewPath);
         return $path;
     }
 
@@ -289,9 +296,9 @@ class View extends PhalconView
     {
         $partialDir = str_replace('./', '', dirname($partialPath));
         $partialsDir = realpath(sprintf('%s%s',
-            $this->getViewsDir(),
-            $partialDir
-        )) . DIRECTORY_SEPARATOR;
+                $this->_viewsDir,
+                $partialDir
+            )) . DIRECTORY_SEPARATOR;
 
         return $partialsDir . basename($partialPath);
     }
@@ -317,7 +324,7 @@ class View extends PhalconView
     private function resolveRelativePath($partialPath)
     {
         $partialsDirPath = realpath(sprintf('%s%s',
-                $this->getViewsDir(),
+                $this->_viewsDir,
                 dirname($partialPath)
             )) . DIRECTORY_SEPARATOR;
 
@@ -360,6 +367,6 @@ class View extends PhalconView
     public function setControllerViewPath($controllerName)
     {
         $this->controllerViewPath = str_replace('\\','/',strtolower($controllerName));
-        $this->controllerFullViewPath = $this->getViewsDir() . $this->controllerViewPath;
+        $this->controllerFullViewPath = $this->_viewsDir . $this->controllerViewPath;
     }
 }

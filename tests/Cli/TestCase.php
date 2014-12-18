@@ -26,6 +26,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     protected $di;
 
+    /**
+     *
+     */
     public function setUp()
     {
         $this->di = DI::getDefault();
@@ -52,5 +55,21 @@ class TestCase extends \PHPUnit_Framework_TestCase
         ob_end_clean();
 
         return $result;
+    }
+
+    /**
+     * @return Bootstrap
+     */
+    public function getBootstrap()
+    {
+        return $this->bootstrap;
+    }
+
+    /**
+     * @return DI
+     */
+    public function getDI()
+    {
+        return $this->di;
     }
 }

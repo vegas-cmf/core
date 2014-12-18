@@ -11,6 +11,8 @@
  */
 namespace Vegas\Db\Adapter\Mongo;
 
+use Phalcon\DiInterface;
+use Phalcon\Mvc\Collection\Manager;
 use Vegas\Db\Exception\NoRequiredServiceException;
 
 /**
@@ -25,10 +27,10 @@ trait AdapterTrait
     /**
      * Verifies required services for Mongo adapter
      *
-     * @param \Phalcon\DiInterface $di
+     * @param DiInterface $di
      * @throws \Vegas\Db\Exception\NoRequiredServiceException
      */
-    public function verifyRequiredServices(\Phalcon\DiInterface $di)
+    public function verifyRequiredServices(DiInterface $di)
     {
         if (!$di->has('mongo')) {
             throw new NoRequiredServiceException();
@@ -38,13 +40,13 @@ trait AdapterTrait
     /**
      * Setups extra services (if not exist) required by mongo service
      *
-     * @param \Phalcon\DiInterface $di
+     * @param DiInterface $di
      */
-    public function setupExtraServices(\Phalcon\DiInterface $di)
+    public function setupExtraServices(DiInterface $di)
     {
         if (!$di->has('collectionManager')) {
             $di->set('collectionManager', function() {
-                return new \Phalcon\Mvc\Collection\Manager();
+                return new Manager();
             });
         }
     }

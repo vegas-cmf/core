@@ -13,7 +13,7 @@
 namespace Test\Controllers\Frontend;
 
 
-use Vegas\Mvc\Controller\ControllerAbstract;
+use Vegas\Mvc\ControllerAbstract;
 use Vegas\Mvc\View;
 
 /**
@@ -52,5 +52,13 @@ class FooController extends ControllerAbstract
     {
         $throwName = 'throw'.$code;
         $this->$throwName('Message');
+    }
+
+    public function translateAction($str)
+    {
+        $this->view->disable();
+        return $this->response->setContent(
+            $this->_($str)
+        );
     }
 } 

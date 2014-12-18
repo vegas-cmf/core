@@ -14,7 +14,7 @@ namespace Vegas\Tests\Mvc;
 
 use Phalcon\DI;
 use Vegas\Mvc\Controller\Crud;
-use Vegas\Tests\App\TestCase;
+use Vegas\Test\TestCase;
 
 class ModuleAbstractTest extends TestCase
 {

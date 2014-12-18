@@ -12,7 +12,6 @@
  
 namespace Test\Services;
 
-use Phalcon\DI\InjectionAwareInterface;
 use Vegas\DI\InjectionAwareTrait;
 
 class Fake extends \Vegas\DI\Service\ComponentAbstract

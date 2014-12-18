@@ -24,7 +24,7 @@ class FooTask extends \Vegas\Cli\Task
      *
      * @return mixed
      */
-    public function setOptions()
+    public function setupOptions()
     {
         // TODO: Implement setOptions() method.
     }

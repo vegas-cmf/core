@@ -13,7 +13,12 @@
 namespace Vegas\DI\Scaffolding\Adapter;
 
 use Phalcon\DI;
+use Vegas\Db\Adapter\Mongo\AdapterTrait;
+use Vegas\Db\AdapterInterface;
+use Vegas\DI\Scaffolding\AdapterInterface as ScaffoldingAdapterInterface;
 use Vegas\DI\Scaffolding\Exception\RecordNotFoundException;
+use Vegas\DI\Scaffolding;
+use Vegas\Paginator\Adapter\Mongo as PaginatorAdapterMongo;
 
 /**
  * Class Mongo
@@ -22,14 +27,14 @@ use Vegas\DI\Scaffolding\Exception\RecordNotFoundException;
  *
  * @package Vegas\DI\Scaffolding\Adapter
  */
-class Mongo implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\AdapterInterface
+class Mongo implements AdapterInterface, ScaffoldingAdapterInterface
 {
-    use \Vegas\Db\Adapter\Mongo\AdapterTrait;
+    use AdapterTrait;
 
     /**
      * Scaffolding instance
      *
-     * @var \Vegas\DI\Scaffolding
+     * @var Scaffolding
      */
     protected $scaffolding;
 
@@ -50,21 +55,32 @@ class Mongo implements \Vegas\Db\AdapterInterface, \Vegas\DI\Scaffolding\Adapter
     public function retrieveOne($id)
     {
         $record = call_user_func(array($this->scaffolding->getRecord(),'findById'),$id);
-        
+
         if (!$record) {
             throw new RecordNotFoundException();
         }
-        
+
         return $record;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setScaffolding(\Vegas\DI\Scaffolding $scaffolding) {
-        $this->scaffolding = $scaffolding;
-        
-        return $this;
+    public function getPaginator($page = 1, $limit = 10)
+    {
+        return new PaginatorAdapterMongo(array(
+            'model' => $this->scaffolding->getRecord(),
+            'limit' => $limit,
+            'page' => $page
+        ));
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setScaffolding(Scaffolding $scaffolding) {
+        $this->scaffolding = $scaffolding;
+
+        return $this;
+    }
 }

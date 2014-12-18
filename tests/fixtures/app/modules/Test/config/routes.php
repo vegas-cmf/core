@@ -33,6 +33,16 @@ return array(
         )
     ),
 
+    'testbrokencrud' => array(
+        'route' => '/test/brokencrud/:action/:params',
+        'paths' => array(
+            'module' => 'Test',
+            'controller' => 'Backend\BrokenCrud',
+            'action' => 1,
+            'params' => 2
+        )
+    ),
+
     'testcrud' => array(
         'route' => '/test/crud/:action/:params',
         'paths' => array(

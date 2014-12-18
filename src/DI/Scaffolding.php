@@ -11,6 +11,7 @@
  */
 namespace Vegas\DI;
 
+use Vegas\DI\Scaffolding\AdapterInterface;
 use Vegas\DI\Scaffolding\Exception\DeleteFailureException;
 use Vegas\DI\Scaffolding\Exception\InvalidFormException;
 
@@ -22,25 +23,16 @@ use Vegas\DI\Scaffolding\Exception\InvalidFormException;
  * class MyController extends Controller\Crud {
  *      protected $formName = 'My\Forms\My';    // default form used by CRUD
  *      protected $modelName = 'My\Models\My';  // default model used by CRUD
-
- *      public function initialize()
- *      {
- *          parent::initialize();
- *          // we can also add this event in the Module.php to the dispatcher
- *          $this->dispatcher->getEventsManager()->attach(
- *              Controller\Crud\Events::AFTER_CREATE, function() {
- *                  $this->response->redirect('user-admin/index');
- *              }
- *          );
- *          // attach more events
- *      }
- *      // other actions
+ *      protected $fields = [
+ *          'name' => 'Name',
+ *          'url' => 'Url'
+ *      ]; // default field set for index and show actions (all fields will be echoed via readMapped() method)
  *  }
  * </code>
  *
  * @package Vegas\DI
  */
-class Scaffolding implements \Vegas\DI\ScaffoldingInterface
+class Scaffolding implements ScaffoldingInterface
 {
     /**
      * Dependency injector
@@ -87,7 +79,7 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(\Vegas\DI\Scaffolding\AdapterInterface $adapter)
+    public function __construct(AdapterInterface $adapter)
     {
         $this->adapter = $adapter;
         $this->adapter->setScaffolding($this);
@@ -144,15 +136,20 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
     }
 
     /**
-     * Retrieves record by its ID
-     *
-     * @param $id
-     * @return mixed
+     * {@inheritdoc}
      */
     public function doRead($id)
     {
         $this->record = $this->adapter->retrieveOne($id);
         return $this->record;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function doPaginate($page = 1, $limit = 10)
+    {
+        return $this->adapter->getPaginator($page, $limit);
     }
 
     /**
@@ -169,7 +166,7 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
      */
     public function doUpdate($id, array $values)
     {
-        $this->record = $this->adapter->retrieveOne($id);
+        $this->record = $this->doRead($id);
         return $this->processForm($values);
     }
 
@@ -178,8 +175,8 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
      */
     public function doDelete($id)
     {
-        $this->record = $this->adapter->retrieveOne($id);
-        
+        $this->record = $this->doRead($id);
+
         try {
             return $this->record->delete();
         } catch (\Exception $e) {
@@ -199,11 +196,11 @@ class Scaffolding implements \Vegas\DI\ScaffoldingInterface
     {
         $form = $this->getForm();
         $form->bind($values, $this->record);
-        
+
         if ($form->isValid()) {
             return $this->record->save();
-        } 
-        
+        }
+
         $this->form = $form;
         throw new InvalidFormException();
     }

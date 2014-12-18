@@ -11,11 +11,13 @@
  */
 namespace Vegas\Db\Exception;
 
+use Vegas\Db\Exception;
+
 /**
  * Class NoRequiredServiceException
  * @package Vegas\Db\Exception
  */
-class NoRequiredServiceException extends \Vegas\Db\Exception
+class NoRequiredServiceException extends Exception
 {
     /**
      * Exception default message

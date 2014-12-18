@@ -15,6 +15,7 @@ namespace Vegas\Mvc\Router\Adapter;
 
 use Phalcon\DI;
 use Phalcon\DiInterface;
+use Phalcon\Mvc\Router;
 use Vegas\DI\InjectionAwareTrait;
 
 /**
@@ -24,7 +25,7 @@ use Vegas\DI\InjectionAwareTrait;
  * @package Vegas\Mvc\Router\Adapter
  * @see http://docs.phalconphp.com/en/latest/api/Phalcon_Mvc_Router.html
  */
-class Standard extends \Phalcon\Mvc\Router implements DI\InjectionAwareInterface
+class Standard extends Router implements DI\InjectionAwareInterface
 {
 
     /**
@@ -33,7 +34,7 @@ class Standard extends \Phalcon\Mvc\Router implements DI\InjectionAwareInterface
      * @param DiInterface $dependencyInjector
      * @param bool $keepDefaultRoutes
      */
-    public function __construct(\Phalcon\DiInterface $dependencyInjector, $keepDefaultRoutes = false)
+    public function __construct(DiInterface $dependencyInjector, $keepDefaultRoutes = false)
     {
         parent::__construct($keepDefaultRoutes);
         $this->removeExtraSlashes(true);

@@ -29,4 +29,13 @@ trait WriteAttributesTrait
             $this->writeAttribute($attribute, $value);
         }
     }
+
+    /**
+     * Writes given value to attribute
+     *
+     * @param $name
+     * @param $value
+     * @return mixed
+     */
+    abstract public function writeAttribute($name, $value);
 } 

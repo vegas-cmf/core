@@ -11,6 +11,7 @@
  */
 
 namespace Vegas\Cli;
+use Phalcon\Loader;
 
 /**
  * Class Console
@@ -51,14 +52,16 @@ class Console extends \Phalcon\CLI\Console
      */
     private function registerSharedData($modules)
     {
-        $loader = new \Phalcon\Loader();
+        $loader = new Loader();
 
         foreach ($modules As $name => $module)
         {
             $loader->registerNamespaces(
                 array(
+                    $name.'\Forms'   => dirname($module['path']).'/forms/',
                     $name.'\Models'   => dirname($module['path']).'/models/',
-                    $name.'\Services' => dirname($module['path']).'/services/'
+                    $name.'\Services' => dirname($module['path']).'/services/',
+                    $name.'\Components' => dirname($module['path']).'/components/',
                 ), true
             );
         }
