@@ -17,8 +17,14 @@ use Vegas\Db\Decorator\CollectionAbstract;
 use Vegas\Db\Decorator\ModelAbstract;
 use Vegas\Db\Exception\InvalidMappingClassException;
 use Vegas\Db\Exception\MappingClassNotFoundException;
+use Vegas\Db\Mapping\Blob;
+use Vegas\Db\Mapping\Camelize;
+use Vegas\Db\Mapping\DateTime as DateTimeMapping;
+use Vegas\Db\Mapping\Decimal;
 use Vegas\Db\Mapping\Json;
-use Vegas\Db\MappingInterface;
+use Vegas\Db\Mapping\Lowercase;
+use Vegas\Db\Mapping\Serialize;
+use Vegas\Db\Mapping\Uppercase;
 use Vegas\Db\MappingManager;
 use Vegas\Util\DateTime;
 
@@ -29,12 +35,14 @@ class Fake extends CollectionAbstract
         return 'fake';
     }
 
-    protected $mappings = array(
+    protected $mappings = [
         'somedata'  =>  'json',
         'somecamel' =>  'camelize',
-        'encoded'   =>  'decoder',
-        'upperstring' => 'upperCase'
-    );
+        'encoded'   =>  'blob',
+        'upperstring' => 'uppercase',
+        'phpobject' => 'serialize',
+        'currency' => 'decimal'
+    ];
 }
 
 class FakeModel extends ModelAbstract
@@ -44,11 +52,11 @@ class FakeModel extends ModelAbstract
         return 'fake_table';
     }
 
-    protected $mappings = array(
+    protected $mappings = [
         'somedata'  =>  'json',
         'somecamel' =>  'camelize',
-        'encoded'   =>  'decoder',
-    );
+        'encoded'   =>  'blob'
+    ];
 }
 
 class FakeDate extends CollectionAbstract
@@ -63,75 +71,25 @@ class FakeDate extends CollectionAbstract
     ];
 }
 
-class UpperCase implements MappingInterface
+class FakeMultiple extends CollectionAbstract
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public function getSource()
     {
-        return 'upperCase';
+        return 'fake_multiple';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function resolve(& $value)
-    {
-        $value = strtoupper($value);
-
-        return $value;
-    }
+    protected $mappings = [
+        'jsonlower' => ['json', 'lowercase']
+    ];
 }
 
-class Decoder implements MappingInterface
+class FakeClass
 {
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
+    public $param;
+
+    public function __construct($param)
     {
-        return 'decoder';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function resolve(& $value)
-    {
-        $value = base64_decode($value);
-
-        return $value;
-    }
-}
-
-/**
- * Class Camelize
- *
- * Simple mapper for converting text to camelize style
- *
- * @package Vegas\Db\Mapping
- */
-class Camelize implements MappingInterface
-{
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'camelize';
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function resolve(& $value)
-    {
-        if (is_string($value) && strlen($value) > 0) {
-            $value = \Phalcon\Text::camelize($value);
-        }
-
-        return $value;
+        $this->param = $param;
     }
 }
 
@@ -164,14 +122,14 @@ class MappingTest extends \PHPUnit_Framework_TestCase
     public function testShouldAddMapperToMappingManager()
     {
         //define mappings
-        $mappingManager = new MappingManager();
+        $mappingManager = new MappingManager;
 
         $this->assertInternalType('array', $mappingManager->getMappers());
         $this->assertEmpty($mappingManager->getMappers());
 
-        $mappingManager->add(new Json());
-        $mappingManager->add(new Camelize());
-        $mappingManager->add(new UpperCase());
+        $mappingManager->add(new Json);
+        $mappingManager->add(new Camelize);
+        $mappingManager->add(new Uppercase);
 
         $this->assertInternalType('array', $mappingManager->getMappers());
         $this->assertNotEmpty($mappingManager->getMappers());
@@ -183,7 +141,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Vegas\Db\MappingInterface', MappingManager::find('camelize'));
 
         try {
-            $mappingManager->add(new \stdClass());
+            $mappingManager->add(new \stdClass);
         } catch (InvalidMappingClassException $e) {
             $m = $e->getMessage();
         }
@@ -207,18 +165,18 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldResolveCollectionMappings()
     {
-        $mappingManager = new MappingManager();
-        $mappingManager->add(new Json());
-        $mappingManager->add(new Camelize());
-        $mappingManager->add(new Decoder());
-        $mappingManager->add(new UpperCase());
+        $mappingManager = new MappingManager;
+        $mappingManager->add(new Json);
+        $mappingManager->add(new Camelize);
+        $mappingManager->add(new Blob);
+        $mappingManager->add(new Uppercase);
 
-        DI::getDefault()->get('mongo')->selectCollection('fake')->remove(array());
+        DI::getDefault()->get('mongo')->selectCollection('fake')->remove([]);
 
         /**  CREATE RECORD  */
         $fake = new Fake();
 
-        $someData = json_encode(array(1,2,3,4,5,6));
+        $someData = json_encode([1,2,3,4,5,6]);
         $fake->somedata = $someData;
 
         $nonCamelText = 'this_is_non_camel_case_text';
@@ -251,13 +209,13 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($encodedVal, $fakeDoc->readAttribute('encoded'));
         $this->assertEquals($lowerTxt, $fakeDoc->readAttribute('upperstring'));
 
-        $ownMappedValues = array(
+        $ownMappedValues = [
             '_id'   =>  $fakeDoc->readMapped('_id'),
             'somedata'   =>  $fakeDoc->readMapped('somedata'),
             'somecamel'   =>  $fakeDoc->readMapped('somecamel'),
             'encoded'   =>  $fakeDoc->readMapped('encoded'),
             'upperstring'   =>  $fakeDoc->readMapped('upperstring')
-        );
+        ];
         $mappedValues = $fakeDoc->toMappedArray();
 
         $this->assertEquals($mappedValues['somedata'], $ownMappedValues['somedata']);
@@ -279,8 +237,8 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $mappingManager->add(new Json());
         $mappingManager->add(new Camelize());
 
-        $someData = json_encode(array(1,2,3,4,5,6));
-        $fake = new FakeModel();
+        $someData = json_encode([1,2,3,4,5,6]);
+        $fake = new FakeModel;
         $fake->somedata = $someData;
         $nonCamelText = 'this_is_non_camel_case_text';
         $fake->somecamel = $nonCamelText;
@@ -296,11 +254,11 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($someData, $fakeRecord->readAttribute('somedata'));
         $this->assertEquals($nonCamelText, $fakeRecord->readAttribute('somecamel'));
 
-        $ownMappedValues = array(
+        $ownMappedValues = [
             '_id'   =>  $fakeRecord->readMapped('_id'),
             'somedata'   =>  $fakeRecord->readMapped('somedata'),
             'somecamel'   =>  $fakeRecord->readMapped('somecamel'),
-        );
+        ];
         $mappedValues = $fakeRecord->toMappedArray();
 
         $this->assertEquals($mappedValues['somedata'], $ownMappedValues['somedata']);
@@ -315,8 +273,8 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldResolveDateTime()
     {
-        $mappingManager = new MappingManager();
-        $mappingManager->add(new \Vegas\Db\Mapping\DateTime());
+        $mappingManager = new MappingManager;
+        $mappingManager->add(new DateTimeMapping);
 
         $now = new \DateTime('now');
 
@@ -336,5 +294,52 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $this->assertNotInstanceOf('\Vegas\Util\DateTime', $fake->readMapped('createdAt'));
         $this->assertEquals($now->format('d/m/Y'), $fake->readMapped('createdAt'));
         $this->assertInternalType('string', $fake->readMapped('createdAt'));
+    }
+
+    public function testShouldResolveMultipleMappersForOneField()
+    {
+        $mappingManager = new MappingManager;
+        $mappingManager->add('\Vegas\Db\Mapping\Json');
+        $mappingManager->add(new Lowercase);
+
+        $fake = new FakeMultiple;
+        $fake->jsonlower = json_encode('SOME DATA');
+
+        $this->assertSame('some data', $fake->readMapped('jsonlower'));
+        $this->assertInternalType('string', $fake->readMapped('jsonlower'));
+    }
+
+    public function testShouldResolveValidCopyOfPhpObject()
+    {
+        $mappingManager = new MappingManager;
+        $mappingManager->add(new Serialize);
+
+        $data = new FakeClass('whatever');
+
+        $fake = new Fake;
+        $fake->phpobject = serialize($data);
+
+        $this->assertInstanceOf('\Vegas\Tests\Db\FakeClass', $fake->readMapped('phpobject'));
+        $this->assertEquals('whatever', $fake->readMapped('phpobject')->param);
+        $this->assertEquals($data, $fake->readMapped('phpobject'));
+
+        $this->assertNotSame($data, $fake->readMapped('phpobject'));
+    }
+
+    public function testShouldPrintDecimalValue()
+    {
+        $mappingManager = new MappingManager;
+        $mappingManager->add(new Decimal);
+
+        $fake = new Fake;
+        $fake->currency = 987654.0321;
+
+        $this->assertInternalType('string', $fake->readMapped('currency'));
+        $this->assertEquals('987654.03', $fake->readMapped('currency'));
+
+        $fake->currency = 7.1234E3;
+
+        $this->assertInternalType('string', $fake->readMapped('currency'));
+        $this->assertEquals('7123.40', $fake->readMapped('currency'));
     }
 } 
