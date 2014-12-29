@@ -15,6 +15,7 @@ namespace Vegas\Db;
 
 /**
  * Class MappingResolverTrait
+ * Handles lifecycle of mapper classes which properly read DB data.
  * @package Vegas\Db
  */
 trait MappingResolverTrait
@@ -25,22 +26,22 @@ trait MappingResolverTrait
      * @var array
      * @internal
      */
-    private $mappingsContainer = array();
+    private $mappingsContainer = [];
 
     /**
      * Adds mapping for indicated attribute
      *
-     * @param $attributeName
-     * @param $mappings
+     * @param string $attributeName
+     * @param mixed $mappings
      * @return $this
      */
     public function addMapping($attributeName, $mappings)
     {
         if (!is_array($mappings)) {
-            $mappings = array($mappings);
+            $mappings = [$mappings];
         }
         if (!$this->hasMapping($attributeName)) {
-            $this->mappingsContainer[$attributeName] = array();
+            $this->mappingsContainer[$attributeName] = [];
         }
         if ($this->mappingsContainer[$attributeName] !== null) {
             foreach ($mappings as $mapping) {
@@ -53,7 +54,7 @@ trait MappingResolverTrait
     /**
      * Removes mapping from indicated attribute
      *
-     * @param $attributeName
+     * @param string $attributeName
      * @return $this
      */
     public function removeMapping($attributeName)
@@ -68,7 +69,7 @@ trait MappingResolverTrait
     /**
      * Determines if attribute has defined mapping
      *
-     * @param $attributeName
+     * @param string $attributeName
      * @return bool
      */
     public function hasMapping($attributeName)
@@ -92,8 +93,8 @@ trait MappingResolverTrait
     /**
      * Filter value of indicated attribute by applying defined mappings
      *
-     * @param $attributeName
-     * @param $value
+     * @param string $attributeName
+     * @param mixed $value
      * @return mixed
      */
     public function resolveMapping($attributeName, $value)

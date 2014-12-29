@@ -14,6 +14,8 @@ namespace Vegas\Db\Decorator\Helper;
 
 /**
  * Class MappingHelperTrait
+ * Strictly coupled with \Vegas\Db\MappingResolverTrait
+ * Manages mappings specified manually in models & calls the mapping resolving tasks.
  * @package Vegas\Db\Decorator
  */
 trait MappingHelperTrait
@@ -22,14 +24,14 @@ trait MappingHelperTrait
      * Defines field mappings in format
      *
      * <code>
-     * array(
+     * [
      *      'field_1' => 'mapper_1',
-     *      'field_2' => array('mapper_1', 'mapper_2')
-     * )
+     *      'field_2' => ['mapper_1', 'mapper_2']
+     * ]
      * </code>
      * @var array
      */
-    protected $mappings = array();
+    protected $mappings = [];
 
     /**
      * Returns array of attributes with mapped values
@@ -39,7 +41,7 @@ trait MappingHelperTrait
     public function toMappedArray()
     {
         $values = $this->toArray();
-        $mappedValues = array();
+        $mappedValues = [];
         foreach ($values as $key => $value) {
             $mappedValues[$key] = $this->readMapped($key);
         }
@@ -50,7 +52,7 @@ trait MappingHelperTrait
     /**
      * Returns mapped value of attribute
      *
-     * @param $name
+     * @param string $name
      * @return mixed
      */
     public function readMapped($name)
@@ -66,27 +68,27 @@ trait MappingHelperTrait
     }
 
     /**
-     * @param $name
+     * @param string $name
      * @return mixed
      */
     abstract public function hasMapping($name);
 
     /**
-     * @param $name
-     * @param $mapping
+     * @param string $name
+     * @param mixed $mappings
      * @return mixed
      */
-    abstract public function addMapping($name, $mapping);
+    abstract public function addMapping($name, $mappings);
 
     /**
-     * @param $name
+     * @param string $name
      * @return mixed
      */
     abstract public function readAttribute($name);
 
     /**
-     * @param $name
-     * @param $value
+     * @param string $name
+     * @param mixed $value
      * @return mixed
      */
     abstract public function resolveMapping($name, $value);
