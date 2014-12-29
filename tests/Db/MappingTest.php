@@ -20,6 +20,7 @@ use Vegas\Db\Exception\MappingClassNotFoundException;
 use Vegas\Db\Mapping\Blob;
 use Vegas\Db\Mapping\Camelize;
 use Vegas\Db\Mapping\DateTime as DateTimeMapping;
+use Vegas\Db\Mapping\Decimal;
 use Vegas\Db\Mapping\Json;
 use Vegas\Db\Mapping\Lowercase;
 use Vegas\Db\Mapping\Serialize;
@@ -39,6 +40,8 @@ class Fake extends CollectionAbstract
         'somecamel' =>  'camelize',
         'encoded'   =>  'blob',
         'upperstring' => 'uppercase',
+        'phpobject' => 'serialize',
+        'currency' => 'decimal'
     ];
 }
 
@@ -77,18 +80,6 @@ class FakeMultiple extends CollectionAbstract
 
     protected $mappings = [
         'jsonlower' => ['json', 'lowercase']
-    ];
-}
-
-class FakeObject extends CollectionAbstract
-{
-    public function getSource()
-    {
-        return 'fake_object';
-    }
-
-    protected $mappings = [
-        'phpobject' => 'serialize'
     ];
 }
 
@@ -325,7 +316,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
         $data = new FakeClass('whatever');
 
-        $fake = new FakeObject;
+        $fake = new Fake;
         $fake->phpobject = serialize($data);
 
         $this->assertInstanceOf('\Vegas\Tests\Db\FakeClass', $fake->readMapped('phpobject'));
@@ -333,5 +324,22 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($data, $fake->readMapped('phpobject'));
 
         $this->assertNotSame($data, $fake->readMapped('phpobject'));
+    }
+
+    public function testShouldPrintDecimalValue()
+    {
+        $mappingManager = new MappingManager;
+        $mappingManager->add(new Decimal);
+
+        $fake = new Fake;
+        $fake->currency = 987654.0321;
+
+        $this->assertInternalType('string', $fake->readMapped('currency'));
+        $this->assertEquals('987654.03', $fake->readMapped('currency'));
+
+        $fake->currency = 7.1234E3;
+
+        $this->assertInternalType('string', $fake->readMapped('currency'));
+        $this->assertEquals('7123.40', $fake->readMapped('currency'));
     }
 } 
