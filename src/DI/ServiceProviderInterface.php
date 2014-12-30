@@ -40,4 +40,4 @@ interface ServiceProviderInterface
      * @return array
      */
     public function getDependencies();
-} 
+}

@@ -13,7 +13,6 @@
 namespace Vegas\Mvc\Module;
 
 use Phalcon\Text;
-use Vegas\DI\InjectionAwareTrait;
 use Vegas\Util\FileWriter;
 
 /**
@@ -130,4 +129,4 @@ class Loader
 
         return $modulesList;
     }
-} 
+}

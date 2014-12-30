@@ -39,4 +39,4 @@ class DefaultRoute implements RouteInterface
             ]
         ));
     }
-} 
+}

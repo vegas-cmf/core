@@ -27,4 +27,3 @@ class ModuleNotFoundException extends VegasException
      */
     protected $message = 'Module has not been found';
 }
- 

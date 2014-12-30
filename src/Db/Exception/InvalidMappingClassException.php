@@ -26,4 +26,4 @@ class InvalidMappingClassException extends DbException
      * @var string
      */
     protected $message = 'Mapping class is invalid';
-} 
+}

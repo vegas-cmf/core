@@ -24,4 +24,3 @@ class InvalidFormException extends Exception
      */
     protected $message = 'Form is invalid.';   
 }
- 

@@ -11,7 +11,6 @@
  */
 namespace Vegas\Mvc;
 
-use Phalcon\Http\ResponseInterface;
 use Phalcon\Mvc\Controller;
 use Vegas\Exception;
 use Vegas\Mvc\View;

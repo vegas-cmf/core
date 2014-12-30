@@ -76,4 +76,4 @@ trait RefResolverTrait
      * @return mixed
      */
     abstract public function readNestedAttribute($attribute);
-} 
+}

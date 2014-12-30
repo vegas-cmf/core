@@ -54,4 +54,3 @@ class InvalidOptionException extends CliException
      */
     protected $message = 'Invalid option';
 }
- 

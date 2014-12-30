@@ -25,4 +25,3 @@ class Exception extends VegasException
      */
     protected $message = 'Scaffolding error';
 }
- 

@@ -26,4 +26,4 @@ class InvalidFilterException extends Exception
      * @var string
      */
     protected $_message = 'Invalid filter. Filter must be an instance of VoltFilterAbstract';
-} 
+}

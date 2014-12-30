@@ -26,4 +26,3 @@ class CannotHandleErrorException extends Exception
      */
     protected $message = 'Dispatcher cannot handle this exception.';
 }
- 

@@ -26,4 +26,3 @@ class Exception extends VegasException
      */
     protected $_message = 'Unknown MVC Controller exception';
 }
- 

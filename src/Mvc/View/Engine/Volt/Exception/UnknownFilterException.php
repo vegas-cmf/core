@@ -26,4 +26,4 @@ class UnknownFilterException extends Exception
      * @var string
      */
     protected $message = 'Unknown filter';
-} 
+}

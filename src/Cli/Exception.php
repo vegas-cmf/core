@@ -27,4 +27,3 @@ class Exception extends VegasException
      */
     protected $message = 'Cli exception';
 }
- 

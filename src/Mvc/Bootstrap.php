@@ -159,4 +159,3 @@ class Bootstrap implements BootstrapInterface
             ->getContent();
     }
 }
- 

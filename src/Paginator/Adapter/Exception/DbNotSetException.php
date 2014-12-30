@@ -26,4 +26,3 @@ class DbNotSetException extends Exception
      */
     protected $message = 'You need to set mongo db for pagination.';
 }
- 

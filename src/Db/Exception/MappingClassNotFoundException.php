@@ -36,4 +36,4 @@ class MappingClassNotFoundException extends DbException
      * @var string
      */
     protected $message = 'Mapping class \'%s\' was not found';
-} 
+}

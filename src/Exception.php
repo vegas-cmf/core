@@ -24,4 +24,4 @@ class Exception extends \Exception
      * @var string
      */
     protected $message = 'Vegas core exception';
-} 
+}

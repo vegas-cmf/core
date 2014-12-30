@@ -27,4 +27,3 @@ class MethodNotFoundException extends VegasException
      */
     protected $message = 'Method has not been found';
 }
- 

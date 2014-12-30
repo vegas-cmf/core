@@ -35,4 +35,4 @@ class StaticRoute implements RouteInterface
             ->setName($route->getName())
             ->setHostName($route->getParam('hostname'));
     }
-} 
+}

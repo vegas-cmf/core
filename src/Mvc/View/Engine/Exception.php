@@ -26,4 +26,4 @@ class Exception extends ViewException
      * @var string
      */
     protected $message = 'View engine exception';
-} 
+}

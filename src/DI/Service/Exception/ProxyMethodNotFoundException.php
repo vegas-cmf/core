@@ -27,4 +27,3 @@ class ProxyMethodNotFoundException extends VegasException
      */
     protected $message = 'Proxy method has not been found';
 }
- 

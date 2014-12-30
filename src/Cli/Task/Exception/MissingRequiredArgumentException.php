@@ -37,4 +37,3 @@ class MissingRequiredArgumentException extends CliException
      */
     protected $message = 'Missing required argument';
 }
- 

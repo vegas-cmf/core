@@ -7,9 +7,6 @@
 namespace Vegas\Bootstrap;
 
 use Phalcon\Config;
-use Phalcon\DI\FactoryDefault;
-use Phalcon\DI;
-use Phalcon\Mvc\Dispatcher;
 use Vegas\Mvc\Router\Adapter\Standard;
 use Vegas\Mvc\Router;
 
@@ -52,4 +49,3 @@ trait RoutesInitializerTrait
 
     abstract public function getDI();
 }
- 

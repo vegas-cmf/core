@@ -29,6 +29,13 @@ class View extends PhalconView
     private $controllerViewPath;
 
     /**
+     * Full path to controller view
+     *
+     * @var bool|string
+     */
+    private $controllerFullViewPath = false;
+
+    /**
      * Constructor
      * Prepares view settings and engine
      *
@@ -77,13 +84,6 @@ class View extends PhalconView
     }
 
     /**
-     * Full path to controller view
-     *
-     * @var bool
-     */
-    private $controllerFullViewPath = false;
-
-    /**
      * Checks whether view exists on registered extensions and render it
      *
      * @override
@@ -104,7 +104,7 @@ class View extends PhalconView
             $renderLevel = intval($this->_renderLevel);
             $cacheLevel = intval($this->_cacheLevel);
             if ($renderLevel >= $cacheLevel) {
-                if ($cache->isStarted() == false) {
+                if ($cache->isStarted() === false) {
                     $viewOptions = $this->_options;
                     if (is_array($viewOptions)) {
                         if (isset($viewOptions['cache'])) {

@@ -26,4 +26,3 @@ class Exception extends VegasException
      */
     protected $message = 'Dispatcher error';
 }
- 

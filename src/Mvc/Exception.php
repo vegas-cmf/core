@@ -26,4 +26,4 @@ class Exception extends VegasException
      * @var string
      */
     protected $message = 'Vegas error';
-} 
+}
