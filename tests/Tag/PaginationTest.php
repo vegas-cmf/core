@@ -91,6 +91,17 @@ class PaginationTest extends TestCase
             $pagination->render($paginate)
         );
 
+        $paginator = new Mongo(array(
+            'db' => $this->di->get('mongo'),
+            'modelName' => '\Vegas\Tests\Stub\Models\FakeModel',
+            'query' => array('test_name' => 'PaginationTest'),
+            'page' => 2
+        ));
+        $paginator->setCurrentPage(2);
+        $this->assertEquals(
+            '<ul class="pagination"><li class="prev"><a href="/?page=1">Previous</a></li><li class=""><a href="/?page=1">1</a></li><li class="active"><a href="/?page=2">2</a></li><li class="next not-active"><a href="/?page=2">Next</a></li></ul>',
+            $pagination->render($paginator->getPaginate())
+        );
 
         $paginate = $paginator->getPaginate();
         $paginate->currentUri = 'test';
