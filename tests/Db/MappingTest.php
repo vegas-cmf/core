@@ -291,9 +291,14 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($fake->createdAt, $fake->readMapped('createdAt')->format('m/d/Y'));
 
         $fake->createdAt = $now->format('d/m/Y');
-        $this->assertNotInstanceOf('\Vegas\Util\DateTime', $fake->readMapped('createdAt'));
-        $this->assertEquals($now->format('d/m/Y'), $fake->readMapped('createdAt'));
-        $this->assertInternalType('string', $fake->readMapped('createdAt'));
+        if ($now->format('j') > 12) {
+            $this->assertNotInstanceOf('\Vegas\Util\DateTime', $fake->readMapped('createdAt'));
+            $this->assertEquals($now->format('d/m/Y'), $fake->readMapped('createdAt'));
+            $this->assertInternalType('string', $fake->readMapped('createdAt'));
+        } else {
+            $this->assertInstanceOf('\Vegas\Util\DateTime', $fake->readMapped('createdAt'));
+            $this->assertNotEquals($now->format('d/m/Y'), $fake->readMapped('createdAt')->format('d/m/Y'));
+        }
     }
 
     public function testShouldResolveMultipleMappersForOneField()

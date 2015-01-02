@@ -42,9 +42,15 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertFalse(\Vegas\Util\DateTime::isValid('Invalid date'));
         $this->assertFalse(\Vegas\Util\DateTime::isValid(time()));
-        $this->assertFalse(\Vegas\Util\DateTime::isValid((new \DateTime())->format('d/m/Y')));
-        $this->assertTrue(\Vegas\Util\DateTime::isValid((new \DateTime())->format('Y-m-d H:i:s')));
-        $this->assertTrue(\Vegas\Util\DateTime::isValid((new \DateTime())->format('m/d/Y')));
+        $this->assertFalse(\Vegas\Util\DateTime::isValid(null));
+
+        $date = new \DateTime();
+        // @see http://php.net/manual/en/datetime.formats.date.php
+        $this->assertTrue($date->format('j') <= 12 && \Vegas\Util\DateTime::isValid($date->format('d/m/Y')));
+        $this->assertFalse($date->format('j') > 12 && \Vegas\Util\DateTime::isValid($date->format('d/m/Y')));
+
+        $this->assertTrue(\Vegas\Util\DateTime::isValid($date->format('Y-m-d H:i:s')));
+        $this->assertTrue(\Vegas\Util\DateTime::isValid($date->format('m/d/Y')));
     }
 
     public function testShouldSerializeDateTimeObjectToJson()
