@@ -87,7 +87,7 @@ class DateTime extends \DateTime implements \JsonSerializable
             return true;
         try {
             new static($value);
-            return true;
+            return !is_null($value);
         } catch (\Exception $e) {
             return false;
         }
