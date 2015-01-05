@@ -28,6 +28,11 @@ class DateTime extends \DateTime implements \JsonSerializable
      */
     private $defaultFormat;
 
+    /**
+     * @param string $time
+     * @param \DateTimeZone $timezone
+     * @throws Exception
+     */
     public function __construct($time = 'now', \DateTimeZone $timezone = null)
     {
         if (is_numeric($time)) {
