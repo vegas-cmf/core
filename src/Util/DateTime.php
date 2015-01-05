@@ -12,6 +12,8 @@
 
 namespace Vegas\Util;
 
+use Vegas\Exception;
+
 class DateTime extends \DateTime implements \JsonSerializable
 {
     /**
@@ -25,6 +27,14 @@ class DateTime extends \DateTime implements \JsonSerializable
      * @var string
      */
     private $defaultFormat;
+
+    public function __construct($time = 'now', \DateTimeZone $timezone = null)
+    {
+        if (is_numeric($time)) {
+            throw new Exception('Invalid date format provided for DateTime: missing `@` prefix.');
+        }
+        return parent::__construct($time, $timezone);
+    }
 
     /**
      * Prints the object as string using default format available.
