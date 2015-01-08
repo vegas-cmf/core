@@ -31,6 +31,14 @@ class AggregateCursor
      */
     private $model;
 
+
+    /**
+     * Mongo Aggregated Cursor
+     *
+     * @var string
+     */
+    private $cursor;
+
     /**
      * Default constructor
      *
