@@ -15,6 +15,7 @@ use Vegas\Paginator\Adapter\Mongo;
 use Vegas\Tag\Pagination;
 use Vegas\Test\TestCase;
 use Vegas\Tests\Stub\Models\FakeModel;
+use Vegas\Tests\Stub\Models\FakePaginatorModel;
 
 class RequestMock
 {
@@ -116,6 +117,36 @@ class PaginationTest extends TestCase
         $this->assertSame(2, $page->current);
         $this->assertSame(10, count($page->items));
         $this->assertSame(2, $page->total_pages);
+
+
+    }
+
+    public function testOffset()
+    {
+        $pagination = new Pagination($this->di);
+
+        for($i = 1; $i <= 20; $i++) {
+            $model = new FakePaginatorModel;
+            $model->fake_field = $i;
+            $model->save();
+        }
+
+        $paginator = new Mongo(array(
+            'db' => $this->di->get('mongo'),
+            'modelName' => '\Vegas\Tests\Stub\Models\FakePaginatorModel',
+            'query' => [],
+            'page' => 5,
+            'limit' => 2
+        ));
+
+        $this->assertEquals(
+            '<ul class="pagination"><li class="prev"><a href="/?page=4">Previous</a></li><li class=""><a href="/?page=1">1</a></li><li class=""><a href="/?page=2">2</a></li><li class=""><a href="/?page=3">3</a></li><li class=""><a href="/?page=4">4</a></li><li class="active"><a href="/?page=5">5</a></li><li class=""><a href="/?page=6">6</a></li><li class=""><a href="/?page=7">7</a></li><li class="more"><a href="/?page=5">...</a></li><li class=""><a href="/?page=9">9</a></li><li class=""><a href="/?page=10">10</a></li><li class="next"><a href="/?page=6">Next</a></li></ul>',
+            $pagination->render($paginator->getPaginate(), ['middle_offset' => 2])
+        );
+
+        foreach (FakePaginatorModel::find() as $robot) {
+            $robot->delete();
+        }
     }
 
     public function testArguments()
