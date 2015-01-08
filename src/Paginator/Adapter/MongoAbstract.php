@@ -2,7 +2,7 @@
 /**
  * This file is part of Vegas package
  *
- * @author Mateusz Aniołek <mateusz.aniolek@amsterdam-standard.pl>
+ * @author Arkadiusz Ostrycharz <aostrycharz@amsterdam-standard.pl>
  * @copyright Amsterdam Standard Sp. Z o.o.
  * @homepage http://vegas-cmf.github.io
  *
@@ -13,7 +13,7 @@ namespace Vegas\Paginator\Adapter;
 use Phalcon\Paginator\AdapterInterface;
 
 /**
- * Class MongoAbstractInterface
+ * Class MongoAbstract
  * @package Vegas\Paginator\Adapter\Mongo
  */
 abstract class MongoAbstract implements AdapterInterface
