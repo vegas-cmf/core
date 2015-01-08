@@ -2,7 +2,7 @@
 /**
  * This file is part of Vegas package
  *
- * @author Arkadiusz Ostrycharz <aostrycharz@amsterdam-standard.pl>
+ * @author Mateusz Aniolek <mateusz.aniolek@amsterdam-standard.pl>
  * @copyright Amsterdam Standard Sp. Z o.o.
  * @homepage http://vegas-cmf.github.io
  *
@@ -11,11 +11,13 @@
  */
 namespace Vegas\Paginator\Adapter;
 
+use Vegas\Paginator\Adapter\Mongo\AggregateCursor;
+
 /**
- * Class Mongo
+ * Class AggregateMongo
  * @package Vegas\Paginator\Adapter
  */
-class Mongo extends MongoAbstract
+class AggregateMongo extends MongoAbstract
 {
     /**
      * Returns results for current page
@@ -25,21 +27,25 @@ class Mongo extends MongoAbstract
     public function getResults()
     {
         $skip = ($this->page-1)*$this->limit;
-
+        
         $cursor = $this->getCursor();
-        $cursor->skip($skip)->limit($this->limit);
-
-        if (!empty($this->sort)) {
-            $cursor->sort($this->sort);
-        }
+        $cursor->skip($skip);
 
         $results = array();
+        $i = 0;
 
-        foreach ($cursor As $row) {
+        while($cursor->valid() && $i++ < $this->limit) {
+
             $object = new $this->modelName();
-            $object->writeAttributes($row);
+            $object->writeAttributes($cursor->current());
 
-            $results[] = $object;
+            $pseudoCursor = new \stdClass();
+            foreach ($object as $key => $value) {
+                $pseudoCursor->$key = $value;
+            }
+
+            $results[] = $pseudoCursor;
+            $cursor->skip();
         }
 
         return $results;
@@ -52,7 +58,7 @@ class Mongo extends MongoAbstract
     public function getCursor()
     {
         $source = $this->model->getSource();
-        $cursor = $this->db->$source->find($this->query);
+        $cursor = new AggregateCursor($this->db, $source, $this->aggregate);
 
         return $cursor;
     }
