@@ -27,4 +27,4 @@ class CannotResolveModelException extends \Vegas\Db\Exception
     {
         $this->message = sprintf($this->message, $collectionName);
     }
-} 
+}

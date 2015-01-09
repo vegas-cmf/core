@@ -27,4 +27,3 @@ class ModulesNotSetException extends VegasException
      */
     protected $message = 'Modules are not set in DI container.';
 }
- 

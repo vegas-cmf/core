@@ -26,4 +26,4 @@ class TaskNotFoundException extends CliException
      * @var string
      */
     protected $message = 'Task not found';
-} 
+}

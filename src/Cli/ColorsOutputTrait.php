@@ -90,4 +90,4 @@ trait ColorsOutputTrait
 
         return $colored_string;
     }
-} 
+}

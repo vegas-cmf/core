@@ -50,4 +50,3 @@ trait RegisterHelpersTrait
      */
     abstract public function registerHelper($helperName);
 }
- 

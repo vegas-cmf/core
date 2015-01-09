@@ -26,5 +26,3 @@ class Exception extends VegasException
      */
     protected $message = 'Paginator error';
 }
-
- 

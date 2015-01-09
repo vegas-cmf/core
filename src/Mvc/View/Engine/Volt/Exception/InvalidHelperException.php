@@ -26,4 +26,4 @@ class InvalidHelperException extends Exception
      * @var string
      */
     protected $_message = 'Invalid helper. Helper must be an instance of VoltHelperAbstract';
-} 
+}

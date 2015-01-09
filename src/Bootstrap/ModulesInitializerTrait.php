@@ -13,14 +13,10 @@
 namespace Vegas\Bootstrap;
 
 use Phalcon\Config;
-use Phalcon\DI\FactoryDefault;
-use Phalcon\DI;
-use Phalcon\Mvc\Dispatcher;
 use Vegas\Constants;
 use Vegas\Mvc\Module\Exception\InvalidModulesListException;
 use Vegas\Mvc\Module\Loader as ModuleLoader;
 use Vegas\Mvc\Module\Loader;
-use Vegas\Mvc\Router;
 
 trait ModulesInitializerTrait
 {
@@ -79,4 +75,3 @@ trait ModulesInitializerTrait
      */
     abstract public function getApplication();
 }
- 

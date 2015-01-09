@@ -34,4 +34,4 @@ interface MappingInterface
      * @return mixed
      */
     public function resolve(& $value);
-} 
+}

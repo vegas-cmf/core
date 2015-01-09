@@ -27,4 +27,4 @@ class Exception extends MvcException
      * @var string
      */
     protected $message = 'View error';
-} 
+}

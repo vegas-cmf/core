@@ -25,4 +25,3 @@ class DeleteFailureException extends Exception
      */
     protected $message = 'Unable to delete record.';   
 }
- 

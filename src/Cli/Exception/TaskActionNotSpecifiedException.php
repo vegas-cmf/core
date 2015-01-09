@@ -26,4 +26,4 @@ class TaskActionNotSpecifiedException extends CliException
      * @var string
      */
     protected $message = 'Task action was not specified';
-} 
+}

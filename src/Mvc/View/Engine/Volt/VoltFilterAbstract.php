@@ -44,4 +44,4 @@ abstract class VoltFilterAbstract
     {
         $this->compiler = $compiler;
     }
-} 
+}

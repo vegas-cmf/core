@@ -26,4 +26,3 @@ class ModelNotSetException extends Exception
      */
     protected $message = 'You need to set model for pagination.';
 }
- 

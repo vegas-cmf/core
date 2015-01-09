@@ -37,7 +37,7 @@ abstract class CrudAbstract extends ControllerAbstract
     {
         parent::initialize();
 
-        $this->eventsManager->attach('view:notFoundView', function ($event, $view) {
+        $this->eventsManager->attach('view:notFoundView', function ($event, \Phalcon\Mvc\ViewInterface $view) {
             if (!in_array($this->dispatcher->getActionName(), ['new', 'edit', 'show', 'index'])) {
                 return false;
             }

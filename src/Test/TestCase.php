@@ -13,7 +13,6 @@
 namespace Vegas\Test;
 
 use Phalcon\DI;
-use Vegas\Bootstrap\ModulesInitializerTrait;
 use Vegas\Test\Bootstrap;
 
 /**
@@ -45,9 +44,9 @@ class TestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *
+     * @inheritdoc
      */
-    public function setUp()
+    protected function setUp()
     {
         $config = DI::getDefault()->get('config');
         $bootstrap = new Bootstrap($config);
@@ -95,4 +94,3 @@ class TestCase extends \PHPUnit_Framework_TestCase
         return $this->bootstrap;
     }
 }
- 

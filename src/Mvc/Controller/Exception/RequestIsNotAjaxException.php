@@ -27,4 +27,3 @@ class RequestIsNotAjaxException extends Exception
      */
     protected $message = 'Action require an AJAX request.';
 }
- 

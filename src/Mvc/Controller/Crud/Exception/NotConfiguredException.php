@@ -26,4 +26,3 @@ class NotConfiguredException extends Exception
      */
     protected $message = "CRUD is not configured.";
 }
- 

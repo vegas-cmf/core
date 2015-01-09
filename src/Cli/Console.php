@@ -69,4 +69,3 @@ class Console extends \Phalcon\CLI\Console
         $loader->register();
     }
 }
- 

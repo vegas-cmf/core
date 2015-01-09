@@ -35,4 +35,4 @@ class NotfoundRoute implements RouteInterface
         $router
             ->notFound($route->getPaths());
     }
-} 
+}

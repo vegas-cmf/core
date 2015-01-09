@@ -37,4 +37,3 @@ trait EnvironmentInitializerTrait
      */
     abstract public function getDI();
 }
- 

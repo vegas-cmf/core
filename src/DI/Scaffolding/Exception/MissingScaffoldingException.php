@@ -20,4 +20,3 @@ class MissingScaffoldingException extends \Vegas\DI\Scaffolding\Exception
 {
     protected $message = 'Scaffolding has not been set';
 }
- 

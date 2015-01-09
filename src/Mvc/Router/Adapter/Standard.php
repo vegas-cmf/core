@@ -16,7 +16,6 @@ namespace Vegas\Mvc\Router\Adapter;
 use Phalcon\DI;
 use Phalcon\DiInterface;
 use Phalcon\Mvc\Router;
-use Vegas\DI\InjectionAwareTrait;
 
 /**
  * Class Standard

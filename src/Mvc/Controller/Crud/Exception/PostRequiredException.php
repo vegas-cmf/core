@@ -26,4 +26,3 @@ class PostRequiredException extends Exception
      */
     protected $message = "This is not a POST request!";
 }
- 

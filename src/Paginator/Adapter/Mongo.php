@@ -11,175 +11,12 @@
  */
 namespace Vegas\Paginator\Adapter;
 
-use Phalcon\Paginator\AdapterInterface;
-use Vegas\Paginator\Page;
-
 /**
  * Class Mongo
  * @package Vegas\Paginator\Adapter
  */
-class Mongo implements AdapterInterface
+class Mongo extends MongoAbstract
 {
-    /**
-     * @var
-     * @internal
-     */
-    private $db;
-
-    /**
-     * @var string
-     * @internal
-     */
-    private $modelName;
-
-    /**
-     * @var
-     * @internal
-     */
-    private $model;
-
-    /**
-     * @var int
-     * @internal
-     */
-    private $totalPages;
-
-    /**
-     * @var array
-     * @internal
-     */
-    private $query = array();
-
-    /**
-     * @var int
-     * @internal
-     */
-    private $limit = 10;
-
-    /**
-     * @var int
-     * @internal
-     */
-    private $page = 1;
-
-    /**
-     * @var mixed
-     * @internal
-     */
-    private $sort;
-
-    /**
-     * Constructor
-     * Sets config as class properties
-     *
-     * @param $config
-     */
-    public function __construct($config)
-    {
-        foreach ($config as $key => $value) {
-            $this->$key = $value;
-        }
-
-        $this->validate();
-    }
-
-    /**
-     * Validates model and database
-     *
-     * @throws Exception\ModelNotSetException
-     * @throws Exception\DbNotSetException
-     * @internal
-     */
-    private function validate()
-    {
-        if (empty($this->modelName) && empty($this->model)) {
-            throw new Exception\ModelNotSetException();
-        }
-
-        if (empty($this->model)) {
-            $this->model = new $this->modelName();
-        }
-
-        if (empty($this->modelName)) {
-            $this->modelName = get_class($this->model);
-        }
-
-        if (empty($this->db)) {
-            $this->db = $this->model->getConnection();
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getPaginate()
-    {
-        $page = new Page();
-
-        $page->current = $this->page;
-        $page->next = $this->getNextPage();
-        $page->before = $this->getPreviousPage();
-        $page->total_pages = $this->getTotalPages();
-        $page->items = $this->getResults();
-
-        return $page;
-    }
-
-    /**
-     * Returns previous page number
-     *
-     * @return int|null
-     */
-    public function getPreviousPage()
-    {
-        if ($this->page > 1) {
-            return ($this->page-1);
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns next page number
-     *
-     * @return int|null
-     */
-    public function getNextPage()
-    {
-        if ($this->page < $this->getTotalPages()) {
-            return ($this->page+1);
-        }
-
-        return null;
-    }
-
-    /**
-     * Returns number of pages
-     *
-     * @return int
-     */
-    public function getTotalPages()
-    {
-        if (empty($this->totalPages)) {
-            $this->totalPages = (int)ceil($this->getCursor()->count()/$this->limit);
-        }
-
-        return $this->totalPages;
-    }
-
-    /**
-     * Sets current page
-     *
-     * @param int $page
-     * @return $this
-     */
-    public function setCurrentPage($page)
-    {
-        $this->page = $page;
-
-        return $this;
-    }
-
     /**
      * Returns results for current page
      *
@@ -212,11 +49,12 @@ class Mongo implements AdapterInterface
      * @return mixed
      * @internal
      */
-    private function getCursor()
+    public function getCursor()
     {
         $source = $this->model->getSource();
         $cursor = $this->db->$source->find($this->query);
 
         return $cursor;
     }
+
 }

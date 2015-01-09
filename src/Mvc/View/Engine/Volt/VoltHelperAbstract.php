@@ -44,4 +44,4 @@ abstract class VoltHelperAbstract
     {
         $this->compiler = $compiler;
     }
-} 
+}

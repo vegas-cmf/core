@@ -22,4 +22,3 @@ class InvalidModulesListException extends MvcException
 {
     protected $message = 'Invalid modules list';
 }
- 

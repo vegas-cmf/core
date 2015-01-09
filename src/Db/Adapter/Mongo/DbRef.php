@@ -12,9 +12,6 @@
  
 namespace Vegas\Db\Adapter\Mongo;
 
-use Phalcon\Db\Adapter\Mongo\Collection;
-use Phalcon\Db\Adapter\Mongo\Document;
-
 /**
  * Class DbRef
  * Allows to create MongoDBRef directly from \Phalcon\Mvc\Collection object

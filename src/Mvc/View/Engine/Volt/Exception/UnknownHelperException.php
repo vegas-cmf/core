@@ -26,4 +26,4 @@ class UnknownHelperException extends Exception
      * @var string
      */
     protected $message = 'Unknown helper';
-} 
+}

@@ -181,4 +181,3 @@ class Option
         return $default;
     }
 }
- 

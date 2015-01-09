@@ -25,4 +25,4 @@ class NoRequiredServiceException extends Exception
      * @var string
      */
     protected $message = 'Required service is not available';
-} 
+}

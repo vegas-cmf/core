@@ -19,4 +19,4 @@ namespace Vegas\Db\Adapter\Mongo\Exception;
 class InvalidReferenceException extends \Vegas\Db\Exception
 {
     protected $message = 'Object is not in valid database reference format';
-} 
+}

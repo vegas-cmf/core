@@ -50,4 +50,3 @@ trait RegisterFiltersTrait
      */
     abstract public function registerFilter($filterName);
 }
- 
