@@ -47,9 +47,13 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse(DateTime::isValid(null));
 
         $date = new \DateTime();
+
         // @see http://php.net/manual/en/datetime.formats.date.php
-        $this->assertTrue($date->format('n') <= 12 && DateTime::isValid($date->format('d-m-Y')));
-        $this->assertFalse($date->format('n') > 12 && DateTime::isValid($date->format('d-m-Y')));
+        if ($date->format('j') > 12) {
+            $this->assertFalse(DateTime::isValid($date->format('d/m/Y')));
+        } else {
+            $this->assertTrue(DateTime::isValid($date->format('d/m/Y')));
+        }
 
         $this->assertTrue(DateTime::isValid($date->format('Y-m-d H:i:s')));
         $this->assertTrue(DateTime::isValid($date->format('m/d/Y')));
