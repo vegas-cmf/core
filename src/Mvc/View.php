@@ -268,7 +268,8 @@ class View extends PhalconView
             return $this->resolveRelativePath($tempViewPath);
         } else if (strpos($tempViewPath, './') === 0) {
             return $this->resolveLocalPath($tempViewPath);
-        } else if (file_exists(dirname($tempViewPath))) {
+        } else if (!in_array(dirname($tempViewPath), ['.','..'])
+            && file_exists(dirname($tempViewPath))) {
             return $tempViewPath;
         }
 
