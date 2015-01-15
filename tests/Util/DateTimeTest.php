@@ -12,6 +12,8 @@
 
 namespace Vegas\Tests\Util;
 
+use Vegas\Util\DateTime;
+
 class DateTimeTest extends \PHPUnit_Framework_TestCase
 {
 
@@ -21,42 +23,42 @@ class DateTimeTest extends \PHPUnit_Framework_TestCase
         $dateTime = \Vegas\Util\DateTime::createFromFormat('Y-m-d H:i:s', $now->format('Y-m-d H:i:s'));
         $this->assertInstanceOf('\DateTime', $dateTime);
 
-        $this->assertEquals($now->format(\Vegas\Util\DateTime::$globalDefaultFormat), (string) $dateTime);
-        \Vegas\Util\DateTime::$globalDefaultFormat = 'Y-m-d H:i';
-        $this->assertEquals($now->format(\Vegas\Util\DateTime::$globalDefaultFormat), (string) $dateTime);
+        $this->assertEquals($now->format(DateTime::$globalDefaultFormat), (string) $dateTime);
+        DateTime::$globalDefaultFormat = 'Y-m-d H:i';
+        $this->assertEquals($now->format(DateTime::$globalDefaultFormat), (string) $dateTime);
         $dateTime->setDefaultFormat('Y-m-d');
-        $this->assertNotEquals($now->format(\Vegas\Util\DateTime::$globalDefaultFormat), (string) $dateTime);
+        $this->assertNotEquals($now->format(DateTime::$globalDefaultFormat), (string) $dateTime);
 
         $dateTime->setDefaultFormat(false);
-        \Vegas\Util\DateTime::$globalDefaultFormat = false;
+        DateTime::$globalDefaultFormat = false;
         $this->assertEmpty((string)$dateTime);
     }
 
     public function testShouldNotCreateValidDateTimeFromInvalidDateString()
     {
-        $dateTime = \Vegas\Util\DateTime::createFromFormat('Y-m-d H:i:s', 'Invalid date');
+        $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', 'Invalid date');
         $this->assertFalse($dateTime);
     }
 
     public function testShouldValidateGivenDateString()
     {
-        $this->assertFalse(\Vegas\Util\DateTime::isValid('Invalid date'));
-        $this->assertFalse(\Vegas\Util\DateTime::isValid(time()));
-        $this->assertFalse(\Vegas\Util\DateTime::isValid(null));
+        $this->assertFalse(DateTime::isValid('Invalid date'));
+        $this->assertFalse(DateTime::isValid(time()));
+        $this->assertFalse(DateTime::isValid(null));
 
         $date = new \DateTime();
         // @see http://php.net/manual/en/datetime.formats.date.php
-        $this->assertTrue($date->format('j') <= 12 && \Vegas\Util\DateTime::isValid($date->format('d/m/Y')));
-        $this->assertFalse($date->format('j') > 12 && \Vegas\Util\DateTime::isValid($date->format('d/m/Y')));
+        $this->assertTrue($date->format('n') <= 12 && DateTime::isValid($date->format('d-m-Y')));
+        $this->assertFalse($date->format('n') > 12 && DateTime::isValid($date->format('d-m-Y')));
 
-        $this->assertTrue(\Vegas\Util\DateTime::isValid($date->format('Y-m-d H:i:s')));
-        $this->assertTrue(\Vegas\Util\DateTime::isValid($date->format('m/d/Y')));
+        $this->assertTrue(DateTime::isValid($date->format('Y-m-d H:i:s')));
+        $this->assertTrue(DateTime::isValid($date->format('m/d/Y')));
     }
 
     public function testShouldSerializeDateTimeObjectToJson()
     {
         $now = new \DateTime('now');
-        $dateTime = \Vegas\Util\DateTime::createFromFormat('Y-m-d H:i:s', $now->format('Y-m-d H:i:s'));
+        $dateTime = DateTime::createFromFormat('Y-m-d H:i:s', $now->format('Y-m-d H:i:s'));
 
         $this->assertEquals(json_encode($now->format(\DateTime::ISO8601)), json_encode($dateTime));
     }
