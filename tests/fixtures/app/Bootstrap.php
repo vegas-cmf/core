@@ -13,7 +13,7 @@
 use Vegas\Db\Mapping\Json;
 use Vegas\Db\MappingManager;
 
-class Bootstrap extends \Vegas\Application\Bootstrap
+class Bootstrap extends \Vegas\Mvc\Bootstrap
 {
     public function setup()
     {
