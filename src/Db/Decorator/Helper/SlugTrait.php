@@ -32,4 +32,4 @@ trait SlugTrait
         $slug = new Slug();
         $this->slug = $slug->generate($string);
     }
-} 
+}

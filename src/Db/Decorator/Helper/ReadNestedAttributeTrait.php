@@ -82,4 +82,4 @@ trait ReadNestedAttributeTrait
      * @return mixed
      */
     abstract public function readAttribute($attribute);
-} 
+}

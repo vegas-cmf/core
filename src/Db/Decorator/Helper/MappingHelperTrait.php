@@ -92,4 +92,4 @@ trait MappingHelperTrait
      * @return mixed
      */
     abstract public function resolveMapping($name, $value);
-} 
+}

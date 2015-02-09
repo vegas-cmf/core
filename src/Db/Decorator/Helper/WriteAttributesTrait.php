@@ -38,4 +38,4 @@ trait WriteAttributesTrait
      * @return mixed
      */
     abstract public function writeAttribute($name, $value);
-} 
+}
