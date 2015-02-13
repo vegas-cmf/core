@@ -96,7 +96,7 @@ abstract class CrudAbstract extends ControllerAbstract
      *
      * @throws Crud\Exception\NotConfiguredException
      */
-    private function initializeScaffolding()
+    protected function initializeScaffolding()
     {
         if (!$this->isConfigured()) {
             throw new Crud\Exception\NotConfiguredException();
@@ -110,7 +110,7 @@ abstract class CrudAbstract extends ControllerAbstract
      * @return bool
      * @internal
      */
-    private function isConfigured()
+    protected function isConfigured()
     {
         return ($this->di->has('scaffolding') && !empty($this->modelName) && !empty($this->formName));
     }
