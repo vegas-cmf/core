@@ -32,19 +32,23 @@ abstract class ModelAbstract extends Model
     /**
      * Event fired when record is being created
      */
-    public function beforeCreate()
+    public function beforeValidationOnCreate()
     {
-        $this->created_at = time();
+        if (property_exists($this, 'created_at')) {
+            $this->created_at = time();
+        }
     }
 
     /**
      * Event fired when record is being updated
      */
-    public function beforeUpdate()
+    public function beforeValidationOnUpdate()
     {
-        $this->updated_at = time();
+        if (property_exists($this, 'updated_at')) {
+            $this->updated_at = time();
+        }
     }
-    
+
     /**
      * Finds record by its ID
      *
