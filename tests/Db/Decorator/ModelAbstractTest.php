@@ -18,6 +18,18 @@ use Vegas\Db\Decorator\ModelAbstract;
 
 class FakeModel extends ModelAbstract
 {
+    public $id;
+
+    public $title;
+
+    public $content;
+
+    public $category_id;
+
+    public $created_at;
+
+    public $updated_at;
+
     public function getSource()
     {
         return 'fake_table';
