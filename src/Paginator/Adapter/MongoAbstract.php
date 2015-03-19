@@ -67,12 +67,6 @@ abstract class MongoAbstract implements AdapterInterface
     protected $sort;
 
     /**
-     * @var mixed
-     * @internal
-     */
-    protected $aggregate;
-
-    /**
      * Constructor
      * Sets config as class properties
      *
@@ -85,15 +79,12 @@ abstract class MongoAbstract implements AdapterInterface
         }
 
         $this->validate();
-
-        $this->model = new $this->modelName();
     }
 
     /**
      * Validates model and database
      *
      * @throws Exception\ModelNotSetException
-     * @throws Exception\DbNotSetException
      * @internal
      */
     private function validate()
@@ -114,7 +105,6 @@ abstract class MongoAbstract implements AdapterInterface
             $this->db = $this->model->getConnection();
         }
     }
-
 
     /**
      * Returns previous page number

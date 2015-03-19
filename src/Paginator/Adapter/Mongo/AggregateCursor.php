@@ -88,7 +88,7 @@ class AggregateCursor
      */
     public function current()
     {
-        return $this->cursor->current()['current'];
+        return isset($this->cursor->current()['current']) ? $this->cursor->current()['current'] : null;
     }
 
     /**

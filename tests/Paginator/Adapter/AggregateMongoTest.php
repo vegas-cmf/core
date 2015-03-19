@@ -34,18 +34,23 @@ class AggregateMongoTest extends \PHPUnit_Framework_TestCase
 
     }
 
+    public function testEmptyQuery()
+    {
+        $adapter = new \Vegas\Paginator\Adapter\AggregateMongo(array(
+            'db' => \Phalcon\DI::getDefault()->get('mongo'),
+            'modelName' => '\Vegas\Tests\Stub\Models\FakePaginatorModel'
+        ));
+        $results = $adapter->getResults();
+
+        $this->assertCount(3, $results);
+    }
+
     public function testPaginator()
     {
         $adapter = new \Vegas\Paginator\Adapter\AggregateMongo(array(
             'db' => \Phalcon\DI::getDefault()->get('mongo'),
             'modelName' => '\Vegas\Tests\Stub\Models\FakePaginatorModel',
-            'limit' => 10,
-            'page' => 1,
-            'query' => [  ],
-            'sort' => [
-                'date' => -1
-            ],
-            'aggregate' => [
+            'query' => [
                 [
                     '$project' => [
                         'fake_field' => 1,
@@ -70,7 +75,6 @@ class AggregateMongoTest extends \PHPUnit_Framework_TestCase
             'modelName' => '\Vegas\Tests\Stub\Models\FakePaginatorModel',
             'limit' => 10,
             'page' => 1,
-            'query' => [  ],
             'aggregate' => [
                 [
                     '$project' => [

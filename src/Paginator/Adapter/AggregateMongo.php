@@ -20,6 +20,18 @@ use Vegas\Paginator\Adapter\Mongo\AggregateCursor;
 class AggregateMongo extends MongoAbstract
 {
     /**
+     * @inheritdoc
+     */
+    public function __construct($config)
+    {
+        if (isset($config['aggregate'])) {
+            $config['query'] = $config['aggregate'];
+        }
+
+        parent::__construct($config);
+    }
+
+    /**
      * Returns results for current page
      *
      * @return array
@@ -58,7 +70,7 @@ class AggregateMongo extends MongoAbstract
     public function getCursor()
     {
         $source = $this->model->getSource();
-        $cursor = new AggregateCursor($this->db, $source, $this->aggregate);
+        $cursor = new AggregateCursor($this->db, $source, $this->query);
 
         return $cursor;
     }
