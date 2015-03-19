@@ -46,7 +46,7 @@ class AggregateMongo extends MongoAbstract
         $results = array();
         $i = 0;
 
-        while($cursor->valid() && $i++ < $this->limit) {
+        while($cursor->valid() && $cursor->current() && $i++ < $this->limit) {
 
             $object = new $this->modelName();
             $object->writeAttributes($cursor->current());

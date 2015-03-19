@@ -42,7 +42,7 @@ class AggregateMongoTest extends \PHPUnit_Framework_TestCase
         ));
         $results = $adapter->getResults();
 
-        $this->assertCount(3, $results);
+        $this->assertCount(0, $results);
     }
 
     public function testPaginator()
