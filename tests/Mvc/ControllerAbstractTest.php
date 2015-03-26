@@ -15,31 +15,40 @@ use Vegas\Test\TestCase;
 
 class ControllerAbstractTest extends TestCase
 {
+    /**
+     * @expectedException \Phalcon\Mvc\Dispatcher\Exception
+     * @expectedExceptionMessage Action 'no-action-like-this' was not found on handler 'Frontend\Fake'
+     */
     public function testNoActionErrorResponse()
     {
-        $response = $this->handleUri('/test/front/no-action-like-this');
-        $this->assertEquals(
-            '404 Action \'no-action-like-this\' was not found on handler \'Frontend\Fake\'',
-            $response->getHeaders()->get('Status')
-        );
+        $this->handleUri('/test/front/no-action-like-this');
     }
 
+    /**
+     * @expectedException \Vegas\Exception
+     * @expectedExceptionCode 403
+     */
     public function test403ErrorResponse()
     {
-        $response = $this->handleUri('/test/front/error/403');
-        $this->assertEquals('403 Message', $response->getHeaders()->get('Status'));
+        $this->handleUri('/test/front/error/403');
     }
 
+    /**
+     * @expectedException \Vegas\Exception
+     * @expectedExceptionCode 404
+     */
     public function test404ErrorResponse()
     {
-        $response = $this->handleUri('/test/front/error/404');
-        $this->assertEquals('404 Message', $response->getHeaders()->get('Status'));
+        $this->handleUri('/test/front/error/404');
     }
 
+    /**
+     * @expectedException \Vegas\Exception
+     * @expectedExceptionCode 500
+     */
     public function test500ErrorResponse()
     {
-        $response = $this->handleUri('/test/front/error/500');
-        $this->assertEquals('500 Message', $response->getHeaders()->get('Status'));
+        $this->handleUri('/test/front/error/500');
     }
 
     public function testJson()
