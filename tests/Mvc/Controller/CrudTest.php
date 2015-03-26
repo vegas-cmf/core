@@ -42,13 +42,13 @@ class CrudTest extends TestCase
         }
     }
 
+    /**
+     * @expectedException \Vegas\Mvc\Controller\Crud\Exception\NotConfiguredException
+     */
     public function testNotConfiguredCrud()
     {
         $this->request()->setRequestMethod('GET');
-
-        $content = $response = $this->handleUri('/test/brokencrud/new')->getContent();
-        $this->assertContains('500', $content);
-        $this->assertContains('CRUD is not configured.', $content);
+        $this->handleUri('/test/brokencrud/new')->getContent();
     }
 
     public function testNew()
@@ -63,18 +63,12 @@ class CrudTest extends TestCase
         $this->assertContains('<form action="/test/crud/create/" method="POST" role="form">', $content);
     }
 
-    public function testNotPostCreate()
-    {
-        $content = $this->handleUri('/test/crud/create')->getContent();
-
-        $this->assertContains('500', $content);
-        $this->assertContains('This is not a POST request!', $content);
-    }
-
+    /**
+     * @expectedException \Vegas\Mvc\Controller\Crud\Exception\PostRequiredException
+     */
     public function testNotPostCreateResponse()
     {
-        $response = $this->handleUri('/test/crud/create');
-        $this->assertEquals('500 This is not a POST request!', $response->getHeaders()->get('Status'));
+        $this->handleUri('/test/crud/create');
     }
 
     public function testPostCreate()
@@ -126,19 +120,12 @@ class CrudTest extends TestCase
         $this->assertContains('<form action="/test/crud/update/'.$this->model->getId().'" method="POST" role="form">', $content);
     }
 
-    public function testNotPostUpdate()
-    {
-        $content = $this->handleUri('/test/crud/update/'.$this->model->getId())->getContent();
-
-        $this->assertContains('500', $content);
-        $this->assertContains('This is not a POST request!', $content);
-    }
-
+    /**
+     * @expectedException \Vegas\Mvc\Controller\Crud\Exception\PostRequiredException
+     */
     public function testNotPostUpdateResponse()
     {
-        $response = $this->handleUri('/test/crud/update/'.$this->model->getId());
-        $this->assertContains('500', $response->getHeaders()->get('Status'));
-        $this->assertContains('This is not a POST request!', $response->getHeaders()->get('Status'));
+        $this->handleUri('/test/crud/update/'.$this->model->getId());
     }
 
     public function testPostUpdate()
@@ -210,13 +197,12 @@ class CrudTest extends TestCase
         $this->assertFalse($this->model);
     }
 
+    /**
+     * @expectedException \MongoException
+     */
     public function testDeleteException()
     {
         $this->request()->setRequestMethod('GET');
-
-        $content = $this->handleUri('/test/crud/delete/RanDoMn0t1D4sUR3')->getContent();
-
-        $this->assertContains('500', $content);
-        $this->assertContains('Invalid object ID', $content);
+        $this->handleUri('/test/crud/delete/RanDoMn0t1D4sUR3');
     }
 }

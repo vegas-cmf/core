@@ -37,11 +37,11 @@ class ExceptionResolver implements InjectionAwareInterface
      */
     public function resolve(\Exception $exception)
     {
-        if (Constants::DEFAULT_ENV === $this->di->get('environment')) {
-            $error = $this->prepareLiveEnvException($exception);
-        } else {
-            $error = $this->prepareDevEnvException($exception);
+        if (Constants::DEFAULT_ENV !== $this->di->get('environment')) {
+            throw $exception;
         }
+
+        $error = $this->prepareLiveEnvException($exception);
 
         try {
             $rendered = $this->renderLayoutForError($error);
@@ -91,27 +91,6 @@ class ExceptionResolver implements InjectionAwareInterface
     }
 
     /**
-     * Prepares error for development environment
-     *
-     * @param \Exception $exception
-     * @return VegasException
-     * @internal
-     */
-    private function prepareDevEnvException(\Exception $exception)
-    {
-        switch ($exception->getCode()) {
-            case 403:
-                return new VegasException($exception->getMessage(), 403, $exception);
-            case Dispatcher::EXCEPTION_HANDLER_NOT_FOUND:
-            case Dispatcher::EXCEPTION_ACTION_NOT_FOUND:
-            case 404:
-                return new VegasException($exception->getMessage(), 404, $exception);
-            default:
-                return new VegasException($exception->getMessage(), 500, $exception);
-        }
-    }
-
-    /**
      * Renders error using error layout
      *
      * @param VegasException $error
@@ -141,6 +120,8 @@ class ExceptionResolver implements InjectionAwareInterface
             }
         }
 
+        $view->disable();
+
         return false;
     }
 
@@ -152,15 +133,6 @@ class ExceptionResolver implements InjectionAwareInterface
      */
     private function displayRawError(VegasException $error)
     {
-        if (Constants::DEV_ENV === $this->di->get('environment')) {
-            trigger_error(
-                $error->getCode() . ' ' .
-                $error->getMessage() . ' ' .
-                $error->getPrevious()->getTraceAsString(),
-                E_USER_ERROR
-            );
-        } elseif (Constants::TEST_ENV === $this->di->get('environment')) {
-            echo $error->getCode(). PHP_EOL .$error->getMessage() . PHP_EOL . $error->getPrevious()->getTraceAsString();
-        }
+        echo $error->getCode() . ' ' . $error->getMessage();
     }
 }

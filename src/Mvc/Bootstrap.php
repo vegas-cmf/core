@@ -18,6 +18,7 @@ use Phalcon\DI;
 use Phalcon\DiInterface;
 use Phalcon\Mvc\Dispatcher;
 use Vegas\Bootstrap\EnvironmentInitializerTrait;
+use Vegas\Bootstrap\ErrorHandlerInitializerTrait;
 use Vegas\Bootstrap\LoaderInitializerTrait;
 use Vegas\Bootstrap\ModulesInitializerTrait;
 use Vegas\Bootstrap\RoutesInitializerTrait;
@@ -35,6 +36,8 @@ class Bootstrap implements BootstrapInterface
     use RoutesInitializerTrait;
 
     use EnvironmentInitializerTrait;
+
+    use ErrorHandlerInitializerTrait;
 
     use LoaderInitializerTrait;
 
@@ -134,6 +137,7 @@ class Bootstrap implements BootstrapInterface
         $this->di->set('config', $this->config);
 
         $this->initEnvironment($this->config);
+        $this->initErrorHandler($this->config);
         $this->initLoader($this->config);
         $this->initModules($this->config);
         $this->initRoutes($this->config);
