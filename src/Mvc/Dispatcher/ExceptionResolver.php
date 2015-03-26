@@ -133,6 +133,6 @@ class ExceptionResolver implements InjectionAwareInterface
      */
     private function displayRawError(VegasException $error)
     {
-        echo $error->getCode() . ' ' . $error->getMessage();
+        $this->di->get('response')->setContent($error->getCode() . ' ' . $error->getMessage());
     }
 }
