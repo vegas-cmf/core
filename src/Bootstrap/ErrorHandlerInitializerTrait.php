@@ -19,7 +19,7 @@ trait ErrorHandlerInitializerTrait
      */
     public function initErrorHandler(Config $config)
     {
-        if ($this->getDI()->get('environment') === Constants::DEFAULT_ENV) {
+        if ($this->getDI()->get('environment') === Constants::PROD_ENV) {
             return;
         }
 
