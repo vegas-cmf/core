@@ -30,11 +30,11 @@ trait ErrorHandlerInitializerTrait
 
         register_shutdown_function(function() {
             if ((error_reporting() & E_ERROR) === E_ERROR) {
-                $last_error = error_get_last();
+                $lastError = error_get_last();
 
-                if ($last_error['type'] === E_ERROR) {
+                if ($lastError['type'] === E_ERROR) {
                     // fatal error
-                    $this->errorHandler(E_ERROR, $last_error['message'], $last_error['file'], $last_error['line']);
+                    $this->errorHandler(E_ERROR, $lastError['message'], $lastError['file'], $lastError['line']);
                 }
             }
         });
