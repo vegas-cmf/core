@@ -34,7 +34,7 @@ trait InjectionAwareTrait
      * @param \Phalcon\DiInterface $dependencyInjector
      * @return $this
      */
-    public function setDI($dependencyInjector)
+    public function setDI(\Phalcon\DiInterface $dependencyInjector)
     {
         $this->di = $dependencyInjector;
 

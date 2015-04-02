@@ -38,7 +38,7 @@ class Console extends \Phalcon\CLI\Console
      *
      * @param array $modules
      */
-    public function registerModules($modules)
+    public function registerModules(array $modules)
     {
         $this->registerSharedData($modules);
         parent::registerModules($modules);
@@ -47,10 +47,10 @@ class Console extends \Phalcon\CLI\Console
     /**
      * Registers namespaces for models and services within modules
      *
-     * @param $modules
+     * @param array $modules
      * @internal
      */
-    private function registerSharedData($modules)
+    private function registerSharedData(array $modules)
     {
         $loader = new Loader();
 

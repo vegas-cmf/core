@@ -70,9 +70,9 @@ abstract class MongoAbstract implements AdapterInterface
      * Constructor
      * Sets config as class properties
      *
-     * @param $config
+     * @param array $config
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         foreach ($config as $key => $value) {
             $this->$key = $value;
@@ -177,4 +177,21 @@ abstract class MongoAbstract implements AdapterInterface
         return $page;
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function setLimit($limit)
+    {
+        $this->limit = $limit;
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getLimit()
+    {
+        return $this->limit;
+    }
 }

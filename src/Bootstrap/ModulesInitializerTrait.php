@@ -55,6 +55,7 @@ trait ModulesInitializerTrait
             if (file_exists($moduleConfigFile)) {
                 $moduleConfig = require $moduleConfigFile;
                 if (is_array($moduleConfig)) {
+                    $moduleConfig = new \Phalcon\Config($moduleConfig);
                     $config->merge($moduleConfig);
                 }
             }

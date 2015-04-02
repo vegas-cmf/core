@@ -38,7 +38,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     /**
      * Registers module autoloaders
      */
-    public function registerAutoloaders()
+    public function registerAutoloaders(\Phalcon\DiInterface $di = null)
     {
         $this->registerControllerScopesAutoloader();
     }
@@ -74,7 +74,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
      *
      * @param \Phalcon\DiInterface $di
      */
-    public function registerServices($di)
+    public function registerServices(\Phalcon\DiInterface $di)
     {
         $this->registerDispatcherNamespace($di);
         $this->registerViewComponent($di);

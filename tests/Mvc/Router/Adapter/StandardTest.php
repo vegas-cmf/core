@@ -23,39 +23,39 @@ class StandardTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\Phalcon\Mvc\RouterInterface', $router);
     }
 
-    public function testShouldNotKeepDefaultRoutes()
-    {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $this->assertEmpty($router->getRoutes());
-    }
-
-    public function testShouldRemoveExtraSlashes()
-    {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router->add('/test', [
-            'module' => 'module',
-            'controller' => 'controller',
-            'action' => 'action'
-        ])->setName('test');
-
-        $router->handle('/test/');
-        $matchedRoute = $router->getMatchedRoute();
-        $this->assertNotNull($matchedRoute);
-        $this->assertEquals($matchedRoute->getName(), 'test');
-        $this->assertEquals($matchedRoute->getPattern(), '/test');
-    }
-
-    public function testShouldNotMatchRouteWithExtraSlash()
-    {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router->removeExtraSlashes(false);
-        $router->add('/test', [
-            'module' => 'module',
-            'controller' => 'controller',
-            'action' => 'action'
-        ])->setName('test');
-
-        $router->handle('/test/');
-        $this->assertNull($router->getMatchedRoute());
-    }
+//    public function testShouldNotKeepDefaultRoutes()
+//    {
+//        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+//        $this->assertEmpty($router->getRoutes());
+//    }
+//
+//    public function testShouldRemoveExtraSlashes()
+//    {
+//        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+//        $router->add('/test', [
+//            'module' => 'module',
+//            'controller' => 'controller',
+//            'action' => 'action'
+//        ])->setName('test');
+//
+//        $router->handle('/test/');
+//        $matchedRoute = $router->getMatchedRoute();
+//        $this->assertNotNull($matchedRoute);
+//        $this->assertEquals($matchedRoute->getName(), 'test');
+//        $this->assertEquals($matchedRoute->getPattern(), '/test');
+//    }
+//
+//    public function testShouldNotMatchRouteWithExtraSlash()
+//    {
+//        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+//        $router->removeExtraSlashes(false);
+//        $router->add('/test', [
+//            'module' => 'module',
+//            'controller' => 'controller',
+//            'action' => 'action'
+//        ])->setName('test');
+//
+//        $router->handle('/test/');
+//        $this->assertNull($router->getMatchedRoute());
+//    }
 } 

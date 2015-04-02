@@ -95,84 +95,84 @@ class View extends PhalconView
      * @return null|void
      * @throws Exception
      */
-    protected function _engineRender($engines, $viewPath, $silence, $mustClean, $cache)
-    {
-        $basePath = $this->_basePath;
-        $notExists = true;
-
-        if (is_object($cache)) {
-            $renderLevel = intval($this->_renderLevel);
-            $cacheLevel = intval($this->_cacheLevel);
-            if ($renderLevel >= $cacheLevel) {
-                if ($cache->isStarted() === false) {
-                    $viewOptions = $this->_options;
-                    if (is_array($viewOptions)) {
-                        if (isset($viewOptions['cache'])) {
-                            $cacheOptions = $viewOptions['cache'];
-                            if (is_array($cacheOptions)) {
-                                if (isset($cacheOptions['key'])) {
-                                    $key = $cacheOptions['key'];
-                                }
-                                if (isset($cacheOptions['lifetime'])) {
-                                    $lifeTime = $cacheOptions['lifetime'];
-                                }
-                            }
-
-                            if (!isset($key) || !$key) {
-                                $key = md5($viewPath);
-                            }
-
-                            if (!isset($lifeTime)) {
-                                $lifeTime = 0;
-                            }
-
-                            $cachedView = $cache->start($key, $lifeTime);
-                            if (!$cachedView) {
-                                $this->_content = $cachedView;
-                                return null;
-                            }
-                        }
-
-                        if (!$cache->isFresh()) {
-                            return null;
-                        }
-                    }
-                }
-            }
-        }
-        $viewParams = $this->_viewParams;
-        $eventsManager = $this->_eventsManager;
-
-        foreach ($engines as $extension => $engine) {
-            $viewEnginePath = $basePath . $this->resolveFullViewPath($viewPath) . $extension;
-
-            if (file_exists($viewEnginePath)) {
-                if (is_object($eventsManager)) {
-                    $this->_activeRenderPath = $viewEnginePath;
-                    if ($eventsManager->fire("view:beforeRenderView", $this, $viewEnginePath) === false) {
-                        continue;
-                    }
-                }
-                $engine->render($viewEnginePath, $viewParams, $mustClean);
-
-                $notExists = false;
-                if (is_object($eventsManager)) {
-                    $eventsManager->fire("view:afterRenderView", $this);
-                }
-                break;
-            }
-        }
-        if ($notExists) {
-            if (is_object($eventsManager)) {
-                $this->_activeRenderPath = $viewEnginePath;
-                $eventsManager->fire("view:notFoundView", $this, $viewEnginePath);
-            }
-
-            if (!$silence) {
-                throw new Exception(sprintf("View %s was not found in the views directory", $viewEnginePath));
-            }
-        }
-    }
+//    protected function _engineRender($engines, $viewPath, $silence, $mustClean, $cache)
+//    {
+//        $basePath = $this->_basePath;
+//        $notExists = true;
+//
+//        if (is_object($cache)) {
+//            $renderLevel = intval($this->_renderLevel);
+//            $cacheLevel = intval($this->_cacheLevel);
+//            if ($renderLevel >= $cacheLevel) {
+//                if ($cache->isStarted() === false) {
+//                    $viewOptions = $this->_options;
+//                    if (is_array($viewOptions)) {
+//                        if (isset($viewOptions['cache'])) {
+//                            $cacheOptions = $viewOptions['cache'];
+//                            if (is_array($cacheOptions)) {
+//                                if (isset($cacheOptions['key'])) {
+//                                    $key = $cacheOptions['key'];
+//                                }
+//                                if (isset($cacheOptions['lifetime'])) {
+//                                    $lifeTime = $cacheOptions['lifetime'];
+//                                }
+//                            }
+//
+//                            if (!isset($key) || !$key) {
+//                                $key = md5($viewPath);
+//                            }
+//
+//                            if (!isset($lifeTime)) {
+//                                $lifeTime = 0;
+//                            }
+//
+//                            $cachedView = $cache->start($key, $lifeTime);
+//                            if (!$cachedView) {
+//                                $this->_content = $cachedView;
+//                                return null;
+//                            }
+//                        }
+//
+//                        if (!$cache->isFresh()) {
+//                            return null;
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        $viewParams = $this->_viewParams;
+//        $eventsManager = $this->_eventsManager;
+//
+//        foreach ($engines as $extension => $engine) {
+//            $viewEnginePath = $basePath . $this->resolveFullViewPath($viewPath) . $extension;
+//
+//            if (file_exists($viewEnginePath)) {
+//                if (is_object($eventsManager)) {
+//                    $this->_activeRenderPath = $viewEnginePath;
+//                    if ($eventsManager->fire("view:beforeRenderView", $this, $viewEnginePath) === false) {
+//                        continue;
+//                    }
+//                }
+//                $engine->render($viewEnginePath, $viewParams, $mustClean);
+//
+//                $notExists = false;
+//                if (is_object($eventsManager)) {
+//                    $eventsManager->fire("view:afterRenderView", $this);
+//                }
+//                break;
+//            }
+//        }
+//        if ($notExists) {
+//            if (is_object($eventsManager)) {
+//                $this->_activeRenderPath = $viewEnginePath;
+//                $eventsManager->fire("view:notFoundView", $this, $viewEnginePath);
+//            }
+//
+//            if (!$silence) {
+//                throw new Exception(sprintf("View %s was not found in the views directory", $viewEnginePath));
+//            }
+//        }
+//    }
 
     /**
      * Resolves full path to view file
