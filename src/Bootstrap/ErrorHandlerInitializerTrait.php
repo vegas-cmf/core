@@ -48,7 +48,7 @@ trait ErrorHandlerInitializerTrait
      * @param $file
      * @param $line
      */
-    protected function errorHandler($code, $message, $file, $line)
+    public function errorHandler($code, $message, $file, $line)
     {
         $this->debug->setShowBackTrace(false);
         $this->debug->onUncaughtException(new \ErrorException($message, $code, 0, $file, $line));
