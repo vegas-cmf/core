@@ -14,6 +14,7 @@ namespace Vegas\Tests\Db\Decorator;
 
 use Phalcon\Utils\Slug;
 use Vegas\Db\Decorator\CollectionAbstract;
+use Vegas\Db\Decorator\Helper\RepositoryTrait;
 
 class Fake extends CollectionAbstract
 {
@@ -23,16 +24,21 @@ class Fake extends CollectionAbstract
     }
 }
 
+abstract class FakeRepository extends Fake
+{
+    use RepositoryTrait;
+}
+
 class CollectionAbstractTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testCreateDocument()
     {
-        $data = array(
+        $data = [
             'title' =>  'Title test',
             'content'   =>  'Content test',
             'category_id' => new \MongoId()
-        );
+        ];
 
         $fake = new Fake();
         $this->assertInstanceOf('\Vegas\Db\Decorator\CollectionAbstract', $fake);
@@ -52,15 +58,18 @@ class CollectionAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($fake->save());
     }
 
+    /**
+     * @depends testCreateDocument
+     */
     public function testUpdateDocument()
     {
-        $fake = Fake::findFirst();
+        $fake = FakeRepository::findFirst();
         $fake->title = 'New title';
 
         $this->assertTrue($fake->save());
         $this->assertInstanceOf('MongoInt32', $fake->updated_at);
 
-        $fake = Fake::findFirst(array(array('_id' => $fake->getId())));
+        $fake = FakeRepository::findById($fake->getId());
         $this->assertEquals('New title', $fake->title);
     }
 } 
