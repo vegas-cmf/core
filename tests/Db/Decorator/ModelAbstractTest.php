@@ -14,6 +14,7 @@ namespace Vegas\Tests\Db\Decorator;
 
 use Phalcon\DI;
 use Phalcon\Utils\Slug;
+use Vegas\Db\Decorator\Helper\RepositoryTrait;
 use Vegas\Db\Decorator\ModelAbstract;
 
 class FakeModel extends ModelAbstract
@@ -34,6 +35,11 @@ class FakeModel extends ModelAbstract
     {
         return 'fake_table';
     }
+}
+
+abstract class FakeModelRepository extends FakeModel
+{
+    use RepositoryTrait;
 }
 
 class ModelAbstractTest extends \PHPUnit_Framework_TestCase
@@ -62,11 +68,11 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldCreateRecord()
     {
-        $data = array(
+        $data = [
             'title' =>  'Title test',
             'content'   =>  'Content test',
             'category_id' => rand(1000, 9999)
-        );
+        ];
 
         $fake = new FakeModel();
         $this->assertInstanceOf('\Vegas\Db\Decorator\ModelAbstract', $fake);
@@ -86,25 +92,31 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($fake->save());
     }
 
+    /**
+     * @depends testShouldCreateRecord
+     */
     public function testShouldFindRecordByItsId()
     {
-        $fake = FakeModel::findFirst();
+        $fake = FakeModelRepository::findFirst();
 
         $this->assertSame(
             $fake->toArray(),
-            FakeModel::findById($fake->getId())->toArray()
+            FakeModelRepository::findById($fake->getId())->toArray()
         );
     }
 
+    /**
+     * @depends testShouldCreateRecord
+     */
     public function testShouldUpdateRecord()
     {
-        $fake = FakeModel::findFirst();
+        $fake = FakeModelRepository::findFirst();
         $fake->title = 'New title';
 
         $this->assertTrue($fake->save());
         $this->assertInternalType('int', $fake->updated_at);
 
-        $fake = FakeModel::findFirst();
+        $fake = FakeModelRepository::findFirst();
         $this->assertEquals('New title', $fake->title);
     }
 }
