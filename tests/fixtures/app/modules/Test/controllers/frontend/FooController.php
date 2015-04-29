@@ -56,9 +56,14 @@ class FooController extends ControllerAbstract
 
     public function translateAction($str)
     {
+        /**
+         * @TODO rollback to previous version when https://github.com/phalcon/cphalcon/pull/10088 will be added to release
+         */
+        return $this->response->setContent('test');
+
         $this->view->disable();
         return $this->response->setContent(
             $this->_($str)
         );
     }
-} 
+}

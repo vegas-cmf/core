@@ -31,10 +31,12 @@ trait ColorsOutputTrait
     private $backgroundColors = array();
 
     /**
+     * @TODO Task constructor is final in Phalcon 2.0, need to move this
+     *
      * Constructors
      * Defines available colors
      */
-    public function __construct()
+    /*public function __construct()
     {
         // Set up shell colors
         $this->foregroundColors['black'] = '0;30';
@@ -62,7 +64,7 @@ trait ColorsOutputTrait
         $this->backgroundColors['magenta'] = '45';
         $this->backgroundColors['cyan'] = '46';
         $this->backgroundColors['light_gray'] = '47';
-    }
+    }*/
 
     /**
      * Returns colored string

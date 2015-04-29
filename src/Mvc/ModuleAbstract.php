@@ -112,7 +112,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     {
         $di->set('view', function() use ($di) {
             $viewDir = $this->dir . '/views';
-            $view = new View($di->get('config')->application->view->toArray(), $viewDir);
+            $view = new View($di->get('config')->application->view, $viewDir);
 
             if (file_exists($viewDir)) {
                 $view->setViewsDir($viewDir);
