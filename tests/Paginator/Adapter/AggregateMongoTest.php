@@ -32,6 +32,9 @@ class AggregateMongoTest extends \PHPUnit_Framework_TestCase
         $model->fake_field = 3;
         $model->save();
 
+        if (!method_exists('MongoCollection', 'aggregateCursor')) {
+            $this->fail('Missing MongoCollection::aggregateCursor() method. MongoDB 3 is required for Vegas CMF to work properly.');
+        }
     }
 
     public function testEmptyQuery()
