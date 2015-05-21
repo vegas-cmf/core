@@ -16,7 +16,6 @@ use Phalcon\Config;
 use Vegas\Constants;
 use Vegas\Mvc\Module\Exception\InvalidModulesListException;
 use Vegas\Mvc\Module\Loader as ModuleLoader;
-use Vegas\Mvc\Module\Loader;
 
 trait ModulesInitializerTrait
 {
@@ -28,7 +27,7 @@ trait ModulesInitializerTrait
         $moduleLoader = new ModuleLoader($this->getDI());
         //registers modules defined in modules.php file
         $modulesFile = $config->application->configDir
-            . Loader::MODULE_STATIC_FILE;
+            . ModuleLoader::MODULE_STATIC_FILE;
         /**
          * For non-default environment modules are being dumped in each application start
          */
