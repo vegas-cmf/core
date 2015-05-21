@@ -171,14 +171,14 @@ class Loader
         $defaultProviders = [
             'vegas-cmf'
         ];
-        $providerNames = $this->di->get('config')->application->vendorModuleProvider;
 
-        if (is_null($providerNames)) {
+        $appConfig = $this->di->get('config')->application;
+        if (!isset($appConfig->vendorModuleProvider)) {
             $providerNames = [];
-        } else if (is_string($providerNames)) {
-            $providerNames = [$providerNames];
+        } else if (is_string($appConfig->vendorModuleProvider)) {
+            $providerNames = [$appConfig->vendorModuleProvider];
         } else {
-            $providerNames = (array)$providerNames;
+            $providerNames = $appConfig->vendorModuleProvider->toArray();
         }
 
         return array_unique(array_merge($defaultProviders, $providerNames));
