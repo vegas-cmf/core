@@ -26,11 +26,11 @@ trait LoaderInitializerTrait
     {
         $loader = new Loader();
         $loader->registerDirs(
-            array(
+            [
                 $config->application->libraryDir,
                 $config->application->pluginDir,
                 $config->application->taskDir
-            )
+            ]
         )->register();
     }
 }

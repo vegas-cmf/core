@@ -12,6 +12,7 @@
  
 namespace Vegas\Mvc\Module;
 
+use Phalcon\DiInterface;
 use Phalcon\Text;
 use Vegas\Util\FileWriter;
 
@@ -30,6 +31,21 @@ class Loader
      * Name of file containing list of modules
      */
     const MODULE_STATIC_FILE = 'modules.php';
+
+    /**
+     * Dependency injector
+     *
+     * @var DiInterface $dependencyInjector
+     */
+    protected $di;
+
+    /**
+     * @param DiInterface $di
+     */
+    public function __construct(DiInterface $di)
+    {
+        $this->di = $di;
+    }
 
     /**
      * Generates list of modules into source file
@@ -101,15 +117,30 @@ class Loader
             )
         );
 
-        $vendorDir .= DIRECTORY_SEPARATOR . 'vegas-cmf';
-        $directoryIterator = new \DirectoryIterator($vendorDir);
+        foreach ($this->getModuleProviders() as $provider) {
+            $providerDir = $vendorDir . DIRECTORY_SEPARATOR . $provider;
+            $this->dumpSingleProviderModulesFromVendor($modulesList, $providerDir);
+        }
+
+        return $modulesList;
+    }
+
+    /**
+     * Extracts Vegas modules from specific provider in vendor directory.
+     *
+     * @param array $modulesList
+     * @param string $providerDir directory path for module provider (e.x. vegas-cmf)
+     */
+    private function dumpSingleProviderModulesFromVendor(array &$modulesList, $providerDir)
+    {
+        $directoryIterator = new \DirectoryIterator($providerDir);
         foreach ($directoryIterator as $libDir) {
             if ($libDir->isDot()) {
                 continue;
             }
             //creates path to Module.php file
             $moduleSettingsFile = implode(DIRECTORY_SEPARATOR, [
-                $vendorDir, $libDir, 'module', self::MODULE_SETTINGS_FILE
+                $providerDir, $libDir, 'module', self::MODULE_SETTINGS_FILE
             ]);
 
             if (!file_exists($moduleSettingsFile)) {
@@ -120,13 +151,36 @@ class Loader
             if (!isset($modulesList[$baseName])) {
                 $modulesList[$baseName] = [
                     'className' =>  $baseName
-                                        . '\\'
-                                        . pathinfo(self::MODULE_SETTINGS_FILE, PATHINFO_FILENAME),
+                        . '\\'
+                        . pathinfo(self::MODULE_SETTINGS_FILE, PATHINFO_FILENAME),
                     'path'  =>  $moduleSettingsFile
                 ];
             }
         }
+    }
 
-        return $modulesList;
+    /**
+     * Get available module providers - default is vegas-cmf.
+     * Additional providers can be placed under application->vendorModuleProvider key in config file.
+     * Value of the key can be either a string with name or an array with multiple names.
+     *
+     * @return array
+     */
+    private function getModuleProviders()
+    {
+        $defaultProviders = [
+            'vegas-cmf'
+        ];
+        $providerNames = $this->di->get('config')->application->vendorModuleProvider;
+
+        if (is_null($providerNames)) {
+            $providerNames = [];
+        } else if (is_string($providerNames)) {
+            $providerNames = [$providerNames];
+        } else {
+            $providerNames = (array)$providerNames;
+        }
+
+        return array_unique(array_merge($defaultProviders, $providerNames));
     }
 }
