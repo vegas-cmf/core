@@ -44,7 +44,7 @@ abstract class TaskAbstract extends \Phalcon\CLI\Task
      * @var array
      * @internal
      */
-    private $outputBuffer = array();
+    private $outputBuffer = [];
 
     /**
      * Available task actions
@@ -52,7 +52,7 @@ abstract class TaskAbstract extends \Phalcon\CLI\Task
      * @var array
      * @internal
      */
-    private $actions = array();
+    private $actions = [];
 
     /**
      * Action which is going to be executed
@@ -104,16 +104,16 @@ abstract class TaskAbstract extends \Phalcon\CLI\Task
         try {
             $this->validate($this->args);
         } catch (InvalidArgumentException $ex) {
-            $this->throwError(strtr(':command: Invalid argument `:argument` for option `:option`', array(
+            $this->throwError(strtr(':command: Invalid argument `:argument` for option `:option`', [
                 ':command' => sprintf('%s %s', $this->dispatcher->getParam('activeTask'), $this->dispatcher->getParam('activeAction')),
                 ':option' => $ex->getOption(),
                 ':argument' => $ex->getArgument()
-            )));
+            ]));
         } catch (InvalidOptionException $ex) {
-            $this->throwError(strtr(':command: Invalid option `:option`', array(
+            $this->throwError(strtr(':command: Invalid option `:option`', [
                 ':command' => sprintf('%s %s', $this->dispatcher->getParam('activeTask'), $this->dispatcher->getParam('activeAction')),
                 ':option' => $ex->getOption()
-            )));
+            ]));
         }
 
         return true;
@@ -218,6 +218,17 @@ abstract class TaskAbstract extends \Phalcon\CLI\Task
     public function getOutput()
     {
         return implode('', $this->outputBuffer);
+    }
+
+    /**
+     * Clears collected output buffer
+     *
+     * @return $this
+     */
+    public function clearOutput()
+    {
+        $this->outputBuffer = [];
+        return $this;
     }
 
     /**
