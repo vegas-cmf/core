@@ -22,7 +22,7 @@ trait RepositoryTrait
     /**
      * {@inheritdoc}
      */
-    public static function find($parameters=null)
+    public static function find(array $parameters = null)
     {
         $classname = get_parent_class(__CLASS__);
         return $classname::find($parameters);
@@ -31,7 +31,7 @@ trait RepositoryTrait
     /**
      * {@inheritdoc}
      */
-    public static function findFirst($parameters=null)
+    public static function findFirst(array $parameters = null)
     {
         $classname = get_parent_class(__CLASS__);
         return $classname::findFirst($parameters);
