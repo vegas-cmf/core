@@ -37,10 +37,13 @@ class FakeModel extends ModelAbstract
     }
 }
 
-abstract class FakeModelRepository extends FakeModel
-{
-    use RepositoryTrait;
-}
+//@TODO reuse when Phalcon team will unify Model- and CollectionInterfaces
+//@TODO check https://github.com/phalcon/cphalcon/issues/10406
+//abstract class FakeRepository extends FakeModel
+//{
+//
+//    use RepositoryTrait;
+//}
 
 class ModelAbstractTest extends \PHPUnit_Framework_TestCase
 {
@@ -97,11 +100,11 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldFindRecordByItsId()
     {
-        $fake = FakeModelRepository::findFirst();
+        $fake = FakeModel::findFirst();
 
         $this->assertSame(
             $fake->toArray(),
-            FakeModelRepository::findById($fake->getId())->toArray()
+            FakeModel::findById($fake->getId())->toArray()
         );
     }
 
@@ -110,13 +113,13 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldUpdateRecord()
     {
-        $fake = FakeModelRepository::findFirst();
+        $fake = FakeModel::findFirst();
         $fake->title = 'New title';
 
         $this->assertTrue($fake->save());
         $this->assertInternalType('int', $fake->updated_at);
 
-        $fake = FakeModelRepository::findFirst();
+        $fake = FakeModel::findFirst();
         $this->assertEquals('New title', $fake->title);
     }
 }
