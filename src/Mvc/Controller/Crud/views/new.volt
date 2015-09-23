@@ -30,7 +30,7 @@
                                                 {% endfor %}
                                             </span>
                                         {% endif %}
-                                        {{ element }}
+                                        {{ element.renderDecorated() }}
                                     </div>
                                 {% endfor %}
 
