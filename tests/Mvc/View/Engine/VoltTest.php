@@ -29,6 +29,8 @@ class VoltTest extends TestCase
 
         $compiler = $volt->getCompiler();
 
+        $this->assertEquals('<?php echo method_exists($object, \'method\'); ?>', $compiler->compileString('{{ methodExists(object, "method") }}'));
+
         $this->assertEquals('<?php echo (new \Vegas\Tag\ShortenText())->prepare(\'foo\',100, "..."); ?>', $compiler->compileString('{{ shortenText("foo") }}'));
         $this->assertEquals('<?php echo (new \Vegas\Tag\ShortenText())->prepare(\'foo\',50, \'bar\'); ?>', $compiler->compileString('{{ shortenText("foo", 50, "bar") }}'));
 

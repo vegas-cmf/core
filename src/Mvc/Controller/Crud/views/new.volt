@@ -30,7 +30,7 @@
                                                 {% endfor %}
                                             </span>
                                         {% endif %}
-                                        {{ element.renderDecorated() }}
+                                        {% if methodExists(element, 'renderDecorated') %}{{ element.renderDecorated() }}{% else %}{{ element }}{% endif %}
                                     </div>
                                 {% endfor %}
 
