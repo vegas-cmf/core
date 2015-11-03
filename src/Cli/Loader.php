@@ -107,7 +107,7 @@ class Loader
         $stringParts = preg_split('/_+/', $str);
 
         foreach($stringParts as $key => $stringPart){
-            $stringParts[$key] = ucfirst(strtolower($stringPart));
+            $stringParts[$key] = \Phalcon\Text::camelize($stringPart);
         }
         return implode('\\', $stringParts) . '\\';
     }
