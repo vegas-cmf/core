@@ -58,6 +58,14 @@ interface ScaffoldingInterface
     public function setFormName($name);
 
     /**
+     * Sets query for paginator
+     *
+     * @param $query
+     * @return mixed
+     */
+    public function setQuery($query);
+
+    /**
      * Sets model name
      *
      * @param $name
