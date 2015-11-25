@@ -39,12 +39,29 @@ class Mysql implements AdapterInterface, ScaffoldingAdapterInterface
     protected $scaffolding;
 
     /**
+     * Query for paginator
+     *
+     * @var array
+     */
+    protected $query = [];
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $di = DI::getDefault();
         $this->verifyRequiredServices($di);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQuery($query)
+    {
+        $this->query = $query;
+
+        return $this;
     }
 
     /**
@@ -71,7 +88,7 @@ class Mysql implements AdapterInterface, ScaffoldingAdapterInterface
         $this->ensureScaffolding();
 
         return new PaginatorAdapterModel(array(
-            'data' => (object) call_user_func(array($this->scaffolding->getRecord(), 'find')),
+            'data' => (object) call_user_func(array($this->scaffolding->getRecord(), 'find'), $this->query),
             'limit' => $limit,
             'page' => $page
         ));
