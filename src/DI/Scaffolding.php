@@ -210,7 +210,7 @@ class Scaffolding implements ScaffoldingInterface
      */
     private function processForm($values)
     {
-        $form = $this->getForm();
+        $form = $this->getForm($this->record);
         $form->bind($values, $this->record);
 
         if ($form->isValid()) {
