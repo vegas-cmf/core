@@ -88,7 +88,7 @@ class Mysql implements AdapterInterface, ScaffoldingAdapterInterface
         $this->ensureScaffolding();
 
         return new PaginatorAdapterModel(array(
-            'data' => (object) call_user_func(array($this->scaffolding->getRecord(), 'find'), $this->query),
+            'data' => call_user_func(array($this->scaffolding->getRecord(), 'find'), $this->query),
             'limit' => $limit,
             'page' => $page
         ));
