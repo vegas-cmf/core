@@ -177,7 +177,7 @@ class Pagination
 
     private function getUrlParams()
     {
-        $arguments = $this->di->get('request')->get();
+        $arguments = $this->di->get('request')->getQuery();
         unset($arguments['_url']);
         unset($arguments['page']);
 
