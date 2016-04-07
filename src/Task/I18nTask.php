@@ -188,11 +188,20 @@ class I18nTask extends TaskAbstract
      * merge new PO file and remove it
      * @param string $basePo
      * @param string $newPo
+     * @param bool $withoutRemoving
+     * @return bool
      */
-    protected function addPo($basePo, $newPo)
+    protected function addPo($basePo, $newPo, $withoutRemoving=false)
     {
+        if (!is_file($basePo) || !is_file($newPo))
+            return false;
+
         $this->exec($this->getMsgCat($newPo, $basePo));
-        unlink($newPo);
+
+        if (!$withoutRemoving)
+            unlink($newPo);
+
+        return true;
     }
 
     /**
@@ -211,9 +220,10 @@ class I18nTask extends TaskAbstract
                 touch($poBaseFile);
             }
 
-            $this->addPo($poBaseFile, $poFile);
-
-            $files[] = $poBaseFile;
+            $updated = $this->addPo($poBaseFile, $poFile, true);
+            
+            if ($updated)
+                $files[] = $poBaseFile;
         }
 
         return $files;
