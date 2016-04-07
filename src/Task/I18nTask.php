@@ -188,11 +188,16 @@ class I18nTask extends TaskAbstract
      * merge new PO file and remove it
      * @param string $basePo
      * @param string $newPo
+     * @return bool
      */
     protected function addPo($basePo, $newPo)
     {
+        if (!is_file($basePo) || !is_file($newPo))
+            return false;
+        
         $this->exec($this->getMsgCat($newPo, $basePo));
         unlink($newPo);
+        return true;
     }
 
     /**
