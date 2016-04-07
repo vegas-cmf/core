@@ -33,13 +33,13 @@ use Vegas\Cli\TaskAbstract;
  * ```
  * protected function addToFinalPo($tmpPo)
  * {
- * $tmpPo = $this->getTmpFile();
+ * $newPo = $this->getTmpFile();
  *
- * file_put_contents($tmpPo, $this->generatePoContent([
+ * file_put_contents($newPo, $this->generatePoContent([
  * 'message1', 'other message', 'dynamic %s message'
  * ]));
  *
- * $this->addPo($tmpPo, $tmpPo);
+ * $this->addPo($tmpPo, $newPo);
  * }
  * ```
  *
