@@ -77,6 +77,13 @@ class Scaffolding implements ScaffoldingInterface
     protected $formName;
 
     /**
+     * Query
+     *
+     * @var array
+     */
+    protected $query = [];
+
+    /**
      * {@inheritdoc}
      */
     public function __construct(AdapterInterface $adapter)
@@ -132,6 +139,15 @@ class Scaffolding implements ScaffoldingInterface
     public function setModelName($name)
     {
         $this->modelName = $name;
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQuery($query)
+    {
+        $this->adapter->setQuery($query);
         return $this;
     }
 
@@ -194,7 +210,7 @@ class Scaffolding implements ScaffoldingInterface
      */
     private function processForm($values)
     {
-        $form = $this->getForm();
+        $form = $this->getForm($this->record);
         $form->bind($values, $this->record);
 
         if ($form->isValid()) {
