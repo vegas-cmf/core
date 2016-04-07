@@ -129,7 +129,7 @@ class I18nTask extends TaskAbstract
             $this->addPo($templateTmpPo, $voltTmpPo);
         }
 
-        echo "Preparing final files...\n";
+        echo "\nPreparing final files...\n";
 
         $this->addPo($textTmpPo, $templateTmpPo);
 
@@ -220,9 +220,10 @@ class I18nTask extends TaskAbstract
                 touch($poBaseFile);
             }
 
-            $this->addPo($poBaseFile, $poFile, true);
+            $updated = $this->addPo($poBaseFile, $poFile, true);
 
-            $files[] = $poBaseFile;
+            if ($updated)
+                $files[] = $poBaseFile;
         }
 
         return $files;
