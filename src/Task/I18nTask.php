@@ -30,18 +30,18 @@ use Vegas\Cli\TaskAbstract;
  *
  *
  * Sample of `addToFinalPo` using:
-```
-protected function addToFinalPo($tmpPo)
-{
-$tmpPo = $this->getTmpFile();
-
-file_put_contents($tmpPo, $this->generatePoContent([
-'message1', 'other message', 'dynamic %s message'
-]));
-
-$this->addPo($tmpPo, $tmpPo);
-}
-```
+ * ```
+ * protected function addToFinalPo($tmpPo)
+ * {
+ * $tmpPo = $this->getTmpFile();
+ *
+ * file_put_contents($tmpPo, $this->generatePoContent([
+ * 'message1', 'other message', 'dynamic %s message'
+ * ]));
+ *
+ * $this->addPo($tmpPo, $tmpPo);
+ * }
+ * ```
  *
  * If You are using non-utf8 standard charset, consider adding own header into PO files.
  */
