@@ -53,7 +53,7 @@ class I18nTask extends TaskAbstract
 
     protected $encoding = 'UTF-8';
     protected $directories;
-    protected $langDir = APP_ROOT . '/lang';
+    protected $langDir;
     protected $langs;
     protected $textKeywords;
     protected $templateKeywords;
@@ -66,6 +66,7 @@ class I18nTask extends TaskAbstract
     {
         parent::__construct();
 
+        $langDir = APP_ROOT . '/lang';
         $this->langs = [
             'nl_NL.utf8'
         ];
