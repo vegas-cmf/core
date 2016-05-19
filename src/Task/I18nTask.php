@@ -52,25 +52,35 @@ class I18nTask extends TaskAbstract
     protected $msgcat = 'msgcat';
 
     protected $encoding = 'UTF-8';
-    protected $directories = [
-        APP_ROOT . '/app/modules',
-        APP_ROOT . '/app/layouts',
-    ];
+    protected $directories;
     protected $langDir = APP_ROOT . '/lang';
-    protected $langs = [
-        'nl_NL.utf8'
-    ];
-    protected $textKeywords = [
-        '_'
-    ];
-    protected $templateKeywords = [
-        'i18n._', '_'
-    ];
+    protected $langs;
+    protected $textKeywords;
+    protected $templateKeywords;
 
     private $parser = '{xgettext} --omit-header --no-wrap --language="{lang}" --from-code="{encoding}" -k"{keys}" -j -o"{out}" {in}';
     private $templateParser = '{xgettextTemplate} --force-po=false --language="{lang}" --from-code="{encoding}" --keyword="{keys}" --output="{out}" {in}';
     private $mergePoCmd = '{msgcat} --force-po --no-wrap --use-first {extra} {base} -o {base} 2>/dev/null';
 
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->langs = [
+            'nl_NL.utf8'
+        ];
+        $this->textKeywords = [
+            '_'
+        ];
+        $this->templateKeywords = [
+            'i18n._', '_'
+        ];
+        $this->directories = [
+            APP_ROOT . '/app/modules',
+            APP_ROOT . '/app/layouts',
+        ];
+    }
+    
     public function setupOptions()
     {
         $action = new Action('generate', 'Generate *.PO files for each lang');
