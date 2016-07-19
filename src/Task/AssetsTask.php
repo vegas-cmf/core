@@ -16,6 +16,7 @@ use Vegas\Cli\Task\Action;
 use Vegas\Cli\Task\Option;
 use Vegas\Cli\Task;
 use Vegas\Cli\TaskAbstract;
+use Vegas\Mvc\Module\Loader;
 
 /**
  * Class AssetsTask
@@ -28,8 +29,12 @@ class AssetsTask extends TaskAbstract
      */
     public function publishAction()
     {
-        $this->putText("Copying assets...");
-        $this->copyAllAssets();
+        $this->putText("Copying Vegas CMF assets...");
+        $this->copyCmfAssets();
+
+        $this->putText("Copying vendor assets:");
+        $this->copyVendorAssets();
+
         $this->putSuccess("Done.");
     }
 
@@ -37,7 +42,7 @@ class AssetsTask extends TaskAbstract
      * Copies all assets from vegas-cmf libraries
      * @internal
      */
-    private function copyAllAssets()
+    private function copyCmfAssets()
     {
         $vegasCmfPath = APP_ROOT . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'vegas-cmf';
         $publicAssetsDir = $this->getOption('d', APP_ROOT.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'assets');
@@ -56,6 +61,32 @@ class AssetsTask extends TaskAbstract
                 }
             }
             closedir($handle);
+        }
+    }
+
+    /**
+     * Copies all assets vendor modules
+     * @internal
+     */
+    private function copyVendorAssets()
+    {
+        $modules = [];
+        $moduleLoader = new Loader($this->di);
+        $moduleLoader->dumpModulesFromVendor($modules);
+
+        $publicAssetsDir = $this->getOption('d', APP_ROOT.DIRECTORY_SEPARATOR.'public'.DIRECTORY_SEPARATOR.'assets');
+
+
+        if ($modules) {
+            foreach ($modules as $moduleName => $module) {
+                $assetsDir = dirname($module['path']) . '/../assets';
+
+                if (file_exists($assetsDir)) {
+                    $this->putText("- " . $moduleName . "...");
+
+                    $this->copyRecursive($assetsDir, $publicAssetsDir);
+                }
+            }
         }
     }
 
