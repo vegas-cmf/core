@@ -19,7 +19,7 @@ use Vegas\Tests\Stub\Models\FakePaginatorModel;
 
 class RequestMock
 {
-    public function get()
+    public function getQuery()
     {
         return [
             'by' => 'name',
