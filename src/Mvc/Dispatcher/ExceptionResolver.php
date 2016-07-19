@@ -41,6 +41,16 @@ class ExceptionResolver implements InjectionAwareInterface
             throw $exception;
         }
 
+        error_log(
+            sprintf(
+                'Vegas %d error: %s in %s on line %d',
+                $exception->getCode(),
+                $exception->getMessage(),
+                $exception->getFile(),
+                $exception->getLine()
+            ),
+            0
+        );
         $error = $this->prepareLiveEnvException($exception);
 
         try {
