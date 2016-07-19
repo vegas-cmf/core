@@ -32,10 +32,8 @@ class FileWriter
      */
     public static function write($filePath, $content, $compareContents = false)
     {
-        if ($compareContents) {
-            if (self::compareContents($filePath, $content)) {
-                return 0;
-            }
+        if ($compareContents && self::compareContents($filePath, $content)) {
+            return 0;
         }
 
         return file_put_contents($filePath, $content);
