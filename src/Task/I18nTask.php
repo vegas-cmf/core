@@ -57,10 +57,11 @@ class I18nTask extends TaskAbstract
     protected $langs;
     protected $textKeywords;
     protected $templateKeywords;
+    protected $poHeader = 'msgid ""'."\n".'msgstr "Content-Type: text/plain; charset=utf-8\n"'."\n";
 
     private $parser = '{xgettext} --omit-header --no-wrap --language="{lang}" --from-code="{encoding}" -k"{keys}" -j -o"{out}" {in}';
     private $templateParser = '{xgettextTemplate} --force-po=false --language="{lang}" --from-code="{encoding}" --keyword="{keys}" --output="{out}" {in}';
-    private $mergePoCmd = '{msgcat} --force-po --no-wrap --use-first {extra} {base} -o {base} 2>/dev/null';
+    private $mergePoCmd = '{msgcat} --force-po --no-wrap --use-first {extra} {base} -o {base}';
 
     public function __construct()
     {
@@ -127,8 +128,6 @@ class I18nTask extends TaskAbstract
 
                     $lines = count( file( $tmpPo ));
                     if ($lines > 2) {
-                        $this->removeTopLines($tmpPo, 2);
-
                         $this->addPo($voltTmpPo, $tmpPo);
                     } else {
                         unlink($tmpPo);
@@ -169,7 +168,7 @@ class I18nTask extends TaskAbstract
      */
     protected function generatePoContent(array $items)
     {
-        $poText = '';
+        $poText = $this->poHeader;
 
         foreach ($items as $item) {
             if (is_array($item) && isset($item['msgid'])) {
