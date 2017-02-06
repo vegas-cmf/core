@@ -37,11 +37,13 @@ class Console extends \Phalcon\CLI\Console
      *</code>
      *
      * @param array $modules
+     * @param bool $merge
+     * @return \Phalcon\Application
      */
-    public function registerModules(array $modules)
+    public function registerModules(array $modules, $merge = false)
     {
         $this->registerSharedData($modules);
-        parent::registerModules($modules);
+        return parent::registerModules($modules);
     }
 
     /**
