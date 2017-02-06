@@ -100,7 +100,7 @@ class Loader
      * @param $modulesList
      * @return mixed
      */
-    private function dumpModulesFromVendor(array &$modulesList)
+    public function dumpModulesFromVendor(array &$modulesList)
     {
         if (!file_exists(APP_ROOT.'/composer.json')) {
             return $modulesList;
