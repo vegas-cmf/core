@@ -65,6 +65,6 @@ class ExceptionResolverTest extends \PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        ob_clean();
+        ob_end_clean();
     }
 }

@@ -48,7 +48,13 @@ class CrudTest extends TestCase
     public function testNotConfiguredCrud()
     {
         $this->request()->setRequestMethod('GET');
-        $this->handleUri('/test/brokencrud/new')->getContent();
+
+        try {
+            $this->handleUri('/test/brokencrud/new')->getContent();
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
     }
 
     public function testNew()
@@ -68,7 +74,12 @@ class CrudTest extends TestCase
      */
     public function testNotPostCreateResponse()
     {
-        $this->handleUri('/test/crud/create');
+        try {
+            $this->handleUri('/test/crud/create');
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
     }
 
     public function testPostCreate()
@@ -125,7 +136,12 @@ class CrudTest extends TestCase
      */
     public function testNotPostUpdateResponse()
     {
-        $this->handleUri('/test/crud/update/'.$this->model->getId());
+        try {
+            $this->handleUri('/test/crud/update/'.$this->model->getId());
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
     }
 
     public function testPostUpdate()
