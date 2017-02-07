@@ -95,7 +95,7 @@ class ScaffoldingTest extends \PHPUnit_Framework_TestCase
             $this->scaffolding->doRead('not_existing_id');
             throw new \Exception('Not this exception.');
         } catch (\Exception $ex) {
-            $this->assertInstanceOf('\MongoException', $ex);
+            $this->assertInstanceOf('\Vegas\Di\Scaffolding\Exception\RecordNotFoundException', $ex);
         }
     }
     

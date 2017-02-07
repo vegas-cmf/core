@@ -213,12 +213,10 @@ class CrudTest extends TestCase
         $this->assertFalse($this->model);
     }
 
-    /**
-     * @expectedException \MongoException
-     */
-    public function testDeleteException()
+    public function testNoDeleteNoException()
     {
         $this->request()->setRequestMethod('GET');
-        $this->handleUri('/test/crud/delete/RanDoMn0t1D4sUR3');
+        $content = $this->handleUri('/test/crud/delete/RanDoaMn0t1D4sUR3')->getContent();
+        $this->assertEmpty($content);
     }
 }
