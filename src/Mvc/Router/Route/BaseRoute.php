@@ -31,9 +31,12 @@ class BaseRoute implements RouteInterface
      */
     public function add(RouterInterface $router, Route $route)
     {
-        $router
+        $newRoute = $router
             ->add($route->getRoute(), $route->getPaths())
-            ->setName($route->getName())
-            ->setHostName($route->getParam('hostname'));
+            ->setName($route->getName());
+
+        if ($route->getParam('hostname')) {
+            $newRoute->setHostName($route->getParam('hostname'));
+        }
     }
 }

@@ -28,10 +28,10 @@ class ComponentTest extends TestCase
         parent::setUp();
 
         $di = Di::getDefault();
-        $di->set('view', function() use ($di) {
-            $view = new View($di->get('config')->application->view->toArray());
+        $di->set('view', function() {
+            $view = new View($this->get('config')->application->view->toArray());
 
-            $path = $di->get('config')->application->moduleDir . '/Test/views';
+            $path = $this->get('config')->application->moduleDir . '/Test/views';
 
             if (file_exists($path)) {
                 $view->setViewsDir($path);

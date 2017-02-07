@@ -52,7 +52,9 @@ class RestRoute implements RouteInterface
 
                 $newRoute = $router->add($route->getRoute() . $actionRoute, $paths)->via($method);
                 $newRoute->setName($route->getName() . $actionRoute . '/' . $action);
-                $newRoute->setHostName($route->getParam('hostname'));
+                if ($route->getParam('hostname')) {
+                    $newRoute->setHostName($route->getParam('hostname'));
+                }
             }
         }
     }

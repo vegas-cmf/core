@@ -49,7 +49,7 @@ abstract class CrudAbstract extends ControllerAbstract
                 $view->setControllerViewPath('views');
                 $view->setRenderLevel(View::LEVEL_ACTION_VIEW);
 
-                $view->render('', $this->dispatcher->getActionName());
+                $view->pick($this->dispatcher->getActionName());
             }
         });
     }

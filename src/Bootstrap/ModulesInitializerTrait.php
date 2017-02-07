@@ -60,8 +60,9 @@ trait ModulesInitializerTrait
             }
         }
 
-        $this->getDI()->set('modules', function() {
-            return $this->getApplication()->getModules();
+        $bootstrap = $this;
+        $this->getDI()->set('modules', function() use ($bootstrap) {
+            return $bootstrap->getApplication()->getModules();
         });
     }
 

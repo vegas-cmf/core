@@ -1,1 +1,1 @@
-1{{ partial('../../../layouts/partials/test/sample') }}{{ content() }}
+1{{ partial('./../../../layouts/partials/test/sample') }}{{ content() }}

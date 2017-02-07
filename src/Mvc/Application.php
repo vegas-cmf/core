@@ -41,7 +41,10 @@ class Application extends \Phalcon\Mvc\Application
     public function registerModules(array $modules, $merge = null)
     {
         $this->registerSharedData($modules);
+
         parent::registerModules($modules, $merge);
+        $this->setDefaultModule(key($modules));
+        return $this;
     }
 
     /**

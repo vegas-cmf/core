@@ -110,15 +110,17 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
      */
     protected function registerViewComponent($di)
     {
-        $di->set('view', function() use ($di) {
-            $viewDir = $this->dir . '/views';
-            $view = new View($di->get('config')->application->view, $viewDir);
+        $dir = $this->dir;
+        $di->set('view', function() use ($dir) {
+            $viewSettings = (array) $this->get('config')->application->view;
+            $viewDir = $dir . '/views';
+            $view = new View($viewSettings, $viewDir);
 
             if (file_exists($viewDir)) {
                 $view->setViewsDir($viewDir);
             }
             
-            $view->setEventsManager($di->getShared('eventsManager'));
+            $view->setEventsManager($this->getShared('eventsManager'));
             return $view;
         });
     }
@@ -131,9 +133,10 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     protected function registerDispatcherNamespace($di)
     {
         $dispatcher = $di->get('dispatcher');
+        $namespace = $this->namespace;
 
-        $di->set('dispatcher', function() use ($dispatcher) {
-            $dispatcher->setDefaultNamespace($this->namespace.'\Controllers');
+        $di->set('dispatcher', function() use ($dispatcher, $namespace) {
+            $dispatcher->setDefaultNamespace($namespace.'\Controllers');
             return $dispatcher;
         });
     }
