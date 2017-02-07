@@ -12,14 +12,14 @@
  
 namespace Vegas\Tests\Mvc\Module;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Mvc\Module\Loader as ModuleLoader;
 
 class LoaderTest extends \PHPUnit_Framework_TestCase
 {
     public function testShouldLoadAllModulesFromApplication()
     {
-        $moduleLoader = new ModuleLoader(DI::getDefault());
+        $moduleLoader = new ModuleLoader(Di::getDefault());
         $modules = $moduleLoader->dump(
             TESTS_ROOT_DIR . '/fixtures/app/modules/',
             TESTS_ROOT_DIR . '/fixtures/app/config/'

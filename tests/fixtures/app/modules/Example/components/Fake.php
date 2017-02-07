@@ -12,8 +12,8 @@
  
 namespace Example\Components;
 
-use Phalcon\DI\InjectionAwareInterface;
-use Vegas\DI\InjectionAwareTrait;
+use Phalcon\Di\InjectionAwareInterface;
+use Vegas\Di\InjectionAwareTrait;
 
 class Fake implements InjectionAwareInterface
 {

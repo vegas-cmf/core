@@ -23,7 +23,7 @@ class EnvironmentInitializerTraitTest extends \PHPUnit_Framework_TestCase
             ]
         ];
 
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di::getDefault();
 
         $trait = $this->getMockForTrait('\Vegas\Bootstrap\EnvironmentInitializerTrait');
         $trait->expects($this->any())
@@ -39,7 +39,7 @@ class EnvironmentInitializerTraitTest extends \PHPUnit_Framework_TestCase
     {
         $config = [];
 
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di::getDefault();
 
         $trait = $this->getMockForTrait('\Vegas\Bootstrap\EnvironmentInitializerTrait');
         $trait->expects($this->any())
@@ -53,7 +53,7 @@ class EnvironmentInitializerTraitTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldSetDefineValue()
     {
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di::getDefault();
 
         $trait = $this->getMockForTrait('\Vegas\Bootstrap\EnvironmentInitializerTrait');
         $trait->expects($this->any())

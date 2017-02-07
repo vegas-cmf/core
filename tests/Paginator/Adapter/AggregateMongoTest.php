@@ -11,7 +11,7 @@
  */
 namespace Vegas\Tests\Paginator;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Tests\Stub\Models\FakePaginatorModel;
 
 class AggregateMongoTest extends \PHPUnit_Framework_TestCase
@@ -40,7 +40,7 @@ class AggregateMongoTest extends \PHPUnit_Framework_TestCase
     public function testEmptyQuery()
     {
         $adapter = new \Vegas\Paginator\Adapter\AggregateMongo(array(
-            'db' => \Phalcon\DI::getDefault()->get('mongo'),
+            'db' => \Phalcon\Di::getDefault()->get('mongo'),
             'modelName' => '\Vegas\Tests\Stub\Models\FakePaginatorModel'
         ));
         $results = $adapter->getResults();
@@ -51,7 +51,7 @@ class AggregateMongoTest extends \PHPUnit_Framework_TestCase
     public function testPaginator()
     {
         $adapter = new \Vegas\Paginator\Adapter\AggregateMongo(array(
-            'db' => \Phalcon\DI::getDefault()->get('mongo'),
+            'db' => \Phalcon\Di::getDefault()->get('mongo'),
             'modelName' => '\Vegas\Tests\Stub\Models\FakePaginatorModel',
             'query' => [
                 [
@@ -74,7 +74,7 @@ class AggregateMongoTest extends \PHPUnit_Framework_TestCase
     public function testCursor()
     {
         $adapter = new \Vegas\Paginator\Adapter\AggregateMongo(array(
-            'db' => \Phalcon\DI::getDefault()->get('mongo'),
+            'db' => \Phalcon\Di::getDefault()->get('mongo'),
             'modelName' => '\Vegas\Tests\Stub\Models\FakePaginatorModel',
             'limit' => 10,
             'page' => 1,

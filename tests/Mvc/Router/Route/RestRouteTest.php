@@ -12,7 +12,7 @@
  
 namespace Vegas\Tests\Mvc\Router\Route;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Http\Method;
 use Vegas\Mvc\Router\Route;
 
@@ -35,7 +35,7 @@ class RestRouteTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldAddRestRouteToRouter()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
 
         $route = new Route('rest', [
             'route' => '/rest',
@@ -66,7 +66,7 @@ class RestRouteTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldMatchRestRoute()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
 
         $route = new Route('rest', [
             'route' => '/rest',
@@ -105,7 +105,7 @@ class RestRouteTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldNotMatchRestRouteWithWrongRequestMethod()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
 
         $route = new Route('rest', [
             'route' => '/rest',

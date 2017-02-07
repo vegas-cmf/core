@@ -10,7 +10,7 @@
  * file that was distributed with this source code.
  */
 
-class ViewCacheServiceProvider implements \Vegas\DI\ServiceProviderInterface {
+class ViewCacheServiceProvider implements \Vegas\Di\ServiceProviderInterface {
 
     const SERVICE_NAME = 'viewCache';
 

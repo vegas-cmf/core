@@ -12,7 +12,7 @@
 
 
 use Phalcon\DiInterface;
-use Vegas\DI\ServiceProviderInterface;
+use Vegas\Di\ServiceProviderInterface;
 
 class ServiceManagerServiceProvider implements ServiceProviderInterface
 {
@@ -23,7 +23,7 @@ class ServiceManagerServiceProvider implements ServiceProviderInterface
      */
     public function register(DiInterface $di)
     {
-        $di->set(self::SERVICE_NAME, '\Vegas\DI\ServiceManager', true);
+        $di->set(self::SERVICE_NAME, '\Vegas\Di\ServiceManager', true);
     }
 
     /**

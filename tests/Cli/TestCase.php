@@ -11,7 +11,7 @@
  */
 namespace Vegas\Tests\Cli;
 
-use Phalcon\DI,
+use Phalcon\Di,
     Vegas\Cli\Bootstrap;
 
 class TestCase extends \PHPUnit_Framework_TestCase
@@ -22,7 +22,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     protected $bootstrap;
 
     /**
-     * @var DI
+     * @var Di
      */
     protected $di;
 
@@ -31,7 +31,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->di = DI::getDefault();
+        $this->di = Di::getDefault();
 
         $bootstrap = new Bootstrap($this->di->get('config'));
 
@@ -66,7 +66,7 @@ class TestCase extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return DI
+     * @return Di
      */
     public function getDI()
     {

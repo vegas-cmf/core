@@ -36,3 +36,7 @@ composer.phar
 composer.lock
 travis.log
 tests/config.php
+
+tests/fixtures/app/config/modules.php
+tests/fixtures/app/config/mongo.map.php
+tests/fixtures/app/config/services.php

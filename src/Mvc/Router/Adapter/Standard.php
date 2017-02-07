@@ -13,7 +13,7 @@
 namespace Vegas\Mvc\Router\Adapter;
 
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Phalcon\DiInterface;
 use Phalcon\Mvc\Router;
 
@@ -24,7 +24,7 @@ use Phalcon\Mvc\Router;
  * @package Vegas\Mvc\Router\Adapter
  * @see http://docs.phalconphp.com/en/latest/api/Phalcon_Mvc_Router.html
  */
-class Standard extends Router implements DI\InjectionAwareInterface
+class Standard extends Router implements Di\InjectionAwareInterface
 {
 
     /**

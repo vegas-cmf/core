@@ -12,7 +12,7 @@
  */
 
 namespace Vegas\Tag;
-use Phalcon\DI;
+use Phalcon\Di;
 
 /**
  * Class Pagination
@@ -65,7 +65,7 @@ class Pagination
      * Sets default settings
      * @param DI $di
      */
-    public function __construct(DI $di)
+    public function __construct(Di $di)
     {
         $this->di = $di;
         $this->settings = array(

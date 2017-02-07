@@ -12,7 +12,7 @@
  
 namespace Vegas\Tests\Mvc\Router\Route;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Mvc\Router\Route\BaseRoute;
 use Vegas\Mvc\Router\Route;
 
@@ -21,7 +21,7 @@ class BaseRouteTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldAddBaseRouteToRouter()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
 
         $route = new Route('test', [
             'route' => '/test',
@@ -52,7 +52,7 @@ class BaseRouteTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldMatchBaseRoute()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
 
         $route = new Route('test', [
             'route' => '/test',

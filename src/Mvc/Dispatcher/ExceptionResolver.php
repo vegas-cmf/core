@@ -11,10 +11,10 @@
  */
 namespace Vegas\Mvc\Dispatcher;
 
-use Phalcon\DI\InjectionAwareInterface;
+use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\Dispatcher;
 use Vegas\Constants;
-use Vegas\DI\InjectionAwareTrait;
+use Vegas\Di\InjectionAwareTrait;
 use Vegas\Exception;
 use Vegas\Exception as VegasException;
 use Vegas\Mvc\Dispatcher\Exception\CannotHandleErrorException;

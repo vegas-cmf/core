@@ -12,9 +12,9 @@
  
 namespace Test\Services;
 
-use Vegas\DI\InjectionAwareTrait;
+use Vegas\Di\InjectionAwareTrait;
 
-class Fake extends \Vegas\DI\Service\ComponentAbstract
+class Fake extends \Vegas\Di\Service\ComponentAbstract
 {
     public function setUp($params = array())
     {

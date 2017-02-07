@@ -11,7 +11,7 @@
  */
 namespace Vegas\Tests\Mvc\View;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Mvc\View\Simple;
 
 class SimpleTest extends \PHPUnit_Framework_TestCase
@@ -25,7 +25,7 @@ class SimpleTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEmpty($engines['.volt']);
         $this->assertNotEmpty($engines['.phtml']);
 
-        $volt = $engines['.volt']($view, DI::getDefault());
+        $volt = $engines['.volt']($view, Di::getDefault());
 
         $this->assertInstanceOf('\Vegas\Mvc\View\Simple', $volt->getView());
     }

@@ -11,7 +11,7 @@
  */
 namespace Vegas\Tests\Mvc\Controller;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Test\Forms\Fake;
 use Test\Models\Fake as FakeModel;
 use Vegas\Mvc\Controller\Crud;
@@ -24,7 +24,7 @@ class CrudTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = DI::getDefault()->get('config');
+        $config = Di::getDefault()->get('config');
         require_once $config->application->moduleDir . '/Test/forms/Fake.php';
         $this->prepareFakeObject();
     }

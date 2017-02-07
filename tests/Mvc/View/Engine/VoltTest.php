@@ -12,7 +12,7 @@
 
 namespace Vegas\Tests\Mvc\View\Engine;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Mvc\View;
 use Vegas\Test\TestCase;
 
@@ -25,7 +25,7 @@ class VoltTest extends TestCase
         $engines = $view->getRegisteredEngines();
 
         $volt = $engines['.volt'];
-        $volt = $volt($view, DI::getDefault());
+        $volt = $volt($view, Di::getDefault());
 
         $compiler = $volt->getCompiler();
 
@@ -45,7 +45,7 @@ class VoltTest extends TestCase
         $engines = $view->getRegisteredEngines();
 
         $volt = $engines['.volt'];
-        $volt = $volt($view, DI::getDefault());
+        $volt = $volt($view, Di::getDefault());
 
         $compiler = $volt->getCompiler();
         $this->assertEquals('<?= (string)1 ?>', $compiler->compileString('{{ 1|toString }}'));

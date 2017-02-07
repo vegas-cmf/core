@@ -12,7 +12,7 @@
 
 use Phalcon\DiInterface;
 use Phalcon\Mvc\Url as UrlResolver;
-use Vegas\DI\ServiceProviderInterface;
+use Vegas\Di\ServiceProviderInterface;
 use Vegas\Session\Adapter\Files as SessionAdapter;
 
 class I18nServiceProvider implements ServiceProviderInterface

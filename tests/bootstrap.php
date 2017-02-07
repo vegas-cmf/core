@@ -12,7 +12,7 @@ $_SERVER['HTTP_HOST'] = 'vegas.dev';
 $_SERVER['REQUEST_URI'] = '/';
 
 $config = new \Phalcon\Config($configArray);
-$di = new Phalcon\DI\FactoryDefault();
+$di = new Phalcon\Di\FactoryDefault();
 
 
 $di->set('config', $config);
@@ -30,4 +30,4 @@ $di->set('db', function() use ($config) {
     return new \Phalcon\Db\Adapter\Pdo\Mysql($config->db->toArray());
 }, true);
 
-Phalcon\DI::setDefault($di);
+Phalcon\Di::setDefault($di);

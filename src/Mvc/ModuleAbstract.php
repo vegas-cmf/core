@@ -11,7 +11,7 @@
  */
 namespace Vegas\Mvc;
 
-use Phalcon\DI\InjectionAwareInterface;
+use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\Loader;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 

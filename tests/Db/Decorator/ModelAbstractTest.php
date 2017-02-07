@@ -12,7 +12,7 @@
 
 namespace Vegas\Tests\Db\Decorator;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Phalcon\Utils\Slug;
 use Vegas\Db\Decorator\Helper\RepositoryTrait;
 use Vegas\Db\Decorator\ModelAbstract;
@@ -50,7 +50,7 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
 
     public static function setUpBeforeClass()
     {
-        $di = DI::getDefault();
+        $di = Di::getDefault();
         $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
         $di->get('db')->execute(
             'CREATE TABLE fake_table(
@@ -65,7 +65,7 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
 
     public static function tearDownAfterClass()
     {
-        $di = DI::getDefault();
+        $di = Di::getDefault();
         $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
     }
 
