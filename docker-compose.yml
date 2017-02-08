@@ -1,5 +1,5 @@
 mongo:
-  image: mongo:3.0.14
+  image: mongo:3.2
   container_name: vegas-cmf-core-mongo
   command: mongod --smallfiles
   expose:
