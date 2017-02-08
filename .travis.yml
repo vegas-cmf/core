@@ -17,7 +17,7 @@ services:
   - memcached
 
 before_install:
-  - pecl install mongo
+  - printf "\n" | pecl install mongo &> /dev/null
   - mysql -e "CREATE DATABASE IF NOT EXISTS vegas_test;" -uroot
 
 before_script:
