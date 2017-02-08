@@ -6,11 +6,21 @@ php:
   - 7.0
 
 env:
-  - PHALCON_VERSION="3.0.x"
-  - PHALCON_VERSION="v3.0.3"
-  - PHALCON_VERSION="v3.0.2"
-  - PHALCON_VERSION="v3.0.1"
-  - PHALCON_VERSION="v3.0.0"
+  global:
+    - MONGO_DB_NAME="vegas_test"
+    - VEGAS_CMF_CORE_MONGO_PORT_27017_TCP_ADDR="localhost"
+    - VEGAS_CMF_CORE_MONGO_PORT_27017_TCP_PORT=27017
+    - VEGAS_CMF_CORE_MYSQL_PORT_3306_TCP_ADDR="localhost"
+    - VEGAS_CMF_CORE_MYSQL_PORT_3306_TCP_PORT=3306
+    - VEGAS_CMF_CORE_MYSQL_ENV_MYSQL_DATABASE="vegas_test"
+    - VEGAS_CMF_CORE_MYSQL_ENV_MYSQL_USER="root"
+    - VEGAS_CMF_CORE_MYSQL_ENV_MYSQL_PASSWORD
+  matrix:
+    - PHALCON_VERSION="3.0.x"
+    - PHALCON_VERSION="v3.0.3"
+    - PHALCON_VERSION="v3.0.2"
+    - PHALCON_VERSION="v3.0.1"
+    - PHALCON_VERSION="v3.0.0"
 
 services:
   - mongodb
@@ -18,7 +28,7 @@ services:
 
 before_install:
   - printf "\n" | pecl install mongo &> /dev/null
-  - mysql -e "CREATE DATABASE IF NOT EXISTS vegas_test;" -uroot
+  - mysql -e "CREATE DATABASE IF NOT EXISTS ${VEGAS_CMF_CORE_MYSQL_ENV_MYSQL_DATABASE};" -uroot
 
 before_script:
   - ./travis/install-php-extension.sh ${PHALCON_VERSION}

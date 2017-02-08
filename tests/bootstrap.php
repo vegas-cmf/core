@@ -21,7 +21,7 @@ $di->set('collectionManager', function() use ($di) {
 }, true);
 $di->set('mongo', function() use ($config) {
     $mongo = new \MongoClient();
-    return $mongo->selectDb($config->mongo->db);
+    return $mongo->selectDb($config->mongo->dbname);
 }, true);
 $di->set('modelManager', function() use ($di) {
     return new \Phalcon\Mvc\Model\Manager();

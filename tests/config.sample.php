@@ -28,17 +28,20 @@ return [
     ],
 
     'mongo' => [
-        'db' => 'vegas_test',
+        'dbname'    => getenv('MONGO_DB_NAME'),
+        'host'      => getenv('VEGAS_CMF_CORE_MONGO_PORT_27017_TCP_ADDR'),
+        'port'      => getenv('VEGAS_CMF_CORE_MONGO_PORT_27017_TCP_PORT')
     ],
 
     'db'    =>  [
         "adapter" => 'mysql',
-        "host" => "localhost",
-        "dbname" => "vegas_test",
-        "port" => 3306,
-        "username" => "root",
-        "options" => [
-            PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
+        'host' => getenv('VEGAS_CMF_CORE_MYSQL_PORT_3306_TCP_ADDR'),
+        'port' => getenv('VEGAS_CMF_CORE_MYSQL_PORT_3306_TCP_PORT'),
+        'dbname' => getenv('VEGAS_CMF_CORE_MYSQL_ENV_MYSQL_DATABASE'),
+        'username' => getenv('VEGAS_CMF_CORE_MYSQL_ENV_MYSQL_USER'),
+        'password' => getenv('VEGAS_CMF_CORE_MYSQL_ENV_MYSQL_PASSWORD'),
+        'options' => [
+            \PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'
         ]
     ]
 ];
