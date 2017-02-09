@@ -9,12 +9,6 @@
             "email": "vegas@amsterdam-standard.pl"
         }
     ],
-    "repositories": [
-        {
-            "type" : "git",
-            "url" : "https://github.com/phalcon/phalcon-devtools.git"
-        }
-    ],
     "require": {
         "php": "^5.5 || ^7.0",
         "ext-phalcon": "^3.0",

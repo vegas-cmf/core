@@ -29,7 +29,7 @@ phpunit:
     - TERM=xterm-256color
     - MONGO_DB_NAME=vegas_test
   links:
-    - mongo:vegas-cmf-auth-mongo
-    - mysql:vegas-cmf-auth-mysql
+    - mongo:vegas-cmf-core-mongo
+    - mysql:vegas-cmf-core-mysql
   volumes:
     - ./:/opt
