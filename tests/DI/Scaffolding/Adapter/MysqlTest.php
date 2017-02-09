@@ -92,7 +92,7 @@ class MysqlTest extends \Vegas\Test\TestCase
         $mysql = new \Vegas\DI\Scaffolding\Adapter\Mysql();
         $scaffolding = new Scaffolding($mysql);
 
-        $scaffolding->setModelName('\Test\Models\Fake');
+        $scaffolding->setModelName('\Test\Models\FakeSql');
         $scaffolding->setFormName('\Test\Forms\Fake');
         $scaffolding->doCreate([
             'fake_field' => 'fake'
@@ -102,7 +102,37 @@ class MysqlTest extends \Vegas\Test\TestCase
         ]);
 
         $pagination = $mysql->getPaginator();
+        $paginate = $pagination->getPaginate();
+
         $this->assertInstanceOf('\Phalcon\Paginator\Adapter\Model', $pagination);
-        $this->assertInstanceOf('\stdClass', $pagination->getPaginate());
+        $this->assertInstanceOf('\stdClass', $paginate);
+        $this->assertNotEquals(0, $paginate->total_items);
+    }
+
+    public function testShouldReturnFilteredPagination()
+    {
+        $mysql = new \Vegas\DI\Scaffolding\Adapter\Mysql();
+        $scaffolding = new Scaffolding($mysql);
+
+        $scaffolding->setModelName('\Test\Models\FakeSql');
+        $scaffolding->setFormName('\Test\Forms\Fake');
+        $scaffolding->doCreate([
+            'fake_field' => 'fake'
+        ]);
+        $scaffolding->doCreate([
+            'fake_field' => 'fake2'
+        ]);
+        $scaffolding->doCreate([
+            'fake_field' => 'fake'
+        ]);
+        $scaffolding->setQuery('fake_field = "fake2"');
+
+        $pagination = $mysql->getPaginator();
+        $paginate = $pagination->getPaginate();
+
+        $this->assertInstanceOf('\Phalcon\Paginator\Adapter\Model', $pagination);
+        $this->assertInstanceOf('\stdClass', $paginate);
+        $this->assertNotEquals(0, $paginate->total_items);
+        $this->assertEquals('fake2', $paginate->items[0]->fake_field);
     }
 }
