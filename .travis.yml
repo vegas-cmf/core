@@ -2,8 +2,6 @@ language: php
 
 php:
   - 5.4
-node_js:
-  - 3
 
 services:
   - mongodb
@@ -15,7 +13,6 @@ before_install:
   - echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
   - sudo apt-get update
   - sudo apt-get install mongodb-org-server
-  - npm install -g xgettext-template
 
 before_script:
   - phpenv config-add travis/php.ini
@@ -23,7 +20,7 @@ before_script:
   - (cd cphalcon/ext; export CFLAGS="-g3 -O1 -fno-delete-null-pointer-checks -Wall"; phpize && ./configure --enable-phalcon && make -j4 && sudo make install && phpenv config-add ../unit-tests/ci/phalcon.ini)
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install --dev
-  
+
 script:
   - cp tests/config.sample.php tests/config.php
   - mkdir -p tests/fixtures/cache
