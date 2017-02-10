@@ -10,6 +10,8 @@
  * $this->serviceManager->getService('foo:barBaz');
  * // or in view
  * {{ serviceManager.getService('foo:barBaz') }}
+ * // or using extra params for __construct()
+ * {{ serviceManager.getService('foo:barBaz', ['param1', 'param2']) }}
  * </code>
  * 
  * @author Arkadiusz Ostrycharz <aostrycharz@amsterdam-standard.pl>
@@ -35,28 +37,30 @@ class ServiceManager implements InjectionAwareInterface
     /**
      * Alias for getService.
      *
-     * @param $name
+     * @param string $name
+     * @param array $parameters
      * @return object
      */
-    public function get($name)
+    public function get($name, array $parameters = [])
     {
-        return $this->getService($name);
+        return $this->getService($name, $parameters);
     }
 
     /**
      * Try to register and return service.
      *
-     * @param $name
+     * @param string $name
+     * @param array $parameters
      * @return object
      * @throws Service\Exception
      */
-    public function getService($name)
+    public function getService($name, array $parameters = [])
     {
         try {
             if (!$this->isRegisteredService($name)) {
                 $this->registerService($name);
             }
-            return $this->di->get($name);
+            return $this->di->get($name, $parameters);
         } catch (\Phalcon\DI\Exception $ex) {
             throw new Exception($ex->getMessage().', using: '.$name);
         }
