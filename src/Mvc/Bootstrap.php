@@ -115,7 +115,7 @@ class Bootstrap implements BootstrapInterface
             /**
              * @var \Phalcon\Events\Manager $eventsManager
              */
-            $eventsManager = $this->di->getShared('eventsManager');
+            $eventsManager = $this->getShared('eventsManager');
             $eventsManager->attach(
                 'dispatch:beforeException',
                 (new ExceptionListener())->beforeException()
