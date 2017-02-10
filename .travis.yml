@@ -20,7 +20,7 @@ before_script:
   - (cd cphalcon/ext; export CFLAGS="-g3 -O1 -fno-delete-null-pointer-checks -Wall"; phpize && ./configure --enable-phalcon && make -j4 && sudo make install && phpenv config-add ../unit-tests/ci/phalcon.ini)
   - curl -s http://getcomposer.org/installer | php
   - php composer.phar install --dev
-  
+
 script:
   - cp tests/config.sample.php tests/config.php
   - mkdir -p tests/fixtures/cache

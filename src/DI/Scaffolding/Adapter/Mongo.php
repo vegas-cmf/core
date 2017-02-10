@@ -39,6 +39,13 @@ class Mongo implements AdapterInterface, ScaffoldingAdapterInterface
     protected $scaffolding;
 
     /**
+     * Query for paginator
+     *
+     * @var array
+     */
+    protected $query = [];
+
+    /**
      * Constructor
      * Verifies services required by Mongo
      */
@@ -47,6 +54,16 @@ class Mongo implements AdapterInterface, ScaffoldingAdapterInterface
         $di = DI::getDefault();
         $this->verifyRequiredServices($di);
         $this->setupExtraServices($di);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setQuery($query)
+    {
+        $this->query = $query;
+
+        return $this;
     }
 
     /**
@@ -69,6 +86,7 @@ class Mongo implements AdapterInterface, ScaffoldingAdapterInterface
     public function getPaginator($page = 1, $limit = 10)
     {
         return new PaginatorAdapterMongo(array(
+            'query' => $this->query,
             'model' => $this->scaffolding->getRecord(),
             'limit' => $limit,
             'page' => $page
