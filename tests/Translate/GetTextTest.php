@@ -11,7 +11,6 @@
  */
 namespace Vegas\Tests\Tag;
 
-use Vegas\Paginator\Adapter\Mongo;
 use Vegas\Test\TestCase;
 use Vegas\Translate\Adapter\GetText;
 
@@ -22,7 +21,7 @@ class GetTextTest extends TestCase
      */
     public function testNotArrayArgument()
     {
-        $gettext = new Gettext('not_an_array');
+        $gettext = new GetText('not_an_array');
     }
 
     /**
@@ -30,7 +29,7 @@ class GetTextTest extends TestCase
      */
     public function testLocaleArgument()
     {
-        $gettext = new Gettext([]);
+        $gettext = new GetText([]);
     }
 
     /**
@@ -38,7 +37,7 @@ class GetTextTest extends TestCase
      */
     public function testDomainArgument()
     {
-        $gettext = new Gettext(['locale' => 'en_US']);
+        $gettext = new GetText(['locale' => 'en_US']);
     }
 
     /**
@@ -46,7 +45,7 @@ class GetTextTest extends TestCase
      */
     public function testDomainDirectoryArgument()
     {
-        $gettext = new Gettext([
+        $gettext = new GetText([
             'locale' => 'en_US',
             'directory' => '/tmp'
         ]);
@@ -57,7 +56,7 @@ class GetTextTest extends TestCase
      */
     public function testDomainFileArgument()
     {
-        $gettext = new Gettext([
+        $gettext = new GetText([
             'locale' => 'en_US',
             'file' => 'tmp.data'
         ]);
@@ -68,7 +67,7 @@ class GetTextTest extends TestCase
      */
     public function testDomainNotArrayArgument()
     {
-        $gettext = new Gettext([
+        $gettext = new GetText([
             'locale' => 'en_US',
             'file' => 'tmp.data',
             'directory' => '/tmp',
@@ -79,7 +78,7 @@ class GetTextTest extends TestCase
 
     public function testDomainArrayArgument()
     {
-        $gettext = new Gettext([
+        $gettext = new GetText([
             'locale' => 'en_US',
             'file' => 'tmp.data',
             'directory' => '/tmp',
@@ -91,7 +90,7 @@ class GetTextTest extends TestCase
 
     public function testDomainFileAsArrayArgument()
     {
-        $gettext = new Gettext([
+        $gettext = new GetText([
             'locale' => 'en_US',
             'file' => ['tmp.data'],
             'directory' => '/tmp'
@@ -100,7 +99,7 @@ class GetTextTest extends TestCase
 
     public function testString()
     {
-        $getText = new Gettext([
+        $getText = new GetText([
             'locale' => 'en_EN',
             'file' => 'messages',
             'directory' => APP_ROOT.'/lang'

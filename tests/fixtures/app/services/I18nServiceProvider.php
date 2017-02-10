@@ -26,7 +26,7 @@ class I18nServiceProvider implements ServiceProviderInterface
     {
         $config = $di->get('config');
         $di->set('i18n', function() use ($config) {
-            return new \Vegas\Translate\Adapter\Gettext(array(
+            return new \Vegas\Translate\Adapter\GetText(array(
                 'locale' => $config->application->language,
                 'file' => 'messages',
                 'directory' => APP_ROOT.'/lang'
