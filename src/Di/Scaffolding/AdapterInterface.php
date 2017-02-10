@@ -28,6 +28,14 @@ interface AdapterInterface
     public function retrieveOne($id);
 
     /**
+     * Sets query for the paginator
+     *
+     * @param $id
+     * @return mixed
+     */
+    public function setQuery($query);
+
+    /**
      * Retrieve list of records as paginator object.
      *
      * @param int $page
