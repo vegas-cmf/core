@@ -30,6 +30,10 @@ class ScaffoldingTest extends \PHPUnit_Framework_TestCase
         $record = new \Vegas\Tests\Stub\Models\FakeModel();
         $record->fake_field = 'test';
         $record->save();
+
+        $record = new \Vegas\Tests\Stub\Models\FakeModel();
+        $record->fake_field = 'test_query';
+        $record->save();
         
         $this->record = $record;
     }
@@ -132,5 +136,30 @@ class ScaffoldingTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $ex) {
             $this->assertInstanceOf('\Vegas\Di\Scaffolding\Exception\RecordNotFoundException', $ex);
         }
+    }
+
+    public function testShouldReturnValidPagination()
+    {
+        $pagination = $this->scaffolding->doPaginate();
+
+        $this->assertInstanceOf('\Vegas\Paginator\Adapter\Mongo', $pagination);
+
+        $results = $pagination->getResults();
+
+        $this->assertNotCount(0, $results);
+        $this->assertInstanceOf('\Vegas\Tests\Stub\Models\FakeModel', $results[0]);
+    }
+
+    public function testShouldReturnFilteredPagination()
+    {
+        $this->scaffolding->setQuery([
+            'fake_field' => 'test_query'
+        ]);
+
+        $pagination = $this->scaffolding->doPaginate();
+        $results = $pagination->getResults();
+
+        $this->assertNotCount(0, $results);
+        $this->assertEquals('test_query', $results[0]->fake_field);
     }
 }

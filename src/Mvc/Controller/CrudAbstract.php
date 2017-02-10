@@ -78,6 +78,13 @@ abstract class CrudAbstract extends ControllerAbstract
     protected $modelName;
 
     /**
+     * Query that will be used in index action
+     *
+     * @var array
+     */
+    protected $query = [];
+
+    /**
      * Array of fields names that will be used in index action
      *
      * @var array
@@ -104,6 +111,7 @@ abstract class CrudAbstract extends ControllerAbstract
 
         $this->scaffolding->setModelName($this->modelName);
         $this->scaffolding->setFormName($this->formName);
+        $this->scaffolding->setQuery($this->query);
     }
 
     /**
