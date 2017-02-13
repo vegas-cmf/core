@@ -11,7 +11,7 @@
  */
 namespace Vegas\Tests\Assets;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Assets\Manager;
 
 class ManagerTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +20,7 @@ class ManagerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->di = DI::getDefault();
+        $this->di = Di::getDefault();
     }
 
     public function testCssAdding()

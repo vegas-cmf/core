@@ -19,7 +19,7 @@ class ErrorHandlerInitializerTraitTest extends TestCase
             ]
         ];
 
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di::getDefault();
 
         $trait = $this->getMockForTrait('\Vegas\Bootstrap\ErrorHandlerInitializerTrait');
         $trait->expects($this->any())

@@ -12,10 +12,10 @@
 
 namespace Vegas\Mvc;
 
-use Phalcon\DI\InjectionAwareInterface;
+use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\DiInterface;
 use Phalcon\Mvc\RouterInterface;
-use Vegas\DI\InjectionAwareTrait;
+use Vegas\Di\InjectionAwareTrait;
 use Vegas\Mvc\Router\Exception\InvalidRouteTypeException;
 use Vegas\Mvc\Router\Route;
 

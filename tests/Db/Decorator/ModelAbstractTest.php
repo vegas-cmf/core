@@ -12,7 +12,7 @@
 
 namespace Vegas\Tests\Db\Decorator;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Phalcon\Utils\Slug;
 use Vegas\Db\Decorator\Helper\RepositoryTrait;
 use Vegas\Db\Decorator\ModelAbstract;
@@ -37,17 +37,20 @@ class FakeModel extends ModelAbstract
     }
 }
 
-abstract class FakeModelRepository extends FakeModel
-{
-    use RepositoryTrait;
-}
+//@TODO reuse when Phalcon team will unify Model- and CollectionInterfaces
+//@TODO check https://github.com/phalcon/cphalcon/issues/10406
+//abstract class FakeRepository extends FakeModel
+//{
+//
+//    use RepositoryTrait;
+//}
 
 class ModelAbstractTest extends \PHPUnit_Framework_TestCase
 {
 
     public static function setUpBeforeClass()
     {
-        $di = DI::getDefault();
+        $di = Di::getDefault();
         $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
         $di->get('db')->execute(
             'CREATE TABLE fake_table(
@@ -62,7 +65,7 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
 
     public static function tearDownAfterClass()
     {
-        $di = DI::getDefault();
+        $di = Di::getDefault();
         $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
     }
 
@@ -97,11 +100,11 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldFindRecordByItsId()
     {
-        $fake = FakeModelRepository::findFirst();
+        $fake = FakeModel::findFirst();
 
         $this->assertSame(
             $fake->toArray(),
-            FakeModelRepository::findById($fake->getId())->toArray()
+            FakeModel::findById($fake->getId())->toArray()
         );
     }
 
@@ -110,13 +113,13 @@ class ModelAbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldUpdateRecord()
     {
-        $fake = FakeModelRepository::findFirst();
+        $fake = FakeModel::findFirst();
         $fake->title = 'New title';
 
         $this->assertTrue($fake->save());
         $this->assertInternalType('int', $fake->updated_at);
 
-        $fake = FakeModelRepository::findFirst();
+        $fake = FakeModel::findFirst();
         $this->assertEquals('New title', $fake->title);
     }
 }

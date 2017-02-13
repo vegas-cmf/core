@@ -51,7 +51,7 @@ class ViewTest extends TestCase
 
     public function testPathsResolving()
     {
-        $configView = $this->getDI()->get('config')->application->view->toArray();
+        $configView = clone $this->getDI()->get('config')->application->view;
 
         $getContent = function($params) {
             $this->setUp();
@@ -125,12 +125,12 @@ class ViewTest extends TestCase
 
     public function testPathsResolvingWithoutPartialsDirInConfig()
     {
-        $configView = $this->getDI()->get('config')->application->view->toArray();
+        $configView = clone $this->getDI()->get('config')->application->view;
 
         $getContent = function($params) {
             $this->setUp();
-            $this->getDI()->get('config')->application->view->partialsDir = false;
-            $this->getDI()->get('config')->application->view->layout = 'main2';
+            $this->getDI()->get('config')->application->view['partialsDir'] = false;
+            $this->getDI()->get('config')->application->view['layout'] = 'main2';
             $route = $this->getDI()->get('router')->getRouteByName('testfoo');
             $url = rtrim(str_replace(array(':action', ':params'), $params, $route->getPattern()), DIRECTORY_SEPARATOR);
             return $this->handleUri($url)->getContent();
@@ -138,7 +138,7 @@ class ViewTest extends TestCase
 
         //compares output rendered by dispatcher
         //views are loaded in the following order:
-        //app/layouts/main.volt     =>  1
+        //app/layouts/main2.volt     =>  1
         //app/layouts/partials/test/sample.volt     => 2
         //app/modules/Test/views/frontend/foo/test.volt    =>  3
         //app/modules/Test/views/frontend/foo/partials/test.volt    =>  4
@@ -201,8 +201,6 @@ class ViewTest extends TestCase
 
     public function testShortNamespacePathsResolving()
     {
-        $configView = $this->getDI()->get('config')->application->view->toArray();
-
         $getContent = function($params) {
             $this->setUp();
             $route = $this->getDI()->get('router')->getRouteByName('testshort');
@@ -234,7 +232,7 @@ class ViewTest extends TestCase
         $view = $this->getDI()->get('view');
 
         ob_start();
-        $view->partial('test/sample');
+        $view->partial('test/sample', ['tested' => true]);
         $this->assertEquals('2', ob_get_contents());
         ob_end_clean();
 
@@ -262,10 +260,10 @@ class ViewTest extends TestCase
 
     public function testViewCaching()
     {
-        $this->getDI()->get('config')->application->view->compileAlways = false;
-        $configView = $this->getDI()->get('config')->application->view->toArray();
+        $this->getDI()->get('config')->application->view['compileAlways'] = false;
+        $configView = $this->getDI()->get('config')->application->view;
 
-        $view = new View($configView);
+        $view = new View($configView->toArray());
         $this->getDI()->set('view', function() use ($view) { return $view; });
 
         if (!file_exists($configView['cacheDir'])) {

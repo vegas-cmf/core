@@ -22,7 +22,7 @@ class AggregateMongo extends MongoAbstract
     /**
      * @inheritdoc
      */
-    public function __construct($config)
+    public function __construct(array $config)
     {
         if (isset($config['aggregate'])) {
             $config['query'] = $config['aggregate'];

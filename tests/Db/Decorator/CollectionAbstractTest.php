@@ -24,10 +24,13 @@ class Fake extends CollectionAbstract
     }
 }
 
-abstract class FakeRepository extends Fake
-{
-    use RepositoryTrait;
-}
+//@TODO reuse when Phalcon team will unify Model- and CollectionInterfaces
+//@TODO check https://github.com/phalcon/cphalcon/issues/10406
+//abstract class FakeRepository extends Fake
+//{
+//
+//    use RepositoryTrait;
+//}
 
 class CollectionAbstractTest extends \PHPUnit_Framework_TestCase
 {
@@ -63,13 +66,13 @@ class CollectionAbstractTest extends \PHPUnit_Framework_TestCase
      */
     public function testUpdateDocument()
     {
-        $fake = FakeRepository::findFirst();
+        $fake = Fake::findFirst();
         $fake->title = 'New title';
 
         $this->assertTrue($fake->save());
         $this->assertInstanceOf('MongoInt32', $fake->updated_at);
 
-        $fake = FakeRepository::findById($fake->getId());
+        $fake = Fake::findById($fake->getId());
         $this->assertEquals('New title', $fake->title);
     }
 } 

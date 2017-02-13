@@ -12,7 +12,7 @@
  
 namespace Vegas\Tests\Mvc;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Mvc\Application;
 use Vegas\Mvc\Module\Loader as ModuleLoader;
 
@@ -20,7 +20,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
     public function testModuleRegister()
     {
-        $moduleLoader = new ModuleLoader(DI::getDefault());
+        $moduleLoader = new ModuleLoader(Di::getDefault());
         $modules = $moduleLoader->dump(
             TESTS_ROOT_DIR . '/fixtures/app/modules/',
             TESTS_ROOT_DIR . '/fixtures/app/config/'

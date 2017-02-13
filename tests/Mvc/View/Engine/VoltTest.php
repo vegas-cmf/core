@@ -12,7 +12,7 @@
 
 namespace Vegas\Tests\Mvc\View\Engine;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Mvc\View;
 use Vegas\Test\TestCase;
 
@@ -25,17 +25,17 @@ class VoltTest extends TestCase
         $engines = $view->getRegisteredEngines();
 
         $volt = $engines['.volt'];
-        $volt = $volt($view, DI::getDefault());
+        $volt = $volt($view, Di::getDefault());
 
         $compiler = $volt->getCompiler();
 
-        $this->assertEquals('<?php echo method_exists($object, \'method\'); ?>', $compiler->compileString('{{ methodExists(object, "method") }}'));
+        $this->assertEquals('<?= method_exists($object, \'method\') ?>', $compiler->compileString('{{ methodExists(object, "method") }}'));
 
-        $this->assertEquals('<?php echo (new \Vegas\Tag\ShortenText())->prepare(\'foo\',100, "..."); ?>', $compiler->compileString('{{ shortenText("foo") }}'));
-        $this->assertEquals('<?php echo (new \Vegas\Tag\ShortenText())->prepare(\'foo\',50, \'bar\'); ?>', $compiler->compileString('{{ shortenText("foo", 50, "bar") }}'));
+        $this->assertEquals('<?= (new \Vegas\Tag\ShortenText())->prepare(\'foo\',100, "...") ?>', $compiler->compileString('{{ shortenText("foo") }}'));
+        $this->assertEquals('<?= (new \Vegas\Tag\ShortenText())->prepare(\'foo\',50, \'bar\') ?>', $compiler->compileString('{{ shortenText("foo", 50, "bar") }}'));
 
-        $this->assertEquals('<?php echo (new \Vegas\Tag\Pagination($this->getDI()))->render($page,array()); ?>', $compiler->compileString('{{ pagination(page) }}'));
-        $this->assertEquals('<?php echo (new \Vegas\Tag\Pagination($this->getDI()))->render($page,array(\'class\' => \'test\')); ?>', $compiler->compileString('{{ pagination(page,["class": "test"]) }}'));
+        $this->assertEquals('<?= (new \Vegas\Tag\Pagination($this->getDI()))->render($page,array()) ?>', $compiler->compileString('{{ pagination(page) }}'));
+        $this->assertEquals('<?= (new \Vegas\Tag\Pagination($this->getDI()))->render($page,[\'class\' => \'test\']) ?>', $compiler->compileString('{{ pagination(page,["class": "test"]) }}'));
     }
 
     public function testFilters()
@@ -45,10 +45,10 @@ class VoltTest extends TestCase
         $engines = $view->getRegisteredEngines();
 
         $volt = $engines['.volt'];
-        $volt = $volt($view, DI::getDefault());
+        $volt = $volt($view, Di::getDefault());
 
         $compiler = $volt->getCompiler();
-        $this->assertEquals('<?php echo (string)1; ?>', $compiler->compileString('{{ 1|toString }}'));
+        $this->assertEquals('<?= (string)1 ?>', $compiler->compileString('{{ 1|toString }}'));
     }
 
     public function testShouldThrowExceptionForUnknownFilter()

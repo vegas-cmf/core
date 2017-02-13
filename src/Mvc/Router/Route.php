@@ -55,7 +55,7 @@ class Route
      * @var array
      * @internal
      */
-    private $params = array();
+    private $params = [];
 
     /**
      * Constructor
@@ -79,14 +79,9 @@ class Route
             throw new InvalidRoutePathsException();
         }
         $this->paths = $routeArray['paths'];
+
         //params are optional
         $this->params = isset($routeArray['params']) ? $routeArray['params'] : array();
-
-        // encode auth array if exists - phalcon application cannot handle arrays as param here
-        // throwing warning "Illegal offset type in ..."
-        if (!empty($this->paths['auth']) && is_array($this->paths['auth'])) {
-            $this->paths['auth'] = json_encode($this->paths['auth']);
-        }
     }
 
     /**

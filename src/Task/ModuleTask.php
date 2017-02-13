@@ -12,7 +12,7 @@
 
 namespace Vegas\Task;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Cli\Task\Action;
 use Vegas\Cli\Task;
 use Vegas\Cli\TaskAbstract;
@@ -39,7 +39,7 @@ class ModuleTask extends TaskAbstract
                 $config->application->configDir
             );
 
-            $serviceProviderLoader = new \Vegas\DI\ServiceProviderLoader($this->getDI());
+            $serviceProviderLoader = new \Vegas\Di\ServiceProviderLoader($this->getDI());
             $serviceProviderLoader->autoload(
                 $config->application->serviceDir,
                 $config->application->configDir

@@ -1,0 +1,35 @@
+mongo:
+  image: mongo:3.2
+  container_name: vegas-cmf-core-mongo
+  command: mongod --smallfiles
+  expose:
+    - 27017
+    - 28017
+  environment:
+    - AUTH=no
+    - TERM=xterm-256color
+
+mysql:
+  image: mysql:5.7
+  container_name: vegas-cmf-core-mysql
+  expose:
+    - 3306
+  environment:
+    - MYSQL_ALLOW_EMPTY_PASSWORD=yes
+    - MYSQL_ROOT_PASSWORD
+    - MYSQL_USER=root
+    - MYSQL_PASSWORD
+    - MYSQL_DATABASE=vegas_test
+
+phpunit:
+  image: amsdard/phalcon:3.x
+  container_name: vegas-cmf-core-phpunit
+  command: vendor/bin/phpunit
+  environment:
+    - TERM=xterm-256color
+    - MONGO_DB_NAME=vegas_test
+  links:
+    - mongo:vegas-cmf-core-mongo
+    - mysql:vegas-cmf-core-mysql
+  volumes:
+    - ./:/opt

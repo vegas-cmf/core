@@ -12,7 +12,7 @@
  
 namespace Vegas\Tests\Db;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Db\Decorator\CollectionAbstract;
 use Vegas\Db\Decorator\ModelAbstract;
 use Vegas\Db\Exception\InvalidMappingClassException;
@@ -97,7 +97,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 {
     public static function setUpBeforeClass()
     {
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di::getDefault();
         $di->get('db')->execute('DROP TABLE IF EXISTS fake_table ');
         $di->get('db')->execute(
             'CREATE TABLE fake_table(
@@ -110,7 +110,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
 
     public static function tearDownAfterClass()
     {
-        $di = \Phalcon\DI::getDefault();
+        $di = \Phalcon\Di::getDefault();
 
         foreach (Fake::find() as $fake) {
             $fake->delete();
@@ -171,7 +171,7 @@ class MappingTest extends \PHPUnit_Framework_TestCase
         $mappingManager->add(new Blob);
         $mappingManager->add(new Uppercase);
 
-        DI::getDefault()->get('mongo')->selectCollection('fake')->remove([]);
+        Di::getDefault()->get('mongo')->selectCollection('fake')->remove([]);
 
         /**  CREATE RECORD  */
         $fake = new Fake();

@@ -1,8 +1,8 @@
 <?php
 namespace Vegas\Tests\Stub\Services;
 
-use Phalcon\DI\InjectionAwareInterface;
-use Vegas\DI\InjectionAwareTrait;
+use Phalcon\Di\InjectionAwareInterface;
+use Vegas\Di\InjectionAwareTrait;
 
 class FakeService implements InjectionAwareInterface
 {

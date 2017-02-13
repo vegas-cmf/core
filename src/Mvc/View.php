@@ -12,6 +12,7 @@
 
 namespace Vegas\Mvc;
 
+use Phalcon\Cache\BackendInterface;
 use Phalcon\Mvc\View as PhalconView;
 use Phalcon\Mvc\View\Exception;
 use Vegas\Mvc\View\Engine\Volt;
@@ -43,7 +44,8 @@ class View extends PhalconView
      * @param null $options
      * @param null $viewDir
      */
-    public function __construct($options = null, $viewDir = null) {
+    public function __construct($options = null, $viewDir = null)
+    {
         parent::__construct($options);
 
         if (isset($options['layoutsDir'])) {
@@ -62,9 +64,10 @@ class View extends PhalconView
             $this->setLayout($options['layout']);
         }
 
-        $this->registerEngines(array(
-            '.volt' => function ($this, $di) use ($options) {
-                    $volt = new Volt($this, $di);
+        $view = $this;
+        $view->registerEngines(array(
+            '.volt' => function ($view, $di) use ($options) {
+                    $volt = new Volt($view, $di);
                     if (isset($options['cacheDir'])) {
                         $volt->setOptions(array(
                             'compiledPath' => $options['cacheDir'],
@@ -92,95 +95,135 @@ class View extends PhalconView
      * @param boolean $silence
      * @param boolean $mustClean
      * @param \Phalcon\Cache\BackendInterface $cache
-     * @return null|void
      * @throws Exception
      */
-    protected function _engineRender($engines, $viewPath, $silence, $mustClean, $cache)
-    {
-        $basePath = $this->_basePath;
-        $notExists = true;
-
-        if (is_object($cache)) {
-            $renderLevel = intval($this->_renderLevel);
-            $cacheLevel = intval($this->_cacheLevel);
-            if ($renderLevel >= $cacheLevel) {
-                if ($cache->isStarted() === false) {
-                    $viewOptions = $this->_options;
-                    if (is_array($viewOptions)) {
-                        if (isset($viewOptions['cache'])) {
-                            $cacheOptions = $viewOptions['cache'];
-                            if (is_array($cacheOptions)) {
-                                if (isset($cacheOptions['key'])) {
-                                    $key = $cacheOptions['key'];
-                                }
-                                if (isset($cacheOptions['lifetime'])) {
-                                    $lifeTime = $cacheOptions['lifetime'];
-                                }
-                            }
-
-                            if (!isset($key) || !$key) {
-                                $key = md5($viewPath);
-                            }
-
-                            if (!isset($lifeTime)) {
-                                $lifeTime = 0;
-                            }
-
-                            $cachedView = $cache->start($key, $lifeTime);
-                            if (!$cachedView) {
-                                $this->_content = $cachedView;
-                                return null;
-                            }
-                        }
-
-                        if (!$cache->isFresh()) {
-                            return null;
-                        }
-                    }
-                }
-            }
-        }
+    protected function _engineRender($engines, $viewPath, $silence, $mustClean, \Phalcon\Cache\BackendInterface $cache = null)
+	{
+		$notExists = true;
+		$basePath = $this->_basePath;
         $viewParams = $this->_viewParams;
-        $eventsManager = $this->_eventsManager;
+		$eventsManager = $this->_eventsManager;
+		$viewEnginePaths = [];
 
-        foreach ($engines as $extension => $engine) {
-            $viewEnginePath = $basePath . $this->resolveFullViewPath($viewPath) . $extension;
+		foreach ($this->getViewsDirs() as $viewsDir) {
 
-            if (file_exists($viewEnginePath)) {
-                if (is_object($eventsManager)) {
-                    $this->_activeRenderPath = $viewEnginePath;
-                    if ($eventsManager->fire("view:beforeRenderView", $this, $viewEnginePath) === false) {
-                        continue;
-                    }
-                }
-                $engine->render($viewEnginePath, $viewParams, $mustClean);
+			if (!$this->_isAbsolutePath($viewPath)) {
+				$viewsDirPath = $basePath . $this->resolveFullViewPath($viewsDir, $viewPath);
+			} else {
+                $viewsDirPath = $this->resolveFullViewPath($viewsDir, $viewPath);
+			}
 
-                $notExists = false;
-                if (is_object($eventsManager)) {
-                    $eventsManager->fire("view:afterRenderView", $this);
-                }
-                break;
-            }
-        }
-        if ($notExists) {
+            if (is_object($cache)) {
+
+                $renderLevel = (int) $this->_renderLevel;
+				$cacheLevel = (int) $this->_cacheLevel;
+
+				if ($renderLevel >= $cacheLevel) {
+
+                    /**
+                     * Check if the cache is started, the first time a cache is started we start the
+                     * cache
+                     */
+                    if (!$cache->isStarted()) {
+
+                        $key = null;
+						$lifetime = null;
+
+						$viewOptions = $this->_options;
+
+						/**
+                         * Check if the user has defined a different options to the default
+                         */
+						if ($cacheOptions = $viewOptions["cache"]) {
+                            if (is_array($cacheOptions)) {
+                                $key = $cacheOptions["key"];
+                                $lifetime = $cacheOptions["lifetime"];
+                            }
+						}
+
+						/**
+                         * If a cache key is not set we create one using a md5
+                         */
+						if ($key === null) {
+                            $key = md5($viewPath);
+						}
+
+						/**
+                         * We start the cache using the key set
+                         */
+						$cachedView = $cache->start($key, $lifetime);
+						if ($cachedView !== null) {
+                            $this->_content = $cachedView;
+							return null;
+						}
+					}
+
+					/**
+                     * This method only returns true if the cache has not expired
+                     */
+					if (!$cache->isFresh()) {
+						return null;
+					}
+				}
+			}
+
+			/**
+             * Views are rendered in each engine
+             */
+			foreach ($engines as $extension => $engine) {
+
+                $viewEnginePath = $viewsDirPath . $extension;
+				if (file_exists($viewEnginePath)) {
+
+                    /**
+                     * Call beforeRenderView if there is an events manager available
+                     */
+					if (is_object($eventsManager)) {
+                        $this->_activeRenderPaths = [$viewEnginePath];
+						if ($eventsManager->fire("view:beforeRenderView", $this, $viewEnginePath) === false) {
+                            continue;
+                        }
+					}
+
+					$engine->render($viewEnginePath, $viewParams, $mustClean);
+
+					/**
+                     * Call afterRenderView if there is an events manager available
+                     */
+//					$notExists = false;
+					if (is_object($eventsManager)) {
+                        $eventsManager->fire("view:afterRenderView", $this);
+					}
+					return;
+				}
+
+				$viewEnginePaths[] = $viewEnginePath;
+			}
+		}
+
+		if ($notExists === true) {
+            /**
+             * Notify about not found views
+             */
             if (is_object($eventsManager)) {
-                $this->_activeRenderPath = $viewEnginePath;
-                $eventsManager->fire("view:notFoundView", $this, $viewEnginePath);
-            }
+                $this->_activeRenderPaths = $viewEnginePaths;
+				$eventsManager->fire("view:notFoundView", $this, $viewEnginePath);
+			}
 
-            if (!$silence) {
-                throw new Exception(sprintf("View %s was not found in the views directory", $viewEnginePath));
+			if (!$silence) {
+                throw new Exception(sprintf("View %s was not found in any of the views directory", $viewEnginePath));
             }
-        }
-    }
+		}
+	}
 
     /**
      * Resolves full path to view file
      *
+     * @param $viewsDir
      * @param $viewPath
      * @return string
      */
-    private function resolveFullViewPath($viewPath)
+    private function resolveFullViewPath($viewsDir, $viewPath)
     {
         if (strlen($this->getPartialsDir()) > 0 && strpos($viewPath, $this->getPartialsDir()) === 0) {
             return $this->resolvePartialPath($viewPath);
@@ -189,7 +232,7 @@ class View extends PhalconView
             return $this->resolveLayoutPath($viewPath);
         }
 
-        return $this->resolveViewPath($viewPath);
+        return $this->resolveViewPath($viewsDir, $viewPath);
     }
 
     /**
@@ -198,9 +241,9 @@ class View extends PhalconView
      * @param $viewPath
      * @return string
      */
-    private function resolveViewPath($viewPath)
+    private function resolveViewPath($viewsDir, $viewPath)
     {
-        $path = realpath($this->_viewsDir . dirname($viewPath)) . DIRECTORY_SEPARATOR . basename($viewPath);
+        $path = realpath($viewsDir . dirname($viewPath)) . DIRECTORY_SEPARATOR . basename($viewPath);
         return $path;
     }
 
@@ -296,10 +339,11 @@ class View extends PhalconView
     private function resolveLocalPath($partialPath)
     {
         $partialDir = str_replace('./', '', dirname($partialPath));
-        $partialsDir = realpath(sprintf('%s%s',
-                $this->_viewsDir,
-                $partialDir
-            )) . DIRECTORY_SEPARATOR;
+        $partialsDir = implode(DIRECTORY_SEPARATOR, [
+                rtrim($this->getViewsDir(), DIRECTORY_SEPARATOR),
+                $partialDir,
+                ''
+        ]);
 
         return $partialsDir . basename($partialPath);
     }
@@ -324,10 +368,11 @@ class View extends PhalconView
      */
     private function resolveRelativePath($partialPath)
     {
-        $partialsDirPath = realpath(sprintf('%s%s',
-                $this->_viewsDir,
-                dirname($partialPath)
-            )) . DIRECTORY_SEPARATOR;
+        $partialsDirPath = implode(DIRECTORY_SEPARATOR, [
+            rtrim($this->getViewsDir(), DIRECTORY_SEPARATOR),
+            dirname($partialPath),
+            ''
+        ]);
 
         return $partialsDirPath . basename($partialPath);
     }
@@ -338,14 +383,33 @@ class View extends PhalconView
      * @override
      * @param string $controllerName
      * @param string $actionName
-     * @param null $params
-     * @return PhalconView|void
+     * @param array $params
+     * @return bool|View
      */
-    public function render($controllerName, $actionName, $params = null) {
+    public function render($controllerName, $actionName, $params = null)
+    {
         if (empty($this->controllerViewPath)) {
             $this->setControllerViewPath($controllerName);
         }
-        parent::render($this->controllerViewPath, $actionName, $params);
+        return parent::render($this->controllerViewPath, $actionName, $params);
+    }
+
+    /**
+     * @param string $partialPath
+     * @param null $params
+     * @return void
+     */
+    public function partial($partialPath, $params = null)
+    {
+        /**
+         * Backwards compatibility for partial rendering without adding directory separator on left
+         */
+        if (strlen($this->getPartialsDir()) > 0
+            && strpos($partialPath, DIRECTORY_SEPARATOR) !== 0
+            && strrpos($this->getPartialsDir(), DIRECTORY_SEPARATOR) !== (strlen($this->getPartialsDir())-1)) {
+            $partialPath = DIRECTORY_SEPARATOR . $partialPath;
+        }
+        parent::partial($partialPath, $params);
     }
 
     /**
@@ -367,7 +431,7 @@ class View extends PhalconView
      */
     public function setControllerViewPath($controllerName)
     {
-        $this->controllerViewPath = str_replace('\\','/',strtolower($controllerName));
-        $this->controllerFullViewPath = $this->_viewsDir . $this->controllerViewPath;
+        $this->controllerViewPath = str_replace('\\', DIRECTORY_SEPARATOR , strtolower($controllerName));
+        $this->controllerFullViewPath = $this->getViewsDir() . $this->controllerViewPath;
     }
 }

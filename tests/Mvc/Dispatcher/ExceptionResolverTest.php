@@ -12,7 +12,7 @@
  
 namespace Vegas\Tests\Mvc\Dispatcher;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Phalcon\Http\Response;
 use Vegas\Constants;
 use Vegas\Mvc\Dispatcher\ExceptionResolver;
@@ -52,7 +52,7 @@ class ExceptionResolverTest extends \PHPUnit_Framework_TestCase
 
     private function getFreshResolver($env = Constants::DEFAULT_ENV)
     {
-        $di = DI::getDefault();
+        $di = Di::getDefault();
         $di->set('environment', function() use ($env) {
             return $env;
         }, true);
@@ -65,6 +65,6 @@ class ExceptionResolverTest extends \PHPUnit_Framework_TestCase
 
     public function tearDown()
     {
-        ob_clean();
+        ob_end_clean();
     }
 }

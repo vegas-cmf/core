@@ -13,8 +13,8 @@
 namespace Vegas\Cli;
 
 use Phalcon\Config;
-use Phalcon\DI\FactoryDefault\CLI;
-use Phalcon\DI\FactoryDefault;
+use Phalcon\Di\FactoryDefault\CLI;
+use Phalcon\Di\FactoryDefault;
 use Phalcon\DiInterface;
 use Phalcon\Loader as PhalconLoader;
 use Vegas\Bootstrap\EnvironmentInitializerTrait;

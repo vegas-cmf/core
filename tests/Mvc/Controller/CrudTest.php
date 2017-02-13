@@ -11,7 +11,7 @@
  */
 namespace Vegas\Tests\Mvc\Controller;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Test\Forms\Fake;
 use Test\Models\Fake as FakeModel;
 use Vegas\Mvc\Controller\Crud;
@@ -24,7 +24,7 @@ class CrudTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $config = DI::getDefault()->get('config');
+        $config = Di::getDefault()->get('config');
         require_once $config->application->moduleDir . '/Test/forms/Fake.php';
         $this->prepareFakeObject();
     }
@@ -48,7 +48,13 @@ class CrudTest extends TestCase
     public function testNotConfiguredCrud()
     {
         $this->request()->setRequestMethod('GET');
-        $this->handleUri('/test/brokencrud/new')->getContent();
+
+        try {
+            $this->handleUri('/test/brokencrud/new')->getContent();
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
     }
 
     public function testNew()
@@ -68,7 +74,12 @@ class CrudTest extends TestCase
      */
     public function testNotPostCreateResponse()
     {
-        $this->handleUri('/test/crud/create');
+        try {
+            $this->handleUri('/test/crud/create');
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
     }
 
     public function testPostCreate()
@@ -125,7 +136,12 @@ class CrudTest extends TestCase
      */
     public function testNotPostUpdateResponse()
     {
-        $this->handleUri('/test/crud/update/'.$this->model->getId());
+        try {
+            $this->handleUri('/test/crud/update/'.$this->model->getId());
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
     }
 
     public function testPostUpdate()
@@ -197,12 +213,10 @@ class CrudTest extends TestCase
         $this->assertFalse($this->model);
     }
 
-    /**
-     * @expectedException \MongoException
-     */
-    public function testDeleteException()
+    public function testNoDeleteNoException()
     {
         $this->request()->setRequestMethod('GET');
-        $this->handleUri('/test/crud/delete/RanDoMn0t1D4sUR3');
+        $content = $this->handleUri('/test/crud/delete/RanDoaMn0t1D4sUR3')->getContent();
+        $this->assertEmpty($content);
     }
 }

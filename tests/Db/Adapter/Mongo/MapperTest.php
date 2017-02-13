@@ -12,7 +12,7 @@
 
 namespace Vegas\Db\Adapter\Mongo;
 
-use Phalcon\DI;
+use Phalcon\Di;
 
 class MapperTest extends \Vegas\Test\TestCase
 {

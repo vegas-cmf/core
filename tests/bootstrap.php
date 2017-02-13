@@ -12,7 +12,7 @@ $_SERVER['HTTP_HOST'] = 'vegas.dev';
 $_SERVER['REQUEST_URI'] = '/';
 
 $config = new \Phalcon\Config($configArray);
-$di = new Phalcon\DI\FactoryDefault();
+$di = new \Phalcon\Di\FactoryDefault();
 
 
 $di->set('config', $config);
@@ -21,7 +21,7 @@ $di->set('collectionManager', function() use ($di) {
 }, true);
 $di->set('mongo', function() use ($config) {
     $mongo = new \MongoClient();
-    return $mongo->selectDb($config->mongo->db);
+    return $mongo->selectDb($config->mongo->dbname);
 }, true);
 $di->set('modelManager', function() use ($di) {
     return new \Phalcon\Mvc\Model\Manager();
@@ -30,4 +30,4 @@ $di->set('db', function() use ($config) {
     return new \Phalcon\Db\Adapter\Pdo\Mysql($config->db->toArray());
 }, true);
 
-Phalcon\DI::setDefault($di);
+\Phalcon\Di::setDefault($di);

@@ -11,7 +11,7 @@
  */
 namespace Vegas\Mvc;
 
-use Phalcon\DI\InjectionAwareInterface;
+use Phalcon\Di\InjectionAwareInterface;
 use Phalcon\Loader;
 use Phalcon\Mvc\ModuleDefinitionInterface;
 
@@ -38,7 +38,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     /**
      * Registers module autoloaders
      */
-    public function registerAutoloaders()
+    public function registerAutoloaders(\Phalcon\DiInterface $di = null)
     {
         $this->registerControllerScopesAutoloader();
     }
@@ -74,7 +74,7 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
      *
      * @param \Phalcon\DiInterface $di
      */
-    public function registerServices($di)
+    public function registerServices(\Phalcon\DiInterface $di)
     {
         $this->registerDispatcherNamespace($di);
         $this->registerViewComponent($di);
@@ -110,15 +110,17 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
      */
     protected function registerViewComponent($di)
     {
-        $di->set('view', function() use ($di) {
-            $viewDir = $this->dir . '/views';
-            $view = new View($di->get('config')->application->view->toArray(), $viewDir);
+        $dir = $this->dir;
+        $di->set('view', function() use ($dir) {
+            $viewSettings = (array) $this->get('config')->application->view;
+            $viewDir = $dir . '/views';
+            $view = new View($viewSettings, $viewDir);
 
             if (file_exists($viewDir)) {
                 $view->setViewsDir($viewDir);
             }
             
-            $view->setEventsManager($di->getShared('eventsManager'));
+            $view->setEventsManager($this->getShared('eventsManager'));
             return $view;
         });
     }
@@ -131,9 +133,10 @@ abstract class ModuleAbstract implements ModuleDefinitionInterface
     protected function registerDispatcherNamespace($di)
     {
         $dispatcher = $di->get('dispatcher');
+        $namespace = $this->namespace;
 
-        $di->set('dispatcher', function() use ($dispatcher) {
-            $dispatcher->setDefaultNamespace($this->namespace.'\Controllers');
+        $di->set('dispatcher', function() use ($dispatcher, $namespace) {
+            $dispatcher->setDefaultNamespace($namespace.'\Controllers');
             return $dispatcher;
         });
     }

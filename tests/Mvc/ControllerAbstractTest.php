@@ -21,7 +21,12 @@ class ControllerAbstractTest extends TestCase
      */
     public function testNoActionErrorResponse()
     {
-        $this->handleUri('/test/front/no-action-like-this');
+        try {
+            $this->handleUri('/test/front/no-action-like-this');
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
     }
 
     /**
@@ -30,7 +35,12 @@ class ControllerAbstractTest extends TestCase
      */
     public function test403ErrorResponse()
     {
-        $this->handleUri('/test/front/error/403');
+        try {
+            $this->handleUri('/test/front/error/403');
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
     }
 
     /**
@@ -39,7 +49,12 @@ class ControllerAbstractTest extends TestCase
      */
     public function test404ErrorResponse()
     {
-        $this->handleUri('/test/front/error/404');
+        try {
+            $this->handleUri('/test/front/error/404');
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
     }
 
     /**
@@ -48,7 +63,12 @@ class ControllerAbstractTest extends TestCase
      */
     public function test500ErrorResponse()
     {
-        $this->handleUri('/test/front/error/500');
+        try {
+            $this->handleUri('/test/front/error/500');
+        } catch (\Exception $e) {
+            ob_end_clean();
+            throw $e;
+        }
     }
 
     public function testJson()

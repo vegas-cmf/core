@@ -13,8 +13,8 @@
 namespace Vegas\Test;
 
 use Phalcon\Config;
-use Phalcon\DI\FactoryDefault;
-use Phalcon\DI;
+use Phalcon\Di\FactoryDefault;
+use Phalcon\Di;
 use Phalcon\DiInterface;
 use Phalcon\Mvc\Dispatcher;
 use Vegas\Bootstrap\EnvironmentInitializerTrait;
@@ -132,7 +132,7 @@ class Bootstrap implements BootstrapInterface
             /**
              * @var \Phalcon\Events\Manager $eventsManager
              */
-            $eventsManager = $this->di->getShared('eventsManager');
+            $eventsManager = $this->getShared('eventsManager');
             $eventsManager->attach(
                 'dispatch:beforeException',
                 (new ExceptionListener())->beforeException()
@@ -172,7 +172,7 @@ class Bootstrap implements BootstrapInterface
         $this->initDispatcher();
 
         $this->application->setDI($this->di);
-        DI::setDefault($this->di);
+        Di::setDefault($this->di);
 
         return $this;
     }

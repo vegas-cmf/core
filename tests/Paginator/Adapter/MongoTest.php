@@ -11,7 +11,7 @@
  */
 namespace Vegas\Tests\Paginator;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Tests\Stub\Models\FakePaginatorModel;
 
 class MongoTest extends \PHPUnit_Framework_TestCase

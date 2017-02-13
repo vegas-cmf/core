@@ -12,7 +12,7 @@
  
 namespace Vegas\Task;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Cli\Task\Action;
 use Vegas\Cli\Task;
 use Vegas\Cli\TaskAbstract;
@@ -30,7 +30,7 @@ class CacheTask extends TaskAbstract
     {
         $this->putText("Cleaning cache...");
 
-        $di = DI::getDefault();
+        $di = Di::getDefault();
 
         if ($di->has('config')) {
             $config = $di->get('config');

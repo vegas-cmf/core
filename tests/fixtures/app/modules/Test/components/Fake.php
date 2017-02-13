@@ -12,8 +12,8 @@
  
 namespace Test\Components;
 
-use Vegas\DI\InjectionAwareTrait;
-use Vegas\DI\Service\ComponentAbstract;
+use Vegas\Di\InjectionAwareTrait;
+use Vegas\Di\Service\ComponentAbstract;
 
 class Fake extends ComponentAbstract
 {

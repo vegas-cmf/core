@@ -13,7 +13,7 @@
 namespace Vegas\Bootstrap;
 
 use Phalcon\Config;
-use Vegas\DI\ServiceProviderLoader;
+use Vegas\Di\ServiceProviderLoader;
 
 trait ServicesInitializerTrait
 {

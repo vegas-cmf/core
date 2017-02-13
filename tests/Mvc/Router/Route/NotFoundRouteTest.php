@@ -12,7 +12,7 @@
  
 namespace Vegas\Tests\Mvc\Router\Route;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Mvc\Router\Route;
 
 class NotFoundRouteTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +20,7 @@ class NotFoundRouteTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldAddNotFoundRouteToRouter()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
 
         $route = new Route('notfound', [
             'paths' => [
@@ -45,7 +45,7 @@ class NotFoundRouteTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldUseNotFoundRoute()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
 
         $route = new Route('notfound', [
             'paths' => [

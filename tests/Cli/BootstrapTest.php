@@ -11,7 +11,7 @@
  */
 namespace Vegas\Tests\Cli;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Cli\Bootstrap;
 
 class BootstrapTest extends TestCase
@@ -20,13 +20,13 @@ class BootstrapTest extends TestCase
 
     public function setUp()
     {
-        $this->di = DI::getDefault();
+        $this->di = Di::getDefault();
     }
 
     public function testShouldChangeDI()
     {
         $cli = new Bootstrap($this->di->get('config'));
-        $this->assertInstanceOf('\Phalcon\DI\FactoryDefault\CLI', $cli->getDI());
+        $this->assertInstanceOf('\Phalcon\Di\FactoryDefault\CLI', $cli->getDI());
         $cli->setDI($this->di);
         $this->assertInstanceOf(get_class($this->di), $cli->getDI());
     }

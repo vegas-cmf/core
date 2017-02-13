@@ -12,7 +12,7 @@
  
 namespace Vegas\Tests\Mvc\Router\Route;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Mvc\Router\Route;
 
 class StaticRouteTest extends \PHPUnit_Framework_TestCase
@@ -20,7 +20,7 @@ class StaticRouteTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldAddStaticRouteToRouter()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
 
         $route = new Route('static', [
             'route' => '/static',
@@ -47,7 +47,7 @@ class StaticRouteTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldMatchStaticRoute()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
 
         $route = new Route('static', [
             'route' => '/static',

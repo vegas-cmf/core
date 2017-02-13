@@ -12,7 +12,7 @@
  
 namespace Vegas\Tests\Mvc;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Http\Method;
 use Vegas\Mvc\Module\Loader as ModuleLoader;
 use Vegas\Mvc\Router;
@@ -121,8 +121,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldContainGivenRouterAdapter()
     {
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
+        $router = new \Vegas\Mvc\Router(Di::getDefault(), $routerAdapter);
 
         $this->assertInstanceOf('\Vegas\Mvc\Router\Adapter\Standard', $router->getRouter());
         $this->assertSame($routerAdapter, $router->getRouter());
@@ -130,8 +130,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldAddRoutes()
     {
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
+        $router = new \Vegas\Mvc\Router(Di::getDefault(), $routerAdapter);
         $router->addRoutes($this->testRoutes);
 
         $router->setup();
@@ -166,8 +166,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
             'params' => array()
         ));
 
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
+        $router = new \Vegas\Mvc\Router(Di::getDefault(), $routerAdapter);
 
         $exception = null;
         try {
@@ -181,8 +181,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldMatchStaticRoute()
     {
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
+        $router = new \Vegas\Mvc\Router(Di::getDefault(), $routerAdapter);
         $router->addRoutes($this->testRoutes);
 
         $router->setup();
@@ -212,10 +212,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldAddModuleRoutes()
     {
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
+        $router = new \Vegas\Mvc\Router(Di::getDefault(), $routerAdapter);
 
-        $moduleLoader = new ModuleLoader(DI::getDefault());
+        $moduleLoader = new ModuleLoader(Di::getDefault());
         $modules = $moduleLoader->dump(
             TESTS_ROOT_DIR . '/fixtures/app/modules/',
             TESTS_ROOT_DIR . '/fixtures/app/config/'
@@ -245,8 +245,8 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     {
         $_SERVER['HTTP_HOST'] = 'test.vegas.dev';
 
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
+        $router = new \Vegas\Mvc\Router(Di::getDefault(), $routerAdapter);
         $router->addRoutes([
             'test' => [
                 'route' => '/',
@@ -274,10 +274,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     public function testShouldMatchRouteWithHostNameResolvedFromApplicationConfig()
     {
         $_SERVER['HTTP_HOST'] = 'test.vegas.dev';
-        DI::getDefault()->get('config')->application->hostname = 'test.vegas.dev';
+        Di::getDefault()->get('config')->application->hostname = 'test.vegas.dev';
 
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
+        $router = new \Vegas\Mvc\Router(Di::getDefault(), $routerAdapter);
         $router->addRoutes([
             'test' => [
                 'route' => '/',
@@ -305,10 +305,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     public function testShouldNotMatchRouteWithHostNameResolvedFromHttpHost()
     {
         $_SERVER['HTTP_HOST'] = 'test.vegas.dev';
-        DI::getDefault()->get('config')->application->hostname = null;
+        Di::getDefault()->get('config')->application->hostname = null;
 
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
+        $router = new \Vegas\Mvc\Router(Di::getDefault(), $routerAdapter);
         $router->addRoutes([
             'test' => [
                 'route' => '/',
@@ -335,10 +335,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     public function testShouldNotMatchRouteWithHostNameResolvedFromApplicationConfig()
     {
         $_SERVER['HTTP_HOST'] = 'test.vegas.dev';
-        DI::getDefault()->get('config')->application->hostname = 'test2.vegas.dev';
+        Di::getDefault()->get('config')->application->hostname = 'test2.vegas.dev';
 
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
+        $router = new \Vegas\Mvc\Router(Di::getDefault(), $routerAdapter);
         $router->addRoutes([
             'test' => [
                 'route' => '/',
@@ -361,10 +361,10 @@ class RouterTest extends \PHPUnit_Framework_TestCase
     public function testShouldMatchRouteWithEmptyHostName()
     {
         $_SERVER['HTTP_HOST'] = null;
-        DI::getDefault()->get('config')->application->hostname = null;
+        Di::getDefault()->get('config')->application->hostname = null;
 
-        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
-        $router = new \Vegas\Mvc\Router(DI::getDefault(), $routerAdapter);
+        $routerAdapter = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
+        $router = new \Vegas\Mvc\Router(Di::getDefault(), $routerAdapter);
         $router->addRoutes([
             'test' => [
                 'route' => '/',

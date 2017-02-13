@@ -12,7 +12,7 @@
  
 namespace Vegas\Tests\Mvc;
 
-use Phalcon\DI;
+use Phalcon\Di;
 use Vegas\Mvc\Controller\Crud;
 use Vegas\Test\TestCase;
 

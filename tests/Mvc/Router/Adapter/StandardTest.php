@@ -12,26 +12,26 @@
  
 namespace Vegas\Tests\Mvc\Router\Adapter;
 
-use Phalcon\DI;
+use Phalcon\Di;
 
 class StandardTest extends \PHPUnit_Framework_TestCase
 {
 
     public function testShouldAdapterInstanceImplementRouterInterface()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
         $this->assertInstanceOf('\Phalcon\Mvc\RouterInterface', $router);
     }
 
     public function testShouldNotKeepDefaultRoutes()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
         $this->assertEmpty($router->getRoutes());
     }
 
     public function testShouldRemoveExtraSlashes()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
         $router->add('/test', [
             'module' => 'module',
             'controller' => 'controller',
@@ -47,7 +47,7 @@ class StandardTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldNotMatchRouteWithExtraSlash()
     {
-        $router = new \Vegas\Mvc\Router\Adapter\Standard(DI::getDefault());
+        $router = new \Vegas\Mvc\Router\Adapter\Standard(Di::getDefault());
         $router->removeExtraSlashes(false);
         $router->add('/test', [
             'module' => 'module',

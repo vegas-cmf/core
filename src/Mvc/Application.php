@@ -38,19 +38,22 @@ class Application extends \Phalcon\Mvc\Application
      * @param array $modules
      * @param boolean $merge
      */
-    public function registerModules($modules, $merge = null)
+    public function registerModules(array $modules, $merge = null)
     {
         $this->registerSharedData($modules);
+
         parent::registerModules($modules, $merge);
+        $this->setDefaultModule(key($modules));
+        return $this;
     }
 
     /**
      * Registers namespaces for models and services within modules
      *
-     * @param $modules
+     * @param array $modules
      * @internal
      */
-    private function registerSharedData($modules)
+    private function registerSharedData(array $modules)
     {
         $loader = new Loader();
         

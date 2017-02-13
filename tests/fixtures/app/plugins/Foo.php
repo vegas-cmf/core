@@ -17,9 +17,9 @@ use Phalcon\Mvc\Dispatcher;
  *
  * @package App\Plugins
  */
-class Foo implements \Phalcon\DI\InjectionAwareInterface
+class Foo implements \Phalcon\Di\InjectionAwareInterface
 {
-    use \Vegas\DI\InjectionAwareTrait;
+    use \Vegas\Di\InjectionAwareTrait;
 
     /**
      * @param Event $event
