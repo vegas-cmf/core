@@ -41,16 +41,18 @@ class ExceptionResolver implements InjectionAwareInterface
             throw $exception;
         }
 
-        error_log(
-            sprintf(
-                'Vegas %d error: %s in %s on line %d',
-                $exception->getCode(),
-                $exception->getMessage(),
-                $exception->getFile(),
-                $exception->getLine()
-            ),
-            0
+        $errorMessage = sprintf(
+            'Vegas %d error: %s in %s on line %d',
+            $exception->getCode(),
+            $exception->getMessage(),
+            $exception->getFile(),
+            $exception->getLine()
         );
+        if ($this->di->has('logger')) {
+            $this->di->get('logger')->error($errorMessage);
+        } else {
+            error_log($errorMessage, 0);
+        }
         $error = $this->prepareLiveEnvException($exception);
 
         try {
@@ -123,7 +125,7 @@ class ExceptionResolver implements InjectionAwareInterface
         foreach ($engines As $ext => $engine) {
             if (file_exists($errorTemplatePath.$ext)) {
                 $view->setLayout('error');
-                $view->disableLevel(\Phalcon\Mvc\View::LEVEL_ACTION_VIEW);
+                $view->disableLevel(View::LEVEL_ACTION_VIEW);
                 $view->error = $error;
 
                 return true;

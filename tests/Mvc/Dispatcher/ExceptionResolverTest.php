@@ -56,6 +56,9 @@ class ExceptionResolverTest extends \PHPUnit_Framework_TestCase
         $di->set('environment', function() use ($env) {
             return $env;
         }, true);
+        $di->set('logger', function () {
+            return new \Phalcon\Logger\Adapter\Stream('/dev/null');
+        }, true);
 
         $resolver = new ExceptionResolver();
         $resolver->setDI($di);
@@ -66,5 +69,8 @@ class ExceptionResolverTest extends \PHPUnit_Framework_TestCase
     public function tearDown()
     {
         ob_end_clean();
+
+        $di = Di::getDefault();
+        $di->has('logger') && $di->remove('logger');
     }
 }

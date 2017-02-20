@@ -15,6 +15,22 @@ use Vegas\Test\TestCase;
 
 class ControllerAbstractTest extends TestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->di->set('logger', function () {
+            return new \Phalcon\Logger\Adapter\Stream('/dev/null');
+        }, true);
+    }
+
+    public function tearDown()
+    {
+        parent::tearDown();
+
+        $this->di->remove('logger');
+    }
+
     /**
      * @expectedException \Phalcon\Mvc\Dispatcher\Exception
      * @expectedExceptionMessage Action 'no-action-like-this' was not found on handler 'Frontend\Fake'
