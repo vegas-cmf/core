@@ -47,4 +47,13 @@ abstract class CollectionAbstract extends Collection
     {
         $this->updated_at = new \MongoInt32(time());
     }
+
+    public function save()
+    {
+        if(!$this->_id) {
+            $this->_id = new \MongoId();
+        }
+
+        return parent::save();
+    }
 }
