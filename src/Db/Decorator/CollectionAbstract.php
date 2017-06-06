@@ -89,4 +89,10 @@ abstract class CollectionAbstract extends Collection
         }
         return $reserved;
     }
+
+    public function &toArray()
+    {
+        $data = parent::toArray();
+        return $data;
+    }
 }
