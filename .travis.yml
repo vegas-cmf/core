@@ -30,7 +30,8 @@ services:
   - memcached
 
 before_install:
-  - phpbaseversion="$(php -v | head -n1 | cut -d\  -f2 | cut -d. -f1)" && if [ $phpbaseversion = 5 ]; then printf "\n" | pecl install mongo &> /dev/null; else printf "\n" | pecl install mongodb &> /dev/null; fi
+  - printf "\n" | pecl install mongodb &> /dev/null;
+  - phpbaseversion="$(php -v | head -n1 | cut -d\  -f2 | cut -d. -f1)" && if [ $phpbaseversion = 5 ]; then printf "\n" | pecl install mongo &> /dev/null; fi
   - mysql -e "CREATE DATABASE IF NOT EXISTS ${VEGAS_CMF_CORE_MYSQL_ENV_MYSQL_DATABASE};" -uroot
 
 before_script:
