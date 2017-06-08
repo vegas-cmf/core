@@ -24,11 +24,13 @@ env:
     - PHALCON_VERSION="v3.0.3"
     - PHALCON_VERSION="3.1.x"
     - PHALCON_VERSION="v3.1.2"
-    exclude:
-      - php: 7.1
-        env: PHALCON_VERSION="3.0.x"
-      - php: 7.1
-        env: PHALCON_VERSION="v3.0.3"
+
+matrix:
+  exclude:
+   - php: 7.1
+     env: PHALCON_VERSION="3.0.x"
+   - php: 7.1
+     env: PHALCON_VERSION="v3.0.3"
 
 services:
   - mongodb
