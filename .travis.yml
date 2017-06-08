@@ -30,14 +30,14 @@ services:
   - memcached
 
 before_install:
-  - printf "\n" | pecl install mongodb &> /dev/null;
-  - phpbaseversion="$(php -v | head -n1 | cut -d\  -f2 | cut -d. -f1)" && if [ $phpbaseversion = 5 ]; then printf "\n" | pecl install mongo &> /dev/null; fi
+  - phpbaseversion="$(php -v | head -n1 | cut -d\  -f2 | cut -d. -f1)" && if [ $phpbaseversion = 5 ]; then printf "\n" | pecl install mongo &> /dev/null; else printf "\n" | pecl install mongodb &> /dev/null;  fi
   - mysql -e "CREATE DATABASE IF NOT EXISTS ${VEGAS_CMF_CORE_MYSQL_ENV_MYSQL_DATABASE};" -uroot
 
 before_script:
   - ./travis/install-phalcon-extension.sh ${PHALCON_VERSION}
   - php --ri phalcon
   - travis_retry composer install --dev --no-interaction
+  - phpbaseversion="$(php -v | head -n1 | cut -d\  -f2 | cut -d. -f1)" && if [ $phpbaseversion = 7 ]; then printf "\n" | composer require alcaeus/mongo-php-adapter  &> /dev/null; fi
   
 script:
   - cp tests/config.sample.php tests/config.php
