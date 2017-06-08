@@ -26,6 +26,8 @@ env:
     - PHALCON_VERSION="v3.1.2"
 
 matrix:
+  allow_failures:
+   - php: 7.0
   exclude:
    - php: 7.1
      env: PHALCON_VERSION="3.0.x"
