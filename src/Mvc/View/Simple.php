@@ -30,9 +30,9 @@ class Simple extends PhalconSimpleView
      */
     public function __construct($options=null) {
         parent::__construct($options);
-
+        $simpleView = $this;
         $this->registerEngines(array(
-            '.volt' => function ($this, $di) use ($options) {
+            '.volt' => function ($simpleView, $di) use ($options) {
                 $volt = new PhalconView\Engine\Volt($this, $di);
                 $volt->setOptions(array(
                     'compiledPath' => $options['cacheDir'],

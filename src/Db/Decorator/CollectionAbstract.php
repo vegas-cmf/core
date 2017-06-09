@@ -47,4 +47,51 @@ abstract class CollectionAbstract extends Collection
     {
         $this->updated_at = new \MongoInt32(time());
     }
+
+    public function save()
+    {
+        if(!$this->_id) {
+            $this->_id = new \MongoId();
+        }
+        return parent::save();
+    }
+
+    /**
+     * Returns an array with reserved properties that cannot be part of the insert/update
+     */
+    public function getReservedAttributes()
+    {
+        $reserved = self::$_reserved;
+        if ($reserved === null) {
+            $reserved = [
+                '_connection' => true,
+                '_dependencyInjector' => true,
+                '_source' => true,
+                '_operationMade' => true,
+                '_errorMessages' => true,
+                '_modelsManager' => true,
+                '_skipped' => true,
+                'cache' => true,
+                'metadataCache' => true,
+                'di' => true,
+                '_collectionManager' => true,
+                'mappingFieldsCache' => true,
+                '__lazy_loading' => true,
+                '__is_mapped' => true,
+                '__is_property_mapped' => true,
+                '__operation' => true,
+                '__cursorFields' => true,
+                '_dirtyState' => true,
+                'mappings' => true
+            ];
+            self::$_reserved = $reserved;
+        }
+        return $reserved;
+    }
+
+    public function &toArray()
+    {
+        $data = parent::toArray();
+        return $data;
+    }
 }

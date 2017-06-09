@@ -7,10 +7,7 @@ php:
   - 5.5
   - 5.6
   - 7.0
-
-matrix:
-  allow_failures:
-    - php: 7.0
+  - 7.1
 
 env:
   global:
@@ -25,22 +22,31 @@ env:
   matrix:
     - PHALCON_VERSION="3.0.x"
     - PHALCON_VERSION="v3.0.3"
-    - PHALCON_VERSION="v3.0.2"
-    - PHALCON_VERSION="v3.0.1"
-    - PHALCON_VERSION="v3.0.0"
+    - PHALCON_VERSION="3.1.x"
+    - PHALCON_VERSION="v3.1.2"
+
+matrix:
+  allow_failures:
+   - php: 7.0
+  exclude:
+   - php: 7.1
+     env: PHALCON_VERSION="3.0.x"
+   - php: 7.1
+     env: PHALCON_VERSION="v3.0.3"
 
 services:
   - mongodb
   - memcached
 
 before_install:
-  - printf "\n" | pecl install mongo &> /dev/null
+  - phpbaseversion="$(php -v | head -n1 | cut -d\  -f2 | cut -d. -f1)" && if [ $phpbaseversion = 5 ]; then printf "\n" | pecl install mongo &> /dev/null; else printf "\n" | pecl install mongodb &> /dev/null;  fi
   - mysql -e "CREATE DATABASE IF NOT EXISTS ${VEGAS_CMF_CORE_MYSQL_ENV_MYSQL_DATABASE};" -uroot
 
 before_script:
   - ./travis/install-phalcon-extension.sh ${PHALCON_VERSION}
   - php --ri phalcon
   - travis_retry composer install --dev --no-interaction
+  - phpbaseversion="$(php -v | head -n1 | cut -d\  -f2 | cut -d. -f1)" && if [ $phpbaseversion = 7 ]; then printf "\n" | composer require alcaeus/mongo-php-adapter  &> /dev/null; fi
   
 script:
   - cp tests/config.sample.php tests/config.php

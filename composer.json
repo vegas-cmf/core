@@ -17,8 +17,7 @@
     "require-dev": {
         "phalcon/devtools": "^3.0",
         "phpunit/phpunit": "4.* || 5.*",
-        "satooshi/php-coveralls": "^1.0",
-        "ext-mongo": ">=1.5"
+        "satooshi/php-coveralls": "^1.0"
     },
     "autoload": {
         "psr-4": {
